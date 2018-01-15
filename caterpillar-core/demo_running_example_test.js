@@ -7,12 +7,12 @@ let example = fs.readFileSync('demo_running_example.bpmn', 'utf-8');
 async.seq(
     (example, callback) => {
         request({ url: 'http://localhost:3010/services/Assess_Loan_Risk', method: 'GET'}, (err, resp, body) => {
-            callback(null, example.replace('$Assess_Loan_Risk', JSON.parse(body).address));
+            callback(null, example.replace('$Assess_Loan_Risk_Address', JSON.parse(body).address));
         })
     },
     (example, callback) => {
         request({ url: 'http://localhost:3010/services/Appraise_Property', method: 'GET'}, (err, resp, body) => {
-            callback(null, {name: 'example', bpmn: example.replace('$Appraise_Property', JSON.parse(body).address)});
+            callback(null, {name: 'example', bpmn: example.replace('$Appraise_Property_Address', JSON.parse(body).address)});
         })
     },
     (modelInfo, callback) => {
