@@ -39,7 +39,7 @@ export class ViewerComponent implements OnInit {
   connection;
   message;
 
-  private sURL = 'http://localhost:8090';
+  private sURL = 'http://192.168.99.100:8090';
   private socket;
 
   ////////////////////// End /////////////////////////
@@ -48,13 +48,13 @@ export class ViewerComponent implements OnInit {
      const instances = processStorage.getInstance(processStorage.modelId);
      this.activeContracts = [];
      instances.forEach(element => {
-       this.activeContracts.push('http://localhost:3000/processes/' + element);
+       this.activeContracts.push('http://192.168.99.100:3000/processes/' + element);
      });
      if (this.activeContracts.length === 0) {
        this.activeContracts.push('No Contracts Available');
        this.url = 'No Contracts Available';
      } else {
-       this.url = 'http://localhost:3000/processes/' + processStorage.actInst;
+       this.url = 'http://192.168.99.100:3000/processes/' + processStorage.actInst;
      }
   }
   loadModel() {
@@ -74,7 +74,7 @@ export class ViewerComponent implements OnInit {
     const res = this.processStorage.getInstance(this.processStorage.modelId);
     this.activeContracts = ['No Contracts Available'];
     res.forEach(element => {
-        this.url = 'http://localhost:3000/processes/' + element;
+        this.url = 'http://192.168.99.100:3000/processes/' + element;
         this.activeContracts.push(this.url);
     });
     if (this.activeContracts.length > 1 && this.activeContracts[0] === 'No Contracts Available') {
@@ -127,7 +127,7 @@ export class ViewerComponent implements OnInit {
             this.canvas.removeMarker(workItem.elementId, 'highlight');
             this.canvas.addMarker(workItem.elementId, 'highlight-running');
             if (workItem.input.length === 0) {
-              this.http.post('http://localhost:3000' + workItem.hrefs[0], { elementId: workItem.elementId, inputParameters: [] })
+              this.http.post('http://192.168.99.100:3000' + workItem.hrefs[0], { elementId: workItem.elementId, inputParameters: [] })
                 .subscribe(resp => this.http.get(this.url).subscribe(resp => this.renderState(resp.json())));
             } else {
               const overlayHtml = jQuery(input_params_as_form({ nodeId: workItem.elementId, inputs: workItem.input }));
@@ -147,7 +147,7 @@ export class ViewerComponent implements OnInit {
                       }
                     });
                   });
-                  this.http.post('http://localhost:3000' + workItem.hrefs[0], { elementId: workItem.elementId, inputParameters: values })
+                  this.http.post('http://192.168.99.100:3000' + workItem.hrefs[0], { elementId: workItem.elementId, inputParameters: values })
                     .subscribe(resp => this.http.get(this.url).subscribe(resp1 => this.renderState(resp1.json())));
                 });
               overlayHtml.find(`#${workItem.elementId}_cancel`).click((e1: any) => {
@@ -172,7 +172,7 @@ export class ViewerComponent implements OnInit {
               this.canvas.removeMarker(nodeId1, 'highlight');
               this.canvas.addMarker(nodeId1, 'highlight-running');
               const values: Array<any> = [];
-              this.http.post('http://localhost:3000' + href, { elementId: workItem.elementId, inputParameters: values })
+              this.http.post('http://192.168.99.100:3000' + href, { elementId: workItem.elementId, inputParameters: values })
                 .subscribe(resp => this.http.get(this.url).subscribe(resp1 => this.renderState(resp1.json())));
             });
             overlayHtml.toggle();

@@ -19,7 +19,7 @@ export class ProcessStorage {
 
   registerModel(model: string) {
     this.http
-      .post('http://localhost:3000/models', { bpmn: model, name: this.modelId })
+      .post('http://192.168.99.100:3000/models', { bpmn: model, name: this.modelId })
       .subscribe(
         (resp) => {
         const res = resp.json();
@@ -35,7 +35,7 @@ export class ProcessStorage {
 
   searchRegisteredModel(modelId: string) {
     this.http
-      .get('http://localhost:3000/models')
+      .get('http://192.168.99.100:3000/models')
       .subscribe(
       (resp) => {
         const resJ = resp.json();
@@ -55,7 +55,7 @@ export class ProcessStorage {
   }
 
   updateModels() {
-    this.http.get('http://localhost:3000/models')
+    this.http.get('http://192.168.99.100:3000/models')
       .subscribe(resp => {
         this.processes = [];
         resp.json().forEach(element => {
@@ -67,7 +67,7 @@ export class ProcessStorage {
   }
 
   createInstance(procName: string) {
-    this.http.post('http://localhost:3000/models/' + procName, {})
+    this.http.post('http://192.168.99.100:3000/models/' + procName, {})
       .subscribe(resp => {
         const res = resp.json();
         if (!this.instances[procName]) {
@@ -78,7 +78,7 @@ export class ProcessStorage {
   };
 
   updateInstances(procName: string) {
-    this.http.get('http://localhost:3000/processes/')
+    this.http.get('http://192.168.99.100:3000/processes/')
       .subscribe(resp => {
         const res = resp.json();
         this.instances[procName] = [];
