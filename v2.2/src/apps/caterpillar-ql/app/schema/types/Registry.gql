@@ -1,0 +1,12 @@
+# Comments in GraphQL are defined with the hash (#) symbol.
+type Registry {
+  _id: String
+  address: String
+  solidityCode: String
+  gasUsed: Int
+  abi: String
+  bytecode: String
+  _v: Int
+  processes: [ProcessContract]
+  models: [Model]
+}

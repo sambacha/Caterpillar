@@ -1,0 +1,6 @@
+type ProcessElement {
+  role: String
+  type: String
+  id: String
+  name: String
+}

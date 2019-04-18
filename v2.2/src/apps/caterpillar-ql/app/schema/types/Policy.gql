@@ -1,0 +1,10 @@
+type Policy {
+  address: String
+  model: String
+  solidityCode: String
+  abi: String
+  bytecode: String
+  indexToRole: [String]
+  accessControlAbi: String
+  accessControlBytecode: String
+}

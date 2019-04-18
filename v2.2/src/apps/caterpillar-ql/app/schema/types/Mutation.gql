@@ -1,0 +1,4 @@
+# The "Mutation" type is the root of all GraphQL mutations.
+type Mutation {
+  addRegistry: Registry,
+}

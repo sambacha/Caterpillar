@@ -1,0 +1,4 @@
+type InstanceState {
+  bpmn: String
+  workItems: [WorkItem]
+}

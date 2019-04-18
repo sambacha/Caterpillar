@@ -1,0 +1,6 @@
+type Model {
+  id: String
+  name: String
+  bpmn: String
+  solidity: String
+}

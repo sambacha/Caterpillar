@@ -1,0 +1,6 @@
+type RoleTask {
+  address: String
+  solidityCode: String
+  abi: String
+  bytecode: String
+}
