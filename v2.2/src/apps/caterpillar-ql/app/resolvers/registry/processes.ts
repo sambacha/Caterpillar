@@ -1,7 +1,8 @@
 import { process } from '../repo'
-import registryContract from '../registry-contract'
+import registryContract from '../util/registry-contract'
 import instanceState from '../process-contract/instance-state'
 import debug from 'debug'
+import hexToId from '../util/hex-to-id'
 
 export default async ({
   web3,
@@ -33,7 +34,7 @@ export default async ({
                 .then(
                   (bundleFor): object => ({
                     instance,
-                    bundleFor: web3.utils.toAscii(bundleFor).toString().substr(0, 24),
+                    bundleFor: hexToId(web3)(bundleFor),
                   }),
                 ),
           )

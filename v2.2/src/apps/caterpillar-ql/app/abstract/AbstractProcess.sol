@@ -39,7 +39,7 @@ contract AbstractProcess {
             (tmpMarking, tmpStartedActivities) = killProcess(0, tmpMarking, tmpStartedActivities);
         else if (eventType == "Signal")
             (tmpMarking, tmpStartedActivities) = broadcastSignal(tmpMarking, tmpStartedActivities, sourceChild);
-        if (parent != 0)
+        if (parent != 0x0000000000000000000000000000000000000000)
             AbstractProcess(parent).handleEvent(code, eventType, instanceIndex, tmpMarking | tmpStartedActivities == 0);
         return (tmpMarking, tmpStartedActivities);
     }

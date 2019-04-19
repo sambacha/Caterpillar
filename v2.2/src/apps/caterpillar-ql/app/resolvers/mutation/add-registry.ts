@@ -1,69 +1,48 @@
 import fs from 'fs'
 import solc from 'solc'
-import debug from 'debug'
+import _debug from 'debug'
 
 import StatusError from '../Status-Error'
 import { registry } from '../repo'
+import compile from '../util/compile'
 
+import abstractFactory from '../../abstract/AbstractFactory.sol'
+import processRegistry from '../../abstract/ProcessRegistry.sol' 
+
+const debug = _debug('caterpillarql:add-registry')
 const executionAccount = 0
 
 export default async ({
   web3,
 }): Promise<object> => {
-  console.log('DEPLOYING PROCESS RUNTIME REGISTRY ...');
+  debug('DEPLOYING PROCESS RUNTIME REGISTRY ...');
   try {
-    let sources = {
+    const output = compile({
       AbstractFactory: {
-        content: fs.readFileSync('./app/abstract/AbstractFactory.sol', 'utf8'),
+        content: abstractFactory,
       },
       ProcessRegistry: {
-        content: fs.readFileSync('./app/abstract/ProcessRegistry.sol', 'utf8'),
+        content: processRegistry,
       },
-    };
-
-
-    console.log('=============================================');
-    console.log("SOLIDITY CODE");
-    console.log('=============================================');
-    // console.log(sources['ProcessRegistry'].content);
-    console.log('....................................................................');
-
-    let output = JSON.parse(
-      solc.compile(
-        JSON.stringify(
-          {
-            language: 'Solidity',
-            sources,
-            settings: {
-              outputSelection: {
-                '*': {
-                  '*': ['*']
-                }
-              }
-            }
-          },
-        ),
-      ),
-    )
+    });
 
     if (Object.keys(output.contracts).length === 0) {
-      console.log('COMPILATION ERROR IN SMART CONTRACTS');
-      console.log(output.errors);
-      console.log('----------------------------------------------------------------------------------------------');
+      debug('COMPILATION ERROR IN SMART CONTRACTS');
+      debug(output.errors);
+      debug('----------------------------------------------------------------------------------------------');
       throw new StatusError('COMPILATION ERROR IN RUNTIME REGISTRY SMART CONTRACTS', 400)
       return;
     }
 
-    console.log('PROCESS RUNTIME REGISTRY COMPILED SUCCESSFULLY');
-    console.log('CREATING RUNTIME REGISTRY INSTANCE ... ');
-    // console.log(Object.keys(output.contracts), Object.keys(output.contracts['ProcessRegistry']), output.contracts.ProcessRegistry.ProcessRegistryinterface)
-    const ProcContract = new web3.eth.Contract(output.contracts.ProcessRegistry.ProcessRegistry.interface)
+    debug('PROCESS RUNTIME REGISTRY COMPILED SUCCESSFULLY');
+    debug('CREATING RUNTIME REGISTRY INSTANCE ... ');
+    const procContract = new web3.eth.Contract(output.contracts.ProcessRegistry.ProcessRegistry.interface)
     // how many blocks we wait for before result
-    ProcContract.transactionConfirmationBlocks = 1;
+    procContract.transactionConfirmationBlocks = 1;
     let gasUsed
-    debug('caterpillarql:registry')(output.contracts.ProcessRegistry.ProcessRegistry)
+    debug(output.contracts.ProcessRegistry.ProcessRegistry)
     const accounts = await web3.eth.personal.getAccounts()
-    const contract = await ProcContract
+    const contract = await procContract
       .deploy({
         data: "0x" + output.contracts.ProcessRegistry.ProcessRegistry.evm.bytecode.object,
       })
@@ -85,15 +64,15 @@ export default async ({
     return registry.create(
       {
         address: contract.address,
-        solidityCode: sources['ProcessRegistry'].content,
+        solidityCode: processRegistry,
         gasUsed,
         abi: JSON.stringify(output.contracts.ProcessRegistry.ProcessRegistry.abi),
         bytecode: output.contracts.ProcessRegistry.ProcessRegistry.evm.bytecode.object,
       }
     )
   } catch (e) {
-    console.log("Error: ", e);
-    console.log('----------------------------------------------------------------------------------------------');
+    debug("Error: ", e);
+    debug('----------------------------------------------------------------------------------------------');
     throw new StatusError(e.message, 400)
   }
 }

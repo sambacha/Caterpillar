@@ -1,6 +1,7 @@
 import debug from 'debug'
 import { process, registry } from '../repo'
-import registryContract from '../registry-contract'
+import registryContract from '../util/registry-contract'
+import hexToId from '../util/hex-to-id'
 
 export default async ({
   web3,
@@ -18,7 +19,7 @@ export default async ({
       models
         .map(
           ({ _id }): Promise<string> => {
-            debug('caterpillarql:registry.models')('_id',{ _id })
+            debug('caterpillarql:registry.models')('_id',{ _id, is: web3.utils.fromAscii(_id.toString()) })
             return contract
               .methods
               .childrenFor(web3.utils.fromAscii(_id.toString()), 0)
@@ -26,7 +27,7 @@ export default async ({
               .then(
                 (x): string =>
                   x &&
-                    web3.utils.toAscii(x).toString().substr(0, 24) === _id.toString() &&
+                  hexToId(web3)(x) === _id.toString() &&
                     _id.toString(),
               )
           },

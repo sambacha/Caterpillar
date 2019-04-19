@@ -1,0 +1,11 @@
+enum RoleBindingEnum {
+  UNDEFINED
+  BOUND
+  UNBOUND
+  NOMINATED
+  RELEASING
+}
+type RoleBinding {
+  role: String
+  binding: RoleBindingEnum
+}

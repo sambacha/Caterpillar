@@ -3,5 +3,5 @@ type ProcessContract {
   name: String
   address: String
   instanceState: InstanceState
-  resources(role: String): [String]
+  resources(role: String): [RoleBinding]
 }

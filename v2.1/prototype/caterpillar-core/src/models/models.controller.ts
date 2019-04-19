@@ -443,6 +443,7 @@ models.get('/resources/:role/:procAddress', (req, res) => {
                         } else {
                             let _runtimePolicyContract = web3.eth.contract(JSON.parse(repoData[0].accessControlAbi)).at(accessControlAddr);
                             let result = _runtimePolicyContract.roleState.call(roleIndexMap.get(req.params.role), req.params.procAddress);
+                            console.log('result', result)
                             if(result.c[0] === 0) {
                                 console.log(`${req.params.role} is UNBOUND`)
                                 res.status(200).send({'state' : 'UNBOUND'});
@@ -1335,12 +1336,14 @@ let continueWorklistCreation = (currentIndex, sortedElements, outputContracts, m
 let instanceStateFor = (currentIndex, nestedContracts, bpmnModel, workitems, serviceTasks, res) => {
     let contractAddress = nestedContracts[currentIndex];
     let bundleId = web3.toAscii(processRegistryContract.bundleFor.call(contractAddress)).toString().substr(0, 24);
+    console.log('finding', bundleId)
     repoSchema.find({_id: bundleId},
         (err, repoData) => {
             if (err) {
                 console.log('ERROR ', err);
                 return [];
             } else {
+                console.log('found', repoData.worklistAbi)
                 let contractInstance = web3.eth.contract(JSON.parse(repoData[0].abi)).at(contractAddress);
                 let worklistAddress = contractInstance.getWorklistAddress.call();
                 let worklistInstance: any;
