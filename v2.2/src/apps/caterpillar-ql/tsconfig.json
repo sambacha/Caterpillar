@@ -17,8 +17,8 @@
 */
 {
 	"compilerOptions": {
-    "module": "commonjs",
-		"target": "es2015",
+		"module": "commonjs",
+		"target": "es6",
 		"outDir": "out",
 		"lib": [
 			"es2015"
@@ -39,7 +39,8 @@
     //"outDir": "out"
 	},
 	"include": [
-		"app"
+		"app",
+		"node_modules/antlr4ts"
   ],
   "exclude": [
 		"node_modules"

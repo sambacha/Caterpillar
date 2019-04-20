@@ -1,18 +1,28 @@
 {
 	"presets": [
-			"@babel/env",
+			["@babel/preset-env", {
+				"targets": {
+					"node": "11.10.0"
+				}
+			}],
 			"@babel/preset-typescript"
 	],
 	"plugins": [
-			"@babel/plugin-syntax-function-bind",
-			"@babel/proposal-class-properties",
-			"@babel/proposal-object-rest-spread",
-			["babel-plugin-inline-import", {
-				"extensions": [
-					".ejs",
-					".gql",
-					".sol"
-				]
-			}]
+		[
+			"@babel/plugin-proposal-decorators",
+			{
+				"legacy": true
+			},
+		],
+		"@babel/plugin-syntax-function-bind",
+		"@babel/proposal-class-properties",
+		"@babel/proposal-object-rest-spread",
+		["babel-plugin-inline-import", {
+			"extensions": [
+				".ejs",
+				".gql",
+				".sol"
+			]
+		}],
 	]
 }

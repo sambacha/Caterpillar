@@ -3,37 +3,34 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
-var _instanceState2 = _interopRequireDefault(require("./instance-state"));
+var _instanceState = _interopRequireDefault(require("./instance-state"));
 
-var _resources2 = _interopRequireDefault(require("./resources"));
+var _resources = _interopRequireDefault(require("./resources"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _default = function _default(web3) {
-  return {
-    instanceState: function instanceState(_ref) {
-      var address = _ref.address,
-          registryContract = _ref.registryContract,
-          bpmnModel = _ref.bpmnModel;
-      return (0, _instanceState2["default"])({
-        web3: web3,
-        registryContract: registryContract,
-        bpmnModel: bpmnModel
-      })(address);
-    },
-    resources: function resources(_ref2, _ref3) {
-      var address = _ref2.address,
-          registryContract = _ref2.registryContract;
-      var role = _ref3.role;
-      return (0, _resources2["default"])({
-        web3: web3,
-        registryContract: registryContract
-      })(address, role);
-    }
-  };
-};
+var _default = web3 => ({
+  instanceState: ({
+    address,
+    registryContract,
+    bpmnModel
+  }) => (0, _instanceState.default)({
+    web3,
+    registryContract,
+    bpmnModel
+  })(address),
+  resources: ({
+    address,
+    registryContract
+  }, {
+    role
+  }) => (0, _resources.default)({
+    web3,
+    registryContract
+  })(address, role)
+});
 
-exports["default"] = _default;
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL2FwcC9yZXNvbHZlcnMvcHJvY2Vzcy1jb250cmFjdC9pbmRleC50cyJdLCJuYW1lcyI6WyJ3ZWIzIiwiaW5zdGFuY2VTdGF0ZSIsImFkZHJlc3MiLCJyZWdpc3RyeUNvbnRyYWN0IiwiYnBtbk1vZGVsIiwicmVzb3VyY2VzIiwicm9sZSJdLCJtYXBwaW5ncyI6Ijs7Ozs7OztBQUFBOztBQUNBOzs7O2VBRWUsa0JBQUNBLElBQUQ7QUFBQSxTQUFtQjtBQUNoQ0MsSUFBQUEsYUFBYSxFQUFFO0FBQUEsVUFBR0MsT0FBSCxRQUFHQSxPQUFIO0FBQUEsVUFBWUMsZ0JBQVosUUFBWUEsZ0JBQVo7QUFBQSxVQUE4QkMsU0FBOUIsUUFBOEJBLFNBQTlCO0FBQUEsYUFDYixnQ0FBYztBQUFFSixRQUFBQSxJQUFJLEVBQUpBLElBQUY7QUFBUUcsUUFBQUEsZ0JBQWdCLEVBQWhCQSxnQkFBUjtBQUEwQkMsUUFBQUEsU0FBUyxFQUFUQTtBQUExQixPQUFkLEVBQXFERixPQUFyRCxDQURhO0FBQUEsS0FEaUI7QUFHaENHLElBQUFBLFNBQVMsRUFBRTtBQUFBLFVBQUdILE9BQUgsU0FBR0EsT0FBSDtBQUFBLFVBQVlDLGdCQUFaLFNBQVlBLGdCQUFaO0FBQUEsVUFBa0NHLElBQWxDLFNBQWtDQSxJQUFsQztBQUFBLGFBQ1QsNEJBQVU7QUFBRU4sUUFBQUEsSUFBSSxFQUFKQSxJQUFGO0FBQVFHLFFBQUFBLGdCQUFnQixFQUFoQkE7QUFBUixPQUFWLEVBQXNDRCxPQUF0QyxFQUErQ0ksSUFBL0MsQ0FEUztBQUFBO0FBSHFCLEdBQW5CO0FBQUEsQyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBpbnN0YW5jZVN0YXRlIGZyb20gJy4vaW5zdGFuY2Utc3RhdGUnXG5pbXBvcnQgcmVzb3VyY2VzIGZyb20gJy4vcmVzb3VyY2VzJ1xuXG5leHBvcnQgZGVmYXVsdCAod2ViMyk6IG9iamVjdCA9PiAoe1xuICBpbnN0YW5jZVN0YXRlOiAoeyBhZGRyZXNzLCByZWdpc3RyeUNvbnRyYWN0LCBicG1uTW9kZWwgfSkgPT5cbiAgICBpbnN0YW5jZVN0YXRlKHsgd2ViMywgcmVnaXN0cnlDb250cmFjdCwgYnBtbk1vZGVsIH0pKGFkZHJlc3MpLFxuICByZXNvdXJjZXM6ICh7IGFkZHJlc3MsIHJlZ2lzdHJ5Q29udHJhY3QgfSwgeyByb2xlIH0pID0+XG4gICAgcmVzb3VyY2VzKHsgd2ViMywgcmVnaXN0cnlDb250cmFjdCB9KShhZGRyZXNzLCByb2xlKSxcblxufSkiXX0=
+exports.default = _default;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL2FwcC9yZXNvbHZlcnMvcHJvY2Vzcy1jb250cmFjdC9pbmRleC50cyJdLCJuYW1lcyI6WyJ3ZWIzIiwiaW5zdGFuY2VTdGF0ZSIsImFkZHJlc3MiLCJyZWdpc3RyeUNvbnRyYWN0IiwiYnBtbk1vZGVsIiwicmVzb3VyY2VzIiwicm9sZSJdLCJtYXBwaW5ncyI6Ijs7Ozs7OztBQUFBOztBQUNBOzs7O2VBRWdCQSxJQUFELEtBQW1CO0FBQ2hDQyxFQUFBQSxhQUFhLEVBQUUsQ0FBQztBQUFFQyxJQUFBQSxPQUFGO0FBQVdDLElBQUFBLGdCQUFYO0FBQTZCQyxJQUFBQTtBQUE3QixHQUFELEtBQ2IsNEJBQWM7QUFBRUosSUFBQUEsSUFBRjtBQUFRRyxJQUFBQSxnQkFBUjtBQUEwQkMsSUFBQUE7QUFBMUIsR0FBZCxFQUFxREYsT0FBckQsQ0FGOEI7QUFHaENHLEVBQUFBLFNBQVMsRUFBRSxDQUFDO0FBQUVILElBQUFBLE9BQUY7QUFBV0MsSUFBQUE7QUFBWCxHQUFELEVBQWdDO0FBQUVHLElBQUFBO0FBQUYsR0FBaEMsS0FDVCx3QkFBVTtBQUFFTixJQUFBQSxJQUFGO0FBQVFHLElBQUFBO0FBQVIsR0FBVixFQUFzQ0QsT0FBdEMsRUFBK0NJLElBQS9DO0FBSjhCLENBQW5CLEMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgaW5zdGFuY2VTdGF0ZSBmcm9tICcuL2luc3RhbmNlLXN0YXRlJ1xuaW1wb3J0IHJlc291cmNlcyBmcm9tICcuL3Jlc291cmNlcydcblxuZXhwb3J0IGRlZmF1bHQgKHdlYjMpOiBvYmplY3QgPT4gKHtcbiAgaW5zdGFuY2VTdGF0ZTogKHsgYWRkcmVzcywgcmVnaXN0cnlDb250cmFjdCwgYnBtbk1vZGVsIH0pID0+XG4gICAgaW5zdGFuY2VTdGF0ZSh7IHdlYjMsIHJlZ2lzdHJ5Q29udHJhY3QsIGJwbW5Nb2RlbCB9KShhZGRyZXNzKSxcbiAgcmVzb3VyY2VzOiAoeyBhZGRyZXNzLCByZWdpc3RyeUNvbnRyYWN0IH0sIHsgcm9sZSB9KSA9PlxuICAgIHJlc291cmNlcyh7IHdlYjMsIHJlZ2lzdHJ5Q29udHJhY3QgfSkoYWRkcmVzcywgcm9sZSksXG5cbn0pIl19

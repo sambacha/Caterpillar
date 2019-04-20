@@ -1,0 +1,5 @@
+{ Customer is case-creator;Customer nominates Supplier;Under Shipment, Supplier nominates Candidate;Under Shipment, Supplier nominates Carrier in Candidate endorsed-by Customer;Under Carrier_Invoicing, Carrier nominates Invoicer endorsed-by Supplier and Customer;Under Carrier_Invoicing, Customer nominates Invoicee endorsed-by Carrier;Under Supplier_Invoicing, Supplier nominates Invoicer endorsed-by Customer;Under Supplier_Invoicing, Supplier nominates Invoicee endorsed-by Customer } {}
+
+"antlr4": "^4.7.1",
+"antlr4ts": "^0.4.1-alpha.0",
+    

@@ -1,8 +1,12 @@
 # The "Mutation" type is the root of all GraphQL mutations.
 type Mutation {
-  addRegistry: Registry,
-  addModel(
-    bpmn: String
-    registry: String
+  registry: Registry,
+  model(
+    bpmn: String!
+    registry: String!
   ): Model
+  policy(
+    model: String!
+    registry: String!
+  ): Policy
 }

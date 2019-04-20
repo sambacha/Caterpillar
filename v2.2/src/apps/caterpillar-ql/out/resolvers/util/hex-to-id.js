@@ -1,0 +1,11 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _default = web3 => hex => web3.utils.toAscii(hex).toString().substr(0, 24);
+
+exports.default = _default;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL2FwcC9yZXNvbHZlcnMvdXRpbC9oZXgtdG8taWQuanMiXSwibmFtZXMiOlsid2ViMyIsImhleCIsInV0aWxzIiwidG9Bc2NpaSIsInRvU3RyaW5nIiwic3Vic3RyIl0sIm1hcHBpbmdzIjoiOzs7Ozs7O2VBQWVBLElBQUksSUFDakJDLEdBQUcsSUFDREQsSUFBSSxDQUNERSxLQURILENBRUdDLE9BRkgsQ0FFV0YsR0FGWCxFQUdHRyxRQUhILEdBSUdDLE1BSkgsQ0FJVSxDQUpWLEVBSWEsRUFKYixDIiwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGRlZmF1bHQgd2ViMyA9PlxuICBoZXggPT5cbiAgICB3ZWIzXG4gICAgICAudXRpbHNcbiAgICAgIC50b0FzY2lpKGhleClcbiAgICAgIC50b1N0cmluZygpXG4gICAgICAuc3Vic3RyKDAsIDI0KSJdfQ==

@@ -71,5 +71,5 @@ type Query {
 }
 # The "Mutation" type is the root of all GraphQL mutations.
 type Mutation {
-  addRegistry: Registry,
+  registry: Registry,
 }

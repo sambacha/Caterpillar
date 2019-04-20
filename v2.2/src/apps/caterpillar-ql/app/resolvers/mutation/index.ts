@@ -1,19 +1,32 @@
-import addRegistry from './add-registry'
-import addModel from './add-model'
+import registry from './registry'
+import model from './model'
+import policy from './policy'
 
 export default (web3): object => ({
-  addRegistry: async (): Promise<any> =>
-    addRegistry({ web3 }),
-  addModel: async (
-    _,
-    {
-      bpmn,
-      registry,
-    },
-  ):Promise<any> =>
-      addModel({
+  registry: async (): Promise<any> =>
+    registry({ web3 }),
+    model: async (
+      _,
+      {
         bpmn,
         registry,
-        web3,
-      }),
+      },
+    ):Promise<any> =>
+        model({
+          bpmn,
+          registry,
+          web3,
+        }),
+    policy: async (
+        _,
+        {
+          model,
+          registry,
+        },
+      ):Promise<any> =>
+          policy({
+            model,
+            registry,
+            web3,
+          }),
 })
