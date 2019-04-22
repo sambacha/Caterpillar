@@ -1,4 +1,5 @@
 type InstanceState {
+  address: String
   bpmn: String
   workItems: [WorkItem]
 }

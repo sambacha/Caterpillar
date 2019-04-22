@@ -3,7 +3,6 @@ import compile from '../../util/compile'
 import registryContract from '../../util/registry-contract'
 import { policy as policySchema } from '../../repo'
 import {generatePolicy} from './dynamic_binding/validation_code_gen/BindingPolicyGenerator';
-import {generateRoleTaskContract} from './dynamic_binding/validation_code_gen/ProcessRoleGenerator';
 import bindingAccessControl from './dynamic_binding/runtime_solidity/BindingAccessControl.sol'
 
 const debug = _debug('caterpillarql:policy')

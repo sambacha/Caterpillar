@@ -1,4 +1,4 @@
-import getNestedContracts from './nested-contracts'
+import getNestedContracts from './get-nested-contracts'
 
 
 const findParameters = (contractAbi, functionName) => {
@@ -63,6 +63,7 @@ export default ({
                         async (req, i): Promise<any> => {
                           if (req === '1') {
                             return {
+                              worklistAddress,
                               bundleId: bundleId,
                               elementId: indexToElement[index].id,
                               elementName: indexToElement[index].name,
@@ -139,5 +140,8 @@ export default ({
     .sort(
       ({ index }) => index,
     )
-  return { bpmn: bpmnModel, workItems }
+  return {
+    bpmn: bpmnModel,
+    workItems
+  }
 }

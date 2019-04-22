@@ -11,13 +11,16 @@ const nestedContracts = ({
 ): Promise<any[]> => {
   const bundleId = await registryContract.methods.bundleFor(contractAddress).call()
     .then(hexToId(web3))
-      
   const [{
     abi,
     indexToElement,
     worklistAbi,
   }] = await process
     .find({ _id: bundleId })
+  // shouldnt need this...
+  if (!abi || !worklistAbi) {
+    return []
+  }
   const contractInstance = new web3.eth.Contract(JSON.parse(abi), contractAddress)
   contractInstance.transactionConfirmationBlocks = 1;
   const worklistAddress = await contractInstance.methods.getWorklistAddress.call()
@@ -27,7 +30,10 @@ const nestedContracts = ({
     worklistInstance.transactionConfirmationBlocks = 1;
   }
   const startedActivities = web3.utils.toBN(
-    await contractInstance.methods.startedActivities.call()
+    await contractInstance
+      .methods
+      .startedActivities
+      .call()
   ).toString(2).split('').reverse()
   const startedInstances = await Promise.all(
     startedActivities
@@ -102,4 +108,3 @@ const nestedContracts = ({
 }
 
 export default nestedContracts
-

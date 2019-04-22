@@ -5,8 +5,59 @@ type Mutation {
     bpmn: String!
     registry: String!
   ): Model
+  process(
+    modelId: String!
+    registry: String!
+    creator: String!
+    creatorRole: String!
+  ): ProcessContract
   policy(
     model: String!
     registry: String!
   ): Policy
+  roleTask(
+    policyId : String!
+    rootProc: String!
+    registry: String!
+  ): RoleTask
+  workItem(
+    id: String!
+    registry: String!
+    workList: String!
+    from: String!
+    parameters: [String]!
+  ): ProcessContract
+  nominate(
+    pcase: String!
+    registry: String!
+    nominator: String!
+    nominatorRole: String!
+    nominee: String!
+    nomineeRole: String!
+  ): ProcessContract
+  release(
+    pcase: String!
+    registry: String!
+    nominator: String!
+    nominatorRole: String!
+    nomineeRole: String!
+  ): ProcessContract
+  voteNominate(
+    isAccepted: Boolean!
+    pcase: String!
+    registry: String!
+    endorser: String!
+    endorserRole: String!
+    nominatorRole: String!
+    nomineeRole: String!
+  ): ProcessContract
+  voteRelease(
+    isAccepted: Boolean!
+    pcase: String!
+    registry: String!
+    endorser: String!
+    endorserRole: String!
+    nominatorRole: String!
+    nomineeRole: String!
+  ): ProcessContract
 }

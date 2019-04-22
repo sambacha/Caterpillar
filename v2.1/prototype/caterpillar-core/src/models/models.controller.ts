@@ -386,12 +386,14 @@ models.post('/resources/policy', (req, res) => {
 });
 
 models.post('/resources/task-role', (req, res) => {
+    console.log('deploying task role..')
     if(processRegistryContract === undefined) {
         console.log('ERROR: Runtime Registry NOT FOUND.');
         res.status(404).send({ 'Error': 'Runtime Registry NOT FOUND. Please, Create/Load a Registry.' });
         console.log('----------------------------------------------------------------------------------------------');
     } else {
         if(web3.isAddress(req.body.policyId)) {
+            console.log('good policyid address')
             policySchema.find({address: req.body.policyId},
                 (err, repoData) => {
                     if (!err && repoData && repoData.length > 0) {
@@ -405,10 +407,13 @@ models.post('/resources/task-role', (req, res) => {
                     }
                 })
         } else {
+            console.log('good policyid id')
+            
             policySchema.find({_id: req.body.policyId},
                 (err, repoData) => {
                     if (!err && repoData && repoData.length > 0) {
                         let processData: Map<string, Array<any>> = new Map();
+                        console.log('searching', req.body.rootProc)
                         searchRepository(0, [req.body.rootProc], processData, res, req.body.policyId, findRoleMap(repoData[0].indexToRole));
                     } else {
                         console.log("Error: Binding Policy NOT Found");
@@ -723,8 +728,10 @@ models.post('/resources/vote', (req, res) => {
 
 let searchRepository = (top: number, queue: Array<string>, processData: Map<string, Array<any>>, response, policyId, roleIndexMap) => {
     processData.set(queue[top], new Array());
+    console.log('searching for', queue[top])
     repoSchema.find({_id: queue[top]},
         (err, repoData) => {
+            console.log({ err, repoData })
             if (err) {
                 return;
             } else {
@@ -734,6 +741,7 @@ let searchRepository = (top: number, queue: Array<string>, processData: Map<stri
                     if(dictionary[i].type === 'Workitem') {
                         processData.get(queue[top]).push({taskIndex: i, roleIndex: roleIndexMap.get(dictionary[i].role)});
                     } else if (dictionary[i].type === 'Separate-Instance') {
+                        console.log('found a separate instance', queue[top])
                         queue.push(web3.toAscii(processRegistryContract.childrenFor.call(queue[top], i)).toString().substr(0, 24));
                     } 
                 }

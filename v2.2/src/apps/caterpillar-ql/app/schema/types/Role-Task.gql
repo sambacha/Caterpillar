@@ -1,4 +1,5 @@
 type RoleTask {
+  _id: String
   address: String
   solidityCode: String
   abi: String

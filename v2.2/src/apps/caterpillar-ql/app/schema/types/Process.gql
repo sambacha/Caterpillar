@@ -1,4 +1,5 @@
 type Process {
+  _id: String
   rootProcessID: String
   rootProcessName: String
   bpmnModel: String

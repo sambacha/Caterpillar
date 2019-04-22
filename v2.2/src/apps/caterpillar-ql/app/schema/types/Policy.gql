@@ -1,4 +1,5 @@
 type Policy {
+  _id: String
   address: String
   model: String
   solidityCode: String

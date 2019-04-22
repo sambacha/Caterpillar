@@ -1,8 +1,16 @@
 # The "Query" type is the root of all GraphQL queries.
 type Query {
   accounts: [String]
-  policies: [Policy]
-  processes: [Process]
-  registries: [Registry]
-  roleTasks: [RoleTask]
+  policies(
+    _id: String
+  ): [Policy]
+  processes(
+    _id: String
+  ): [Process]
+  registries(
+    _id: String
+  ): [Registry]
+  roleTasks(
+    _id: String
+  ): [RoleTask]
 }

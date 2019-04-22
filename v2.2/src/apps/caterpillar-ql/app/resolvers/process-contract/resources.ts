@@ -1,7 +1,7 @@
 import { compose } from 'ramda'
-import hexToId from '../../util/hex-to-id'
-import { policy } from '../../repo'
-import findRoleMap from './find-role-map'
+import hexToId from '../util/hex-to-id'
+import { policy } from '../repo'
+import findRoleMap from '../util/find-role-map'
 
 const bindings = {
   0: 'UNBOUND',

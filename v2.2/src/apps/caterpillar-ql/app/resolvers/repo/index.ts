@@ -29,6 +29,7 @@ export const policy = model<any>(
   'PolicyRepo',
   new Schema({
     address: String,
+    registry: String,
     model: String,
     solidityCode: String,
     abi: String,

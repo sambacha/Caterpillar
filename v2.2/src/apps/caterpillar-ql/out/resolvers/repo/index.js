@@ -7,7 +7,6 @@ exports.roleTask = exports.policy = exports.registry = exports.process = void 0;
 
 var _mongoose = require("mongoose");
 
-console.log('here it is!!!!!!!!!!');
 const process = (0, _mongoose.model)('ProcessRepo', new _mongoose.Schema({
   rootProcessID: String,
   rootProcessName: String,

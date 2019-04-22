@@ -1,4 +1,5 @@
 type WorkItem {
+  worklistAddress: String
   bundleId: String
   elementId: String,
   elementName: String,

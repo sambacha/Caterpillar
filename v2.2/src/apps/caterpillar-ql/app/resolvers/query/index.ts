@@ -11,12 +11,12 @@ export default (web3): object => ({
       (accounts): string[] =>
         accounts,
     ),
-  policies: async (): Promise<any[]> =>
-    policy.find(),
-  processes: async (): Promise<any[]> =>
-    process.find(),
-  registries: async (): Promise<any[]> =>
-    registry.find(),
-  roleTasks: async (): Promise<any[]> =>
-    roleTask.find(),
+  policies: async (_, { _id }): Promise<any[]> =>
+    policy.find({..._id && { _id }}),
+  processes: async (_, { _id }): Promise<any[]> =>
+    process.find({..._id && { _id }}),
+  registries: async (_, { _id }): Promise<any[]> =>
+    registry.find({..._id && { _id }}),
+  roleTasks: async (_, { _id }): Promise<any[]> =>
+    roleTask.find({..._id && { _id }}),
 })

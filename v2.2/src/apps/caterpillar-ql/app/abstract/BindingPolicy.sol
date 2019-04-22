@@ -26,7 +26,7 @@ pragma solidity ^0.5.6;
 //  Carrier          -> 5 (32)
 
 
-library BidingPolicy {
+library BindingPolicy {
     
     enum EndorsmentState {ENDORSED, PENDING, REJECTED, UNBINDING}
     
