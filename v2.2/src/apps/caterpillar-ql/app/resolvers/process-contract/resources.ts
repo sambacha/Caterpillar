@@ -10,10 +10,15 @@ const bindings = {
   3: 'BOUND'
 }
 
-export default ({
-  web3,
-  registryContract,
-}): Function => async (
+export default (
+  {
+    web3,
+    registryContract,
+  }: {
+    web3: Web3,
+    registryContract: import('caterpillar-lib').RegistryContract,
+  }
+): Function => async (
   contractAddress,
   role,
 ): Promise<any> => {
@@ -22,17 +27,16 @@ export default ({
     accessControlAbi,
   }] = await policy.find({
     _id: await registryContract
-      .methods
-      .bindingPolicyFor(contractAddress).call()
-      .then(hexToId(web3))
+      .bindingPolicyFor({
+        address: contractAddress,
+      })
   })
 
   const roleIndexMap = findRoleMap(indexToRole);
 
   const accessControlAddr = await registryContract
-    .methods
-    .findRuntimePolicy(contractAddress)
-    .call()
+    .findRuntimePolicy({ address: contractAddress })
+
   if(accessControlAddr.toString() === '0x0000000000000000000000000000000000000000') {
     return []
   }

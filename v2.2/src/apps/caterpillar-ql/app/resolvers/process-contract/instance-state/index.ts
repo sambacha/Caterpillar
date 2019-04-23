@@ -1,3 +1,4 @@
+import Web3 from 'web3'
 import getNestedContracts from './get-nested-contracts'
 
 
@@ -18,11 +19,17 @@ const findParameters = (contractAbi, functionName) => {
 };
 
 
-export default ({
-  web3,
-  bpmnModel,
-  registryContract,
-}): Function => async (
+export default (
+  {
+    web3,
+    bpmnModel,
+    registryContract,
+  } : {
+    web3: Web3,
+    bpmnModel: string,
+    registryContract: import('caterpillar-lib').RegistryContract,
+  }
+): Function => async (
   contractAddress,
 ): Promise<any> => {
   const nestedContracts = await getNestedContracts({

@@ -27,12 +27,9 @@ export default async ({
     web3,
   })
   const policyId = await contract
-    .methods
-    .bindingPolicyFor(
-      pcase,
-    )
-    .call()
-    .then(hexToId(web3))
+    .bindingPolicyFor({
+      address: pcase,
+    })
   const [policy] = await policySchema
       .find({ _id: policyId })
   const roleIndexMap = findRoleMap(policy.indexToRole)
@@ -52,15 +49,14 @@ export default async ({
     throw new Error('pcase is not an address')
   }
   const bundleId = await contract
-    .methods
-    .bundleFor(pcase)
-    .call()
-    .then(hexToId(web3))
-  debug({ bundleId })
-
+    .bundleFor({
+      instance: pcase,
+    })
+  
   const accessControlAddress = await contract
-    .methods
-    .findRuntimePolicy(pcase)
+    .findRuntimePolicy({
+      address: pcase,
+    })
     .call()
   
   debug({ accessControlAddress })

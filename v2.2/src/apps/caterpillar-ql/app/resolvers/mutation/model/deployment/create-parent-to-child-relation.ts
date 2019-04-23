@@ -4,18 +4,24 @@ import registerFactory from './register-factory'
 
 const debug = _debug('caterpillarql:model:create-parent-to-child-relation')
 
-const createParent2ChildRelation = (web3, registryContract, currentIndex, sortedElements, outputContracts, modelInfo) => {
+const createParent2ChildRelation = (
+  web3,
+  registryContract: import('caterpillar-lib').RegistryContract,
+  currentIndex,
+  sortedElements,
+  outputContracts,
+  modelInfo,
+) => {
   return web3.eth.personal.getAccounts()
     .then(
       accounts =>
         registryContract
-          .methods
-          .addChildBundleId(
-            web3.utils.fromAscii(sortedElements[currentIndex].bundleParent),
-            web3.utils.fromAscii(sortedElements[currentIndex].bundleId),
-            sortedElements[currentIndex].nodeIndex,
-          )
-          .send(
+          .addChildBundleId({
+            parentBundleId: web3.utils.fromAscii(sortedElements[currentIndex].bundleParent),
+            processBundleId: web3.utils.fromAscii(sortedElements[currentIndex].bundleId),
+            nodeIndex: sortedElements[currentIndex].nodeIndex,
+          })
+          (
             {
               from: accounts[0],
               gas: 4700000

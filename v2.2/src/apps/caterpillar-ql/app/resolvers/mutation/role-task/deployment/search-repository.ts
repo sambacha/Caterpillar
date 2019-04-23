@@ -6,7 +6,7 @@ const debug = _debug('caterpillarql:role-task:search-repository')
 
 let searchRepository = (
   web3,
-  registryContract,
+  registryContract: import('caterpillar-lib').RegistryContract,
   procId,
   policyId,
   roleIndexMap
@@ -37,13 +37,10 @@ let searchRepository = (
                   index,
                 }) =>
                   registryContract
-                    .methods
-                    .childrenFor(
-                      web3.utils.fromAscii(procId.toString()),
+                    .childrenFor({
+                      id: web3.utils.fromAscii(procId.toString()),
                       index,
-                    )
-                    .call()
-                    .then(hexToId(web3))
+                    })
                     .then(
                       instanceProcId =>
                         searchRepository(
@@ -63,31 +60,31 @@ let searchRepository = (
                 rootProcessId: repoData.rootProcessId,
                 separateInstances,
                 workItems: repoData
-                .indexToElement
-                .map(
-                  (
-                    element,
-                    index,
-                  ) => ({
-                    element,
-                    index,
-                  })
-                )
-                .filter(
-                  ({ element }) =>
-                  element && element.type === 'Workitem'
-                )
-                .map(
-                  ({
-                    index,
-                    element,
-                  }) => ({
-                    element,
-                    taskIndex: index,
-                    roleIndex: roleIndexMap.get(element.role)
-                  })
-                ),
-              })
+                  .indexToElement
+                  .map(
+                    (
+                      element,
+                      index,
+                    ) => ({
+                      element,
+                      index,
+                    })
+                  )
+                  .filter(
+                    ({ element }) =>
+                    element && element.type === 'Workitem'
+                  )
+                  .map(
+                    ({
+                      index,
+                      element,
+                    }) => ({
+                      element,
+                      taskIndex: index,
+                      roleIndex: roleIndexMap.get(element.role)
+                    })
+                  ),
+                })
             )
         )
 

@@ -42,5 +42,10 @@ export default async ({
     // console.log("Contract Name: " + key.split(':')[1]);
     // console.log("Gas Estimation: " + gasEstimate);
   });*/
-  return registerModel(web3, contract, model, output.contracts);
+  return registerModel(
+    web3,
+    contract,
+    model,
+    output.contracts,
+  );
 }

@@ -5,7 +5,7 @@ const debug = _debug('caterpillarql:model:continue-factory-registration')
 
 const continueFactoryRegistration = (
   web3,
-  registryContract,
+  registryContract: import('caterpillar-lib').RegistryContract,
   currentIndex,
   sortedElements,
   outputContracts,
@@ -17,12 +17,11 @@ const continueFactoryRegistration = (
     .then(
       accounts =>
         registryContract
-          .methods
-          .registerFactory(
-            web3.utils.fromAscii(sortedElements[currentIndex].bundleId),
-            contractF.address,
-          )
-          .send(
+          .registerFactory({
+            bundleId: web3.utils.fromAscii(sortedElements[currentIndex].bundleId),
+            address: contractF.address,
+          })
+          (
             {
               from: accounts[0],
               gas: 4700000

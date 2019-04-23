@@ -30,12 +30,9 @@ export default async ({
   })
   debug({ contract })
   const workListId = await contract
-    .methods
-    .worklistBundleFor(
-      workList,
-    )
-    .call()
-    .then(hexToId(web3))
+    .worklistBundleFor({
+      address: workList,
+    })
   debug({ workListId })
   const [model] = await processSchema
     .find({

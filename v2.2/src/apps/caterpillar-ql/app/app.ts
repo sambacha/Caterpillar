@@ -1,9 +1,7 @@
 import Web3 from 'web3'
 import mongoose from 'mongoose'
 import debug from 'debug'
-
 import serve from './serve'
-
 
 const web3 = new Web3('ws://127.0.0.1:8545');
 

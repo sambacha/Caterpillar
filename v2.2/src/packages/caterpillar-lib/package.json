@@ -1,17 +1,17 @@
 {
-  "name": "caterpillar-ql",
+  "name": "caterpillar-lib",
   "version": "0.0.0",
   "private": true,
   "description": "",
-  "main": "index.js",
+  "main": "out/index.js",
+  "types": "out/index.d.ts",
   "scripts": {
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
-    "start": "babel-watch app/app.ts --extensions '.ts'",
-    "build": "rimraf out && ./node_modules/.bin/babel app --out-dir out --extensions \".ts,.tsx,.js\" --source-maps inline",
-    "prod": "rimraf out && tsc && node out/app.js",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build": "rimraf out && yarn build:types && ./node_modules/.bin/babel lib --out-dir out --extensions \".ts,.tsx,.js\" --source-maps inline",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint app/app.ts"
+    "lint": "eslint lib/index.ts"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",
@@ -39,7 +39,6 @@
     "typescript": "^3.4.3"
   },
   "dependencies": {
-    "caterpillar-lib": "0.0.0",
     "antlr4": "^4.7.2",
     "antlr4ts": "^0.5.0-alpha.3",
     "apollo-server": "^2.4.8",

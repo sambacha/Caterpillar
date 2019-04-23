@@ -1,16 +1,17 @@
 import debug from 'debug'
-import { process, registry } from '../repo'
-import registryContract from '../util/registry-contract'
+import { process } from '../repo'
 import hexToId from '../util/hex-to-id'
+import Web3 from 'web3'
 
-export default async ({
-  web3,
-  registry: address,
-}): Promise<any[]> => {
-  const contract = await registryContract({
-    address,
+export default async (
+  {
     web3,
-  })
+    contract,
+  }: {
+    web3: Web3,
+    contract: import('caterpillar-lib').RegistryContract,
+  },
+): Promise<any[]> => {
   if (contract) {
     const models: any[] = await process
       .find({ 'bpmnModel': { $ne: 'empty' } })
@@ -21,13 +22,13 @@ export default async ({
           ({ _id }): Promise<string> => {
             debug('caterpillarql:registry.models')('_id',{ _id, is: web3.utils.fromAscii(_id.toString()) })
             return contract
-              .methods
-              .childrenFor(web3.utils.fromAscii(_id.toString()), 0)
-              .call()
+              .childrenFor({
+                id: web3.utils.fromAscii(_id.toString()),
+                index: 0,
+              })
               .then(
                 (x): string =>
-                  x &&
-                  hexToId(web3)(x) === _id.toString() &&
+                  x === _id.toString() &&
                     _id.toString(),
               )
           },

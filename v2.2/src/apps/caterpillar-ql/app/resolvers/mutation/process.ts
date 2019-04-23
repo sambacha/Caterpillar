@@ -28,22 +28,16 @@ export default async ({
     web3,
   })
   const roleTaskId = await contract
-    .methods
-    .taskRoleMapFromId(
-      web3.utils.fromAscii(modelId),
-    )
-    .call()
-    .then(hexToId(web3))
+    .taskRoleMapFromId({
+      procId: web3.utils.fromAscii(modelId),
+    })
   const [roleTask] = await roleTaskSchema
     .find({ _id: roleTaskId })
   
   const policyId = await contract
-    .methods
-    .bindingPolicyFromId(
-      web3.utils.fromAscii(modelId),
-    )
-    .call()
-    .then(hexToId(web3))
+    .bindingPolicyFromId({
+      procId: web3.utils.fromAscii(modelId),
+    })
   const [policy] = await policySchema
     .find({
       _id: policyId
@@ -73,13 +67,12 @@ export default async ({
       gas: 4700000,
     })
   const instance = await contract
-    .methods
-    .newBundleInstanceFor(
-      web3.utils.fromAscii(model._id.toString()),
-      '0x0000000000000000000000000000000000000000',
-      created.address,
-    )
-    .send({
+    .newBundleInstanceFor({
+      bundleId: web3.utils.fromAscii(model._id.toString()),
+      parent: '0x0000000000000000000000000000000000000000',
+      policyOpAddr: created.address,
+    })
+    ({
       from: accounts[0],
       gas: 4500000,
     })

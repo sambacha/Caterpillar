@@ -4,7 +4,14 @@ import continueFactoryRegistration from './continue-factory-registration'
 
 const debug = _debug('caterpillarql:model:register-factory')
 
-const registerFactory = (web3, registryContract, currentIndex, sortedElements, outputContracts, modelInfo) => {
+const registerFactory = (
+  web3,
+  registryContract,
+  currentIndex,
+  sortedElements,
+  outputContracts,
+  modelInfo,
+) => {
   debug('------------------------------------------------------------------------')
   const factoryContract = new web3.eth.Contract(outputContracts[modelInfo.id][`${sortedElements[currentIndex].nodeName}_Factory`].abi);
   factoryContract.transactionConfirmationBlocks = 1;

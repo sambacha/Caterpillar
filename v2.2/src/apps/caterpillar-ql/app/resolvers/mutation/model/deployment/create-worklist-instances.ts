@@ -6,7 +6,7 @@ const debug = _debug('caterpillarql:model:create-worklist-instances')
 
 const createWorklistInstances = (
   web3,
-  registryContract, 
+  registryContract: import('caterpillar-lib').RegistryContract,
   currentIndex,
   sortedElements,
   outputContracts,
@@ -36,12 +36,11 @@ const createWorklistInstances = (
               contractW => {
                 if (contractW.address) {
                   return registryContract
-                    .methods
-                    .registerWorklist(
-                      web3.utils.fromAscii(sortedElements[currentIndex].bundleId),
-                      contractW.address,
-                    )
-                    .send(
+                    .registerWorklist({
+                      bundleId: web3.utils.fromAscii(sortedElements[currentIndex].bundleId),
+                      address: contractW.address,
+                    })
+                    (
                       {
                         from: accounts[0],
                         gas: 4700000

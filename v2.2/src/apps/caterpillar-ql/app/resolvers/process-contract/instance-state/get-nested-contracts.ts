@@ -1,16 +1,21 @@
 import { process } from '../../repo'
 import hexToId from '../../util/hex-to-id'
+import Web3 from 'web3';
 
 
-const nestedContracts = ({
-  web3,
-  // bpmModel,
-  registryContract,
-}): Function => async (
+const nestedContracts = (
+  {
+    web3,
+    registryContract,
+  }: {
+    web3: Web3,
+    registryContract: import('caterpillar-lib').RegistryContract
+  }
+): Function => async (
   contractAddress,
 ): Promise<any[]> => {
-  const bundleId = await registryContract.methods.bundleFor(contractAddress).call()
-    .then(hexToId(web3))
+  const bundleId = await registryContract
+    .bundleFor({ instance: contractAddress })
   const [{
     abi,
     indexToElement,

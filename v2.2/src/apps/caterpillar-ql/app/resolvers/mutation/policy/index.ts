@@ -39,7 +39,7 @@ export default async ({
   }
   const procContract = new web3.eth.Contract(output.contracts['BindingPolicy']['BindingPolicy_Contract'].abi);
   procContract.transactionConfirmationBlocks = 1
-    
+
   const accounts = await web3.eth.personal.getAccounts()
   const result = await procContract
     .deploy({
