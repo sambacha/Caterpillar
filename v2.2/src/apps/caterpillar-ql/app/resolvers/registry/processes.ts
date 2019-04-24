@@ -7,16 +7,22 @@ export default async (
   {
     web3,
     contract,
+    address
   } : {
     web3: Web3,
     contract: import('caterpillar-lib').RegistryContract,
+    address: string
   }): Promise<any[]> => {
   const instances = await contract
     .allInstances()
+  console.log({ instances })
   if (instances) {
     debug('caterpillarql:processes')({ instances })
     const bundleFors = await Promise.all(
       instances
+        .filter(
+          i => !address || i === address
+        )
         .map(
           (instance): Promise<object> =>
             contract
@@ -29,6 +35,9 @@ export default async (
               ),
         )
     )
+    console.log({
+      bundleFors
+    })
     return Promise.all(
       bundleFors
         .map(

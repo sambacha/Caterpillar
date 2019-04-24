@@ -53,7 +53,7 @@ app.use((error: any, req, res, next) => {
 });
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/caterpillarRepo', function(error){
+mongoose.connect('mongodb://localhost:27017/caterpillarRepo3', function(error){
    if(error){
       throw error;
    }else{

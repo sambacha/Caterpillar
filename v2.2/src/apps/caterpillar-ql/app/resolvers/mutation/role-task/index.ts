@@ -9,6 +9,8 @@ import {
 import searchRepository from './deployment/search-repository'
 import generateRoleTaskIndexes from './deployment/dynamic-binding/validation_code_gen/generate-role-task-indexes'
 import generateRoleTaskContract from './deployment/dynamic-binding/validation_code_gen/generate-role-task-contract'
+import createContract from '../../util/create-contract'
+
 const debug = _debug('caterpillarql:role-task')
 
 export default async ({
@@ -43,8 +45,7 @@ export default async ({
     },
   })
 
-  const procContract = new web3.eth.Contract(output.contracts.TaskRoleContract.TaskRoleContract_Contract.abi);
-  procContract.transactionConfirmationBlocks = 1
+  const procContract = createContract(web3)(output.contracts.TaskRoleContract.TaskRoleContract_Contract.abi);
   
   const accounts = await web3.eth.personal.getAccounts()
 
@@ -67,13 +68,12 @@ export default async ({
       }
     )
   const related = await contract
-    .methods
-    .relateProcessToPolicy(
-      web3.utils.fromAscii(rootProc),
-      web3.utils.fromAscii(policyId),
-      web3.utils.fromAscii(created._id.toString()),
-    )
-    .send({
+    .relateProcessToPolicy({
+      bundleId: web3.utils.fromAscii(rootProc),
+      policyId: web3.utils.fromAscii(policyId),
+      roleTaskId: web3.utils.fromAscii(created._id.toString()),
+    })
+    ({
       from: accounts[0],
       gas: 4700000
     })

@@ -3,7 +3,6 @@ import { registryContract } from 'caterpillar-lib'
 import {
   registry,
   roleTask,
-  policy,
   process
 } from '../repo'
 
@@ -15,8 +14,6 @@ export default (web3): object => ({
       (accounts): string[] =>
         accounts,
     ),
-  policies: async (_, { _id }): Promise<any[]> =>
-    policy.find({..._id && { _id }}),
   processes: async (_, { _id }): Promise<any[]> =>
     process.find({..._id && { _id }}),
   registries: async (_, { _id }): Promise<any[]> =>
@@ -24,10 +21,14 @@ export default (web3): object => ({
       .find({..._id && { _id }})
       .then(
         rs => rs
+          // ? shouldnt be needed?
+          .filter(
+            ({ abi }) => abi,
+          )
           .map(
             r =>
               ({
-                ...r,
+                ...r._doc,
                 contract: registryContract({
                   hexToId: hexToId(web3),
                   web3,

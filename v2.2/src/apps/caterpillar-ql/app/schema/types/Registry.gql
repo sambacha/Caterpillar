@@ -7,6 +7,13 @@ type Registry {
   abi: String
   bytecode: String
   _v: Int
-  processes: [ProcessContract]
-  models: [Model]
+  processes(
+    address: String
+  ): [ProcessContract]
+  models(
+    id: String
+  ): [Model]
+  policies(
+    _id: String
+  ): [Policy]
 }

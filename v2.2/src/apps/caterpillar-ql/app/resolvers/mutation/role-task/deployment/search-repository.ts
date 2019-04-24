@@ -16,6 +16,7 @@ let searchRepository = (
     .then(
       ([repoData] = []) =>
         repoData &&
+          !console.log('i', repoData.indexToElement) &&
           Promise.all(
             repoData
               .indexToElement
@@ -41,6 +42,10 @@ let searchRepository = (
                       id: web3.utils.fromAscii(procId.toString()),
                       index,
                     })
+                    .then(
+                      childrenFor =>
+                        console.log({ childrenFor }) || childrenFor
+                    )
                     .then(
                       instanceProcId =>
                         searchRepository(

@@ -12,6 +12,7 @@ export default async ({
   registry,
   web3,
 }): Promise<object> => {
+  console.log({ registry, web3 })
   const contract = await registryContract({
     address: registry,
     web3,
@@ -56,7 +57,8 @@ export default async ({
   }
   return policySchema.create(
     {
-        address: contract.address,
+        address: result.address,
+        registry: contract.address,
         model: model,
         solidityCode: policy.solidity,
         abi: JSON.stringify(output.contracts.BindingPolicy.BindingPolicy_Contract.abi),

@@ -38,6 +38,7 @@ export default async ({
     .bindingPolicyFromId({
       procId: web3.utils.fromAscii(modelId),
     })
+  console.log({ policyId })
   const [policy] = await policySchema
     .find({
       _id: policyId
@@ -66,6 +67,7 @@ export default async ({
       from: creator,
       gas: 4700000,
     })
+  console.log('access control contract created', created.address)
   const instance = await contract
     .newBundleInstanceFor({
       bundleId: web3.utils.fromAscii(model._id.toString()),
@@ -73,7 +75,7 @@ export default async ({
       policyOpAddr: created.address,
     })
     ({
-      from: accounts[0],
+      from: creator, //accounts[0],
       gas: 4500000,
     })
   debug({ instance })
@@ -106,7 +108,13 @@ export default async ({
 
     }
   )
-  
+  console.log(
+    'got to nominated..',
+    creatorRole,
+    roleIndexMap.get(creatorRole),
+    creator,
+    result.returnValues.processAddress.toString()
+  )
   const nominated = await created
     .methods
     .nominateCaseCreator(
@@ -118,7 +126,7 @@ export default async ({
       from: creator,
       gas: 4700000,
     })
-    
+  
   return {
     id: modelId,
     address: result.returnValues.processAddress,

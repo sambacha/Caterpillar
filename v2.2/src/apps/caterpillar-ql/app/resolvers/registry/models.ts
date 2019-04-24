@@ -7,14 +7,26 @@ export default async (
   {
     web3,
     contract,
+    id,
   }: {
     web3: Web3,
     contract: import('caterpillar-lib').RegistryContract,
+    id: String,
   },
 ): Promise<any[]> => {
   if (contract) {
+    console.log({ id })
     const models: any[] = await process
-      .find({ 'bpmnModel': { $ne: 'empty' } })
+      .find(
+        {
+          bpmnModel: {
+            $ne: 'empty',
+          },
+          ...id && {
+            _id: id,
+          }
+        },
+      )
     
     const children = await Promise.all(
       models
@@ -51,7 +63,8 @@ export default async (
           id: _id.toString(),
           name,
           bpmn,
-          solidity
+          solidity,
+          registryContract: contract
         })
       )
   }

@@ -276,6 +276,7 @@ models.post('/registry/load', (req, res) => {
                     res.status(200).send('Registry Loaded Successfully');
                     console.log('----------------------------------------------------------------------------------------------');
                 } else {
+                    console.log({ err })
                     console.log("Error: Registry NOT Found");
                     console.log('----------------------------------------------------------------------------------------------');
                     res.status(400).send('Registry NOT Found');
@@ -947,20 +948,22 @@ models.post('/models/:bundleId', (req, res) => {
                                                                         });
                                                                         myEvent.watch((errEvt, resEvt) => {
                                                                             if (!errEvt) {
+                                                                                console.log({ resEvt })
                                                                                 if (resEvt && resEvt.transactionHash === resNew && resEvt.event === 'NewInstanceCreatedFor' && parseInt(resEvt.args.parent.toString(), 16) === 0) {
                                                                                     myEvent.stopWatching();
                                                                                     let processAddress = resEvt.args.processAddress.toString();
                                                                                     console.log('Root Process Contract DEPLOYED and RUNNING !!! AT ADDRESS: ', processAddress);
                                                                                     console.log('GAS USED: ', web3.eth.getTransactionReceipt(resEvt.transactionHash).gasUsed);
                                                                                     console.log('....................................................................');
-                                                                                    
+                                                                                    console.log('nominating case ctreator', roleIndexMap.get(req.body.creatorRole), req.body.caseCreator, processAddress, contract.address)
+                                                                                    process.exit(1)
                                                                                     contract.nominateCaseCreator(roleIndexMap.get(req.body.creatorRole), req.body.caseCreator, processAddress, {
                                                                                         from: req.body.caseCreator,
                                                                                         gas: 4700000
                                                                                     },
                                                                                     (error1, result1) => {
                                                                                         if (result1) {
-                                                                                            console.log("Case-creator nominated ");
+                                                                                            console.log("Case-creator nominated ", error1, result1);
                                                                                             caseCreatorMap.set(result1, processAddress);
                                                                                             console.log('----------------------------------------------------------------------------------------------');
                                                                                             res.status(200).send({

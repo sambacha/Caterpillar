@@ -120,6 +120,19 @@ export default ({
           address,
         )
         .send,
+    relateProcessToPolicy: ({
+      bundleId,
+      policyId,
+      roleTaskId,
+    }) =>
+      contract
+        .methods
+        .relateProcessToPolicy(
+          bundleId,
+          policyId,
+          roleTaskId,
+        )
+        .send,  
     taskRoleMapFromId: ({
       procId,
     }) =>

@@ -35,11 +35,31 @@ export default async ({
     debug('PROCESS RUNTIME REGISTRY COMPILED SUCCESSFULLY');
     debug('CREATING RUNTIME REGISTRY INSTANCE ... ');
     const procContract = new web3.eth.Contract(output.contracts.ProcessRegistry.ProcessRegistry.interface)
+    /*
+    procContract
+      .getPastEvents(
+        'allEvents',
+        {
+          fromBlock: 'latest',
+        },
+        e => console.log('past event', e),
+      )*/
     // how many blocks we wait for before result
     procContract.transactionConfirmationBlocks = 1;
-    let gasUsed
-    debug(output.contracts.ProcessRegistry.ProcessRegistry)
+    let gasUsed, createdBlockNumber
     const accounts = await web3.eth.personal.getAccounts()
+    procContract
+      .events
+      .allEvents(
+        {
+          fromBlock: 517366,
+        },
+        (err, e) => console.log('past event', e),
+      )
+      .on(
+        'data',
+        console.log
+      )
     const contract = await procContract
       .deploy({
         data: "0x" + output.contracts.ProcessRegistry.ProcessRegistry.evm.bytecode.object,
@@ -54,11 +74,22 @@ export default async ({
       .on(
         'receipt',
         (
-          { gasUsed: g }: any,
+          { gasUsed: g, blockNumber }: any,
         ): void => {
+          createdBlockNumber = blockNumber
           gasUsed = g
         },
       )
+      console.log({ createdBlockNumber })
+    contract
+      .getPastEvents(
+        'allEvents',
+        {
+          fromBlock: createdBlockNumber - 1,
+        },
+        (err, e) => console.log('past event', e),
+      )
+      
     return registry.create(
       {
         address: contract.address,

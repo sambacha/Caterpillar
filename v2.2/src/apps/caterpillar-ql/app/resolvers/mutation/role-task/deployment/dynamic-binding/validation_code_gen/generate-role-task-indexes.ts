@@ -3,6 +3,7 @@ const generate = ({
   separateInstances,
   workItems,
 }) => {
+  console.log({separateInstances})
   const maxTaskIndex = Math.max(...workItems.map(({ taskIndex }) => taskIndex))
   return {
     [procId]: [...Array(maxTaskIndex + 1)].fill('.')

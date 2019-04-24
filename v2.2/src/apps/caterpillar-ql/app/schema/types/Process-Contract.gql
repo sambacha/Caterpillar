@@ -4,4 +4,6 @@ type ProcessContract {
   address: String
   instanceState: InstanceState
   resources(role: String): [RoleBinding]
+  policyId: String
+  runtimePolicyAddress: String
 }

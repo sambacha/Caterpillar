@@ -47,6 +47,12 @@ export default interface RegistryContract {
     address: string,
   }) =>
     (any) => Promise<any>,
+  relateProcessToPolicy: ({
+    bundleId,
+    policyId,
+    roleTaskId: string,
+  }) =>
+    (any) => Promise<any>,
   taskRoleMapFromId: ({
     procId: string,
   }) =>
