@@ -268,6 +268,7 @@ models.post('/registry/load', (req, res) => {
                 }
             })
     } else {
+        console.log('looking for id', req.body.from)
         registrySchema.find({_id: req.body.from},
             (err, repoData) => {
                 if (!err && repoData && repoData.length > 0) {
@@ -1062,7 +1063,11 @@ models.post('/workitems/:worklistAddress/:reqId', (req, res) => {
                     let functionName = '';
 
                     realParameters = inputParams.length > 0 ? [reqId].concat(inputParams) : [reqId];
-                    console.log(`WANT TO EXECUTE TASK: ${node.name}, ON WORKLIST: ${worklistAddress}`);
+                    console.log(
+                        req.body.user,
+                        [reqId],
+                        `WANT TO EXECUTE TASK: ${node.name}, ON WORKLIST: ${worklistAddress}`
+                    );
                     functionName = node.name;
 
                     worklistInstance[functionName].apply(this, realParameters.concat({
