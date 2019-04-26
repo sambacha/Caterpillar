@@ -1,9 +1,10 @@
 import _debug from 'debug'
-import compile from '../../util/compile'
+import truffleCompile from '../../util/truffle-compile'
 import registryContract from '../../util/registry-contract'
+import debugContracts from '../../util/debug-contracts'
 import { policy as policySchema } from '../../repo'
 import {generatePolicy} from './dynamic_binding/validation_code_gen/BindingPolicyGenerator';
-import bindingAccessControl from './dynamic_binding/runtime_solidity/BindingAccessControl.sol'
+import bindingAccessControl from '../../../abstract/BindingAccessControl.sol'
 
 const debug = _debug('caterpillarql:policy')
 
@@ -20,30 +21,32 @@ export default async ({
   debug('=============================================');
   debug("SOLIDITY CODE");
   debug('=============================================');
-  debug(policy)
+  debug(policy.solidity)
   debug('....................................................................');
+  console.log('=============================================');
+  console.log(policy.solidity)
+  console.log('....................................................................');
 
-  const output = compile({
-    BindingPolicy: {
-      content: policy.solidity,
-    },
-    BindingAccessControl: {
-      content: bindingAccessControl,
-    }
+  const contracts = await truffleCompile({
+    BindingPolicy: policy.solidity,
+    BindingAccessControl: bindingAccessControl
   })
-  if (!output.contracts || !Object.keys(output.contracts).length) {
+  if (!contracts || !Object.keys(contracts).length) {
     debug('COMPILATION ERROR IN POLICY CONTRACTS');
-    debug(output.errors);
     debug('----------------------------------------------------------------------------------------------');
     throw new Error('COMPILATION ERROR IN POLICY CONTRACTS')
   }
-  const procContract = new web3.eth.Contract(output.contracts['BindingPolicy']['BindingPolicy_Contract'].abi);
+  debugContracts({
+    debug,
+    contracts,
+  })
+  const procContract = new web3.eth.Contract(contracts['BindingPolicy_Contract'].abi);
   procContract.transactionConfirmationBlocks = 1
 
   const accounts = await web3.eth.personal.getAccounts()
   const result = await procContract
     .deploy({
-      data: '0x' + output.contracts['BindingPolicy']['BindingPolicy_Contract'].evm.bytecode.object
+      data: contracts['BindingPolicy_Contract'].bytecode
     })
     .send({
       from: accounts[0],
@@ -60,11 +63,11 @@ export default async ({
         registry: contract.address,
         model: model,
         solidityCode: policy.solidity,
-        abi: JSON.stringify(output.contracts.BindingPolicy.BindingPolicy_Contract.abi),
-        bytecode: output.contracts.BindingPolicy.BindingPolicy_Contract.evm.bytecode.object,
+        abi: JSON.stringify(contracts.BindingPolicy_Contract.abi),
+        bytecode: contracts.BindingPolicy_Contract.bytecode,
         indexToRole,
-        accessControlAbi: JSON.stringify(output.contracts.BindingAccessControl.BindingAccessControl.abi),
-        accessControlBytecode:output.contracts.BindingAccessControl.BindingAccessControl.evm.bytecode.object,
+        accessControlAbi: JSON.stringify(contracts.BindingAccessControl.abi),
+        accessControlBytecode: contracts.BindingAccessControl.bytecode,
     },
   )
 }

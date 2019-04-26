@@ -1,5 +1,5 @@
 import _debug from 'debug'
-import compile from '../../util/compile'
+import truffleCompile from '../../util/truffle-compile'
 import registryContract from '../../util/registry-contract'
 import findRoleMap from '../../util/find-role-map'
 import {
@@ -34,24 +34,21 @@ export default async ({
     policyId,
     findRoleMap(policy.indexToRole)
   )
-  const content = generateRoleTaskContract({
+  const solidityCode = generateRoleTaskContract({
     contractName: 'TaskRoleContract',
     processData: generateRoleTaskIndexes(searchResults),
   })
-
-  const output = compile({
-    TaskRoleContract: {
-      content,
-    },
+  const contracts = await truffleCompile({
+    TaskRoleContract: solidityCode,
   })
 
-  const procContract = createContract(web3)(output.contracts.TaskRoleContract.TaskRoleContract_Contract.abi);
+  const procContract = createContract(web3)(contracts.TaskRoleContract_Contract.abi);
   
   const accounts = await web3.eth.personal.getAccounts()
 
   const ret = await procContract
     .deploy({
-      data: "0x" + output.contracts.TaskRoleContract.TaskRoleContract_Contract.evm.bytecode.object,                          
+      data: contracts.TaskRoleContract_Contract.bytecode,
     })
     .send({
       from: accounts[0],
@@ -62,9 +59,9 @@ export default async ({
     .create(
       {
           address: ret.address,
-          solidityCode: content,
-          abi: JSON.stringify(output.contracts.TaskRoleContract.TaskRoleContract_Contract.abi),
-          bytecode: output.contracts.TaskRoleContract.TaskRoleContract_Contract.evm.bytecode.object
+          solidityCode,
+          abi: JSON.stringify(contracts.TaskRoleContract_Contract.abi),
+          bytecode: contracts.TaskRoleContract_Contract.bytecode
       }
     )
   const related = await contract

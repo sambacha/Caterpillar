@@ -59,7 +59,7 @@ export default async ({
         policy.address,
         roleTask.address
       ],
-      data: "0x" + policy.accessControlBytecode,
+      data: policy.accessControlBytecode,
     })
     .send({
       from: creator,
