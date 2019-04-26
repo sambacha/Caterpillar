@@ -35,6 +35,7 @@ const Policy: React.FC<{
               }}
             >
               {JSON.stringify(data.registries[0].policies, null, 2)}
+              {data.registries[0].policies[0].solidityCode}
             </div>
           ) || null
       }

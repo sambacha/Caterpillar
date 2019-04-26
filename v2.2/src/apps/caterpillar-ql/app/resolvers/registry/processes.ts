@@ -15,7 +15,6 @@ export default async (
   }): Promise<any[]> => {
   const instances = await contract
     .allInstances()
-  console.log({ instances })
   if (instances) {
     debug('caterpillarql:processes')({ instances })
     const bundleFors = await Promise.all(
@@ -35,9 +34,6 @@ export default async (
               ),
         )
     )
-    console.log({
-      bundleFors
-    })
     return Promise.all(
       bundleFors
         .map(

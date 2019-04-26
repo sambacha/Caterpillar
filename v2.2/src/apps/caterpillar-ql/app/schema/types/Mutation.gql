@@ -23,7 +23,7 @@ type Mutation {
   workItem(
     id: String!
     registry: String!
-    workList: String!
+    worklist: String!
     from: String!
     parameters: [String]!
   ): ProcessContract

@@ -1,11 +1,9 @@
 import React, { ReactNode } from 'react';
 import {
-  Query,
   Mutation,
   MutationResult,
   MutationFn,
 } from 'react-apollo';
-import { withState } from 'recompose'
 
 import mutation from './mutation'
 
@@ -33,7 +31,7 @@ mutation={mutation}
             registry: registryAddress,
             model,
             creatorRole: 'Customer',
-            creator: '0x6D4E74CdA0b4aa5eA86b3d30153850B11F90E9A9',
+            creator: '0x4Fb071E73eAFEf84B4f5CD012C4f07f007B93ADD',
           }
         });
       }}

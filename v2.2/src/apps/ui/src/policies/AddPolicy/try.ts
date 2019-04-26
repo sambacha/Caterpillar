@@ -1,0 +1,1 @@
+export default <T>(hello: T) => hello

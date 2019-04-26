@@ -28,6 +28,7 @@ const nestedContracts = (
   }
   const contractInstance = new web3.eth.Contract(JSON.parse(abi), contractAddress)
   contractInstance.transactionConfirmationBlocks = 1;
+
   const worklistAddress = await contractInstance.methods.getWorklistAddress.call()
   const worklistInstance = worklistAddress.toString() !== '0x0000000000000000000000000000000000000000' &&
     new web3.eth.Contract(JSON.parse(worklistAbi), worklistAddress)

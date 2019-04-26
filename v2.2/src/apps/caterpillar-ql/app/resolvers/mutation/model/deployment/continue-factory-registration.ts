@@ -41,7 +41,7 @@ const continueFactoryRegistration = (
                       modelInfo)
                 } else {
                     debug('....................................................................');
-                    debug('DEPLOYONG WORKLIST CONTRACTS AND UPDATING PROCESS REGISTRY ...');
+                    debug('DEPLOYONG worklist CONTRACTS AND UPDATING PROCESS REGISTRY ...');
                     return createWorklistInstances(
                       web3,
                       registryContract,

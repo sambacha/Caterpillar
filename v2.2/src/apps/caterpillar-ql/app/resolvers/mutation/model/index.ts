@@ -3,7 +3,7 @@ import _debug from 'debug'
 import registryContract from '../../util/registry-contract'
 import parseModel from './parse-model'
 import sources from './sources'
-import compile from '../../util/compile'
+import truffleCompile from '../../util/truffle-compile'
 import registerModel from './deployment/register-model'
 
 const debug = _debug('caterpillarql:model')
@@ -23,16 +23,37 @@ export default async ({
     bpmn,
   }
   await parseModel(model)
-  const output = compile({
+  debug('model contracts....')
+  debug({
     ...sources,
-    [model.id]: {
-      content: model.solidity,
-    }
+    [model.id]: model.solidity,
   })
-  if (!output.contracts || Object.keys(output.contracts).length === 0) {
+  const contracts = await truffleCompile({
+    ...sources,
+    [model.id]: model.solidity,
+  })
+  console.log('-------------------')
+  console.log(model.solidity)
+  console.log('-------------------')
+  
+  debug(
+    Object.keys(contracts)
+      .reduce(
+        (
+          acc,
+          key,
+        ) => ({
+          ...acc,
+          [key]: contracts[key].bytecode.slice(-30),
+        }),
+        {}
+      )
+  )
+
+
+  if (!contracts || Object.keys(contracts).length === 0) {
     debug('COMPILATION ERROR IN SMART CONTRACTS');
-    debug(output.errors);
-    throw new Error('COMPILATION ERROR IN SMART CONTRACTS')
+    throw new Error('COMPILATION ERROR IN SMART CONTRACTS 1')
   }
   // this does nothing
   /*Object.keys(output.contracts).forEach(key => {
@@ -46,6 +67,6 @@ export default async ({
     web3,
     contract,
     model,
-    output.contracts,
+    contracts,
   );
 }

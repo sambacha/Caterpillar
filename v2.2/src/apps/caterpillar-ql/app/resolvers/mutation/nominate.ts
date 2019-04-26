@@ -87,6 +87,7 @@ export default async ({
   debug({ nominated })
   return {
     id: bundleId,
-    address: pcase
+    address: pcase,
+    registryContract: contract,
   }
 }

@@ -22,7 +22,6 @@ export default async ({
   if (!web3.utils.isAddress(creator)) {
     throw new Error('Case creator is not a valid address')
   }
-  const accounts = await web3.eth.personal.getAccounts()
   const contract = await registryContract({
     address: registry,
     web3,
@@ -38,7 +37,6 @@ export default async ({
     .bindingPolicyFromId({
       procId: web3.utils.fromAscii(modelId),
     })
-  console.log({ policyId })
   const [policy] = await policySchema
     .find({
       _id: policyId
@@ -132,7 +130,6 @@ export default async ({
     address: result.returnValues.processAddress,
     name: model.rootProcessName,
     bpmnModel: model.bpmnModel,
-    registryContract: contract,
-                  
+    registryContract: contract                
   }
 }

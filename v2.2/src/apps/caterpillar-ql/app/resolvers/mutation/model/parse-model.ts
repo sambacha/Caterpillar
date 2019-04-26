@@ -11,13 +11,13 @@ import {
     OracleInfo
 } from "./definitions";
 import bpmn2solEJS from '../../../templates/bpmn2sol.ejs' 
-import workList2solEJS from '../../../templates/workList2sol.ejs' 
+import worklist2solEJS from '../../../templates/worklist2sol.ejs' 
 
 const debug = _debug('caterpillarql:parse-model')
 
 const bpmn2solTemplate = ejs.compile(bpmn2solEJS);
 
-const workList2solTemplate = ejs.compile(workList2solEJS);
+const worklist2solTemplate = ejs.compile(worklist2solEJS);
 
 let moddle = new BpmnModdle();
 let parseBpmn = bpmnDoc => {
@@ -283,7 +283,7 @@ let parseModel = (modelInfo: ModelInfo) => {
         parseBpmn(modelInfo.bpmn)
             .then((definitions: any) => {
                 debug('parsed model', definitions)
-                modelInfo.solidity = "pragma solidity ^0.5.6;\n";
+                modelInfo.solidity = "pragma solidity ^0.5.0;\n";
                 modelInfo.controlFlowInfoMap = new Map();
 
                 // Sanity checks
@@ -1187,7 +1187,7 @@ let parseModel = (modelInfo: ModelInfo) => {
 
                         let localSolidity = bpmn2solTemplate(codeGenerationInfo);
 
-                        // Code for using the WorkList template
+                        // Code for using the worklist template
                         let userTaskList = [];
                         let parameterInfo: Map<string, Map<string, Array<ParameterInfo>>> = new Map();
                         controlFlowInfo.nodeList.forEach(nodeId => {
@@ -1202,8 +1202,8 @@ let parseModel = (modelInfo: ModelInfo) => {
                         if (controlFlowInfo.catchingMessages.length > 0)
                             userTaskList = userTaskList.concat(controlFlowInfo.catchingMessages);
 
-                        // WorkList: Smart Contract Generation
-                        let workListGenerationInfo = {
+                        // worklist: Smart Contract Generation
+                        let worklistGenerationInfo = {
                             nodeList: userTaskList,
                             restrictRelation: restrictRelation,
                             parameterInfo: parameterInfo,
@@ -1275,7 +1275,8 @@ let parseModel = (modelInfo: ModelInfo) => {
                         };
                         modelInfo.solidity += localSolidity;
                         if (userTaskList.length > 0) {
-                            modelInfo.solidity += workList2solTemplate(workListGenerationInfo);
+                            modelInfo.solidity += worklist2solTemplate(worklistGenerationInfo);
+                            debug(JSON.stringify(modelInfo.solidity))
                         }
                         modelInfo.controlFlowInfoMap.set(controlFlowInfo.self.id, controlFlowInfo);
                     } else {

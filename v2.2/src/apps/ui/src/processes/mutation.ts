@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import fragment from './fragment'
 
 export default gql`
   mutation Process(
@@ -13,7 +14,8 @@ export default gql`
       creator: $creator
       creatorRole: $creatorRole
     ) {
-      id
+      ...ProcessFragment
     }
   }
+  ${fragment('ProcessFragment')}
 `

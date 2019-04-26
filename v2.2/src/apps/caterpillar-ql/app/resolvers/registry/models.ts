@@ -15,7 +15,6 @@ export default async (
   },
 ): Promise<any[]> => {
   if (contract) {
-    console.log({ id })
     const models: any[] = await process
       .find(
         {

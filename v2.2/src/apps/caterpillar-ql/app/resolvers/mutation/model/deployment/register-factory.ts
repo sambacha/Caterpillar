@@ -13,7 +13,15 @@ const registerFactory = (
   modelInfo,
 ) => {
   debug('------------------------------------------------------------------------')
-  const factoryContract = new web3.eth.Contract(outputContracts[modelInfo.id][`${sortedElements[currentIndex].nodeName}_Factory`].abi);
+  debug(
+    'adding factory..',
+    modelInfo.id,
+    `${sortedElements[currentIndex].nodeName}_Factory`,
+    Object.keys(
+      outputContracts[`${sortedElements[currentIndex].nodeName}_Factory`],
+    )
+  )
+  const factoryContract = new web3.eth.Contract(outputContracts[`${sortedElements[currentIndex].nodeName}_Factory`].abi);
   factoryContract.transactionConfirmationBlocks = 1;
   return web3.eth.personal.getAccounts()
     .then(
@@ -21,7 +29,7 @@ const registerFactory = (
         factoryContract
           .deploy(
             {
-              data: "0x" + outputContracts[modelInfo.id][`${sortedElements[currentIndex].nodeName}_Factory`].evm.bytecode.object,
+              data: outputContracts[`${sortedElements[currentIndex].nodeName}_Factory`].bytecode,
             },
           )
           .send(

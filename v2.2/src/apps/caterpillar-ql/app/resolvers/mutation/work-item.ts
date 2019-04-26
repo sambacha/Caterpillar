@@ -14,13 +14,13 @@ const debug = _debug('caterpillarql:mutation:work-item')
 
 export default async ({
   id,
-  workList,
+  worklist,
   from,
   parameters,
   registry,
   web3,
 }): Promise<object> => {
-  debug({ workList })
+  debug({ worklist })
   if (!web3.utils.isAddress(from)) {
     throw new Error('User is not a valid address')
   }
@@ -28,39 +28,53 @@ export default async ({
     address: registry,
     web3,
   })
-  debug({ contract })
-  const workListId = await contract
+  const worklistId = await contract
     .worklistBundleFor({
-      address: workList,
+      address: worklist,
     })
-  debug({ workListId })
+  debug({ worklistId })
   const [model] = await processSchema
     .find({
-      _id: workListId,
+      _id: worklistId,
     })
   
-  const worklistInstance = new web3.eth.Contract(JSON.parse(model.worklistAbi), workList)
+  const worklistInstance = new web3.eth.Contract(JSON.parse(model.worklistAbi), worklist)
+
+  const processAddress = await worklistInstance
+    .methods
+    .processInstanceFor(parseInt(id))
+    .call()
 
   let nodeIndex = await worklistInstance
     .methods
     .elementIndexFor(id)
     .call()
-  
     debug({ nodeIndex })
     
   const node = model
     .indexToElement[nodeIndex.toNumber()]
+  debug('about to fire method', worklist, from, node.name, ...[id, ...parameters])
   const ddd = await worklistInstance
     .methods[node.name](
-      ...[id, ...parameters],
+      ...[id, ...parameters.map(p => true)],
     )
     .send({
       from,
       gas: 4700000,
     })
+    .on(
+      'receipt',
+      (
+        receipt: any,
+      ): void => {
+        debug({ receipt })
+      },
+    )
   debug({ ddd })
   // to do get the worklist address...
   return {
-    id: workListId
+    address: processAddress,
+    id: model.id,
+    registryContract: contract
   }           
 }

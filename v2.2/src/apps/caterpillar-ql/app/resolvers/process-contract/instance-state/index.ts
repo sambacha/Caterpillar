@@ -1,6 +1,9 @@
 import Web3 from 'web3'
-import getNestedContracts from './get-nested-contracts'
+import { process } from '../../repo'
+import createContract from '../../util/create-contract'
+import _debug from 'debug'
 
+const debug = _debug('caterpillarql:process-contract:instance-state')
 
 const findParameters = (contractAbi, functionName) => {
   let jsonAbi = JSON.parse(contractAbi);
@@ -32,123 +35,109 @@ export default (
 ): Function => async (
   contractAddress,
 ): Promise<any> => {
-  const nestedContracts = await getNestedContracts({
-    web3,
-    registryContract,  
-  })(contractAddress)
+  debug({ contractAddress })
 
-  const x = await Promise.all(
-    nestedContracts
+  // the model id
+  const bundleId = await registryContract
+    .bundleFor({ instance: contractAddress })
+
+  const [{
+    abi,
+    indexToElement,
+    worklistAbi,
+  }] = await process
+    .find({ _id: bundleId })
+  
+  // this is the contract for this instance
+  const instanceContract = createContract(web3)(JSON.parse(abi), contractAddress)
+
+  // this is the address of the worklist contract for the instance
+  const worklistAddress = await instanceContract
+    .methods
+    .getWorklistAddress.call()
+  debug({ worklistAddress })
+  // what does it mean when it is 0??
+  const worklistContract = worklistAddress.toString() !== '0x0000000000000000000000000000000000000000' &&
+    createContract(web3)(JSON.parse(worklistAbi), worklistAddress)
+  if (!worklistContract) {
+    return null
+  }
+  const startedActivities = web3.utils.toBN(
+    await instanceContract
+      .methods
+      .startedActivities
+      .call()
+  ).toString(2).split('').reverse()
+
+  debug({ startedActivities })
+
+  const s = await Promise.all(
+    startedActivities
       .map(
-        async ({
-          bundleId,
-          contractAddress,
-          abi,
-          indexToElement,
-          worklistAbi,
-          worklistAddress,
-          worklistInstance,
-          startedActivities,
-          startedInstances,
-        }): Promise<any> => Promise.all(
-          startedActivities
-            .map(
-              async (
-                startedActivity,
-                index,
-              ): Promise<any> => {
-                if (startedActivity === '1' && indexToElement[index].type === 'Workitem') {
-                  const reqInd = await worklistInstance.methods.workItemsFor(index, contractAddress).call()
-                    .then(
-                      (x): any =>
-                        web3.utils.toBN(x).toString(2).split('').reverse(),
-                    )
-                  
-                  const ret = await Promise.all(
-                    reqInd
-                      .map(
-                        async (req, i): Promise<any> => {
-                          if (req === '1') {
-                            return {
-                              worklistAddress,
-                              bundleId: bundleId,
-                              elementId: indexToElement[index].id,
-                              elementName: indexToElement[index].name,
-                              hrefs: [`/workitems/${worklistAddress}/${i}`],
-                              input: findParameters(worklistAbi, indexToElement[index].name),
-                              pcases: [ await worklistInstance.methods.processInstanceFor(i).call()],
-                              processAddress: contractAddress,
-                            }
-                          }
-                        }
+        (state, index) => ({
+          index,
+          state,
+        })
+      )
+      .filter(
+        ({ state, index }) =>
+          state === '1' &&
+            indexToElement[index].type === 'Workitem'
+      )
+      .map(
+        ({
+          state,
+          index,
+        }) => worklistContract
+          .methods
+          .workItemsFor(index, contractAddress)
+          .call()
+          .then(
+            async (x): Promise<any> => ({
+              index,
+              refs: await Promise.all(
+                web3.utils.toBN(x).toString(2).split('').reverse()
+                  .map(
+                    (val, index) => ({
+                      index,
+                      val,
+                    })
+                  )
+                  .filter(
+                    ({ val }) => val === '1'
+                  )
+                  .map(
+                    ({
+                      index,
+                    }) => worklistContract
+                      .methods.processInstanceFor(index)
+                      .call()
+                      .then(
+                        processAddress => ({
+                          index,
+                          processAddress,
+                          worklistAddress,
+                        })
                       )
                   )
-                  return ret
-                }
-                // return Promise.resolve()
-              }
-            )
-        ),
-      )
+              )
+            })
+          )
+      ),
   )
-  const workItems = x
-    .reduce(
-      (acc, items) => [
-        ...acc,
-        ...items || [],
-      ],
-      [],
-    )
-    .reduce(
-      (acc, items) => [
-        ...acc,
-        ...items || [],
-      ],
-      [],
-    )
-    .filter(x => x)
-    .map(
-      (item, index) => ({
-        ...item,
-        index,
-      })
-    )
-    .reduce(
-      (acc, item) => {
-        const exists = acc.find(
-          ({ elementId, bundleId }) =>
-            elementId === item.elementId &&
-              bundleId === item.bundleId,
-        )
-        if (exists) {
-          return [
-            ...acc.filter(a => a !== exists),
-            {
-              ...exists,
-              hrefs:[
-                ...exists.hrefs,
-                ...item.hrefs,
-              ],
-              pcases: [
-                ...exists.pcases,
-                ...item.pcases,
-              ]
-            }
-          ]
-        }
-        return [
-          ...acc,
-          item,
-        ]  
-        
-      },
-      [],
-    )
-    .sort(
-      ({ index }) => index,
-    )
+  debug(JSON.stringify(s, null,2))
   return {
     bpmn: bpmnModel,
-    workItems
+    workItems: s
+      .map(
+        ({ index, refs }) => ({
+          elementId: indexToElement[index].id,
+          elementName: indexToElement[index].name,
+          input: findParameters(worklistAbi, indexToElement[index].name),
+          refs,
+          worklistAddress,
+        })
+      )
+
   }
 }

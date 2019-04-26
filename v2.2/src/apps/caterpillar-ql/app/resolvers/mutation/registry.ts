@@ -2,7 +2,7 @@ import _debug from 'debug'
 
 import StatusError from '../Status-Error'
 import { registry } from '../repo'
-import compile from '../util/compile'
+import truffleCompile from '../util/truffle-compile'
 
 import abstractFactory from '../../abstract/AbstractFactory.sol'
 import processRegistry from '../../abstract/ProcessRegistry.sol' 
@@ -15,18 +15,13 @@ export default async ({
 }): Promise<object> => {
   debug('DEPLOYING PROCESS RUNTIME REGISTRY ...');
   try {
-    const output = compile({
-      AbstractFactory: {
-        content: abstractFactory,
-      },
-      ProcessRegistry: {
-        content: processRegistry,
-      },
-    });
-
-    if (Object.keys(output.contracts).length === 0) {
-      debug('COMPILATION ERROR IN SMART CONTRACTS');
-      debug(output.errors);
+    const contracts = await truffleCompile({
+      AbstractFactory: abstractFactory,
+      ProcessRegistry: processRegistry
+    })
+    debug({ contracts })
+    if (Object.keys(contracts).length === 0) {
+      debug('COMPILATION ERROR IN SMART CONTRACTS 2');
       debug('----------------------------------------------------------------------------------------------');
       throw new StatusError('COMPILATION ERROR IN RUNTIME REGISTRY SMART CONTRACTS', 400)
       return;
@@ -34,7 +29,7 @@ export default async ({
 
     debug('PROCESS RUNTIME REGISTRY COMPILED SUCCESSFULLY');
     debug('CREATING RUNTIME REGISTRY INSTANCE ... ');
-    const procContract = new web3.eth.Contract(output.contracts.ProcessRegistry.ProcessRegistry.interface)
+    const procContract = new web3.eth.Contract(contracts.ProcessRegistry.abi)
     /*
     procContract
       .getPastEvents(
@@ -48,21 +43,9 @@ export default async ({
     procContract.transactionConfirmationBlocks = 1;
     let gasUsed, createdBlockNumber
     const accounts = await web3.eth.personal.getAccounts()
-    procContract
-      .events
-      .allEvents(
-        {
-          fromBlock: 517366,
-        },
-        (err, e) => console.log('past event', e),
-      )
-      .on(
-        'data',
-        console.log
-      )
     const contract = await procContract
       .deploy({
-        data: "0x" + output.contracts.ProcessRegistry.ProcessRegistry.evm.bytecode.object,
+        data: contracts.ProcessRegistry.bytecode,
       })
       .send(
         {
@@ -74,29 +57,21 @@ export default async ({
       .on(
         'receipt',
         (
-          { gasUsed: g, blockNumber }: any,
+          { gasUsed: g, blockNumber, ...rest }: any,
         ): void => {
+          debug({ rest })
           createdBlockNumber = blockNumber
           gasUsed = g
         },
       )
-      console.log({ createdBlockNumber })
-    contract
-      .getPastEvents(
-        'allEvents',
-        {
-          fromBlock: createdBlockNumber - 1,
-        },
-        (err, e) => console.log('past event', e),
-      )
       
     return registry.create(
       {
-        address: contract.address,
+        address: contract.address,  
         solidityCode: processRegistry,
         gasUsed,
-        abi: JSON.stringify(output.contracts.ProcessRegistry.ProcessRegistry.abi),
-        bytecode: output.contracts.ProcessRegistry.ProcessRegistry.evm.bytecode.object,
+        abi: JSON.stringify(contracts.ProcessRegistry.abi),
+        bytecode: contracts.ProcessRegistry.bytecode,
       }
     )
   } catch (e) {

@@ -25,7 +25,7 @@ function createGeneralTabGroups(element: any, bpmnFactory: any, elementRegistry:
     const generalGroup = {
         id: 'general',
         label: 'General',
-        entries: new Array,
+        entries: [],
     };
 
     idProps(generalGroup, element, elementRegistry);
@@ -35,7 +35,7 @@ function createGeneralTabGroups(element: any, bpmnFactory: any, elementRegistry:
     const detailsGroup = {
         id: 'details',
         label: 'Details',
-        entries: new Array,
+        entries: [],
     };
     linkProps(detailsGroup, element);
     eventProps(detailsGroup, element, bpmnFactory, elementRegistry);
@@ -48,7 +48,7 @@ function createGeneralTabGroups(element: any, bpmnFactory: any, elementRegistry:
     const documentationGroup = {
         id: 'documentation',
         label: 'Documentation',
-        entries: new Array,
+        entries: [],
     };
 
     documentationProps(documentationGroup, element, bpmnFactory);

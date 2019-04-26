@@ -3,8 +3,6 @@ type WorkItem {
   bundleId: String
   elementId: String,
   elementName: String,
-  hrefs: [String],
   input: [WorkItemInput]
-  pcases: [String],
-  processAddress: String,
+  refs: [WorkItemRef]
 }

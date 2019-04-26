@@ -1,7 +1,7 @@
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.0;
 
 contract IFunct {
-    // WorkList functions
+    // worklist functions
     function updateRuntimeRegistry(address _runtimeRegistry) public;
     // Factory Functions
     function setWorklist(address _worklist) public;

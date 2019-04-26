@@ -7,6 +7,11 @@ export default sources => JSON.parse(
         language: 'Solidity',
         sources,
         settings: {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "evmVersion": "byzantium",      
           outputSelection: {
             '*': {
               '*': ['*']

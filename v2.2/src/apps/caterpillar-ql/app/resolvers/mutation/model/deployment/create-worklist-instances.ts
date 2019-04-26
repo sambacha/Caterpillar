@@ -13,9 +13,9 @@ const createWorklistInstances = (
   modelInfo,
 ) => {
   debug('----------------------------------------------------------------------------------------')
-  const workListInstanceContract = outputContracts[modelInfo.id][`${sortedElements[currentIndex].nodeName}_Worklist`]
-  if (workListInstanceContract) {
-    const worklistContract = new web3.eth.Contract(workListInstanceContract.abi)
+  const worklistInstanceContract = outputContracts[`${sortedElements[currentIndex].nodeName}_worklist`]
+  if (worklistInstanceContract) {
+    const worklistContract = new web3.eth.Contract(worklistInstanceContract.abi)
     worklistContract.transactionConfirmationBlocks = 1
     return web3.eth.personal.getAccounts()
       .then(
@@ -23,7 +23,7 @@ const createWorklistInstances = (
           worklistContract
             .deploy(
               {
-                data: "0x" + workListInstanceContract.evm.bytecode.object,
+                data: worklistInstanceContract.bytecode,
               },
             )
             .send(

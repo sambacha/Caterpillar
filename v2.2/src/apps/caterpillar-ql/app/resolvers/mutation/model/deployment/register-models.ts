@@ -53,16 +53,15 @@ let registerModels = (
       }
     });
     let bpmnModel = currentIndex < sortedElements.length - 1 ? 'empty' : modelInfo.bpmn;
-    
-    let worklistAbi = contracts[`${modelInfo.id}`][`${nodeName}_Worklist`] ? contracts[`${modelInfo.id}`][`${nodeName}_Worklist`].abi : 'undefined';
+    let worklistAbi = contracts[`${nodeName}_worklist`] ? contracts[`${nodeName}_worklist`].abi : 'undefined';
     return process.create(
       {
         rootProcessID: gNodeId,
         rootProcessName: nodeName,
         bpmnModel: bpmnModel,
         solidityCode: modelInfo.solidity,
-        abi:JSON.stringify(contracts[`${modelInfo.id}`][`${nodeName}_Contract`].abi),
-        bytecode: contracts[`${modelInfo.id}`][`${nodeName}_Contract`].evm.bytecode.object,
+        abi:JSON.stringify(contracts[`${nodeName}_Contract`].abi),
+        bytecode: contracts[`${nodeName}_Contract`].bytecode,
         indexToElement: indexToFunctionName,
         worklistAbi: JSON.stringify(worklistAbi)
       },

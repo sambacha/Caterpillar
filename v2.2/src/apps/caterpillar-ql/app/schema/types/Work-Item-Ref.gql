@@ -1,0 +1,5 @@
+type WorkItemRef {
+  worklistAddress: String
+  index: Int
+  processAddress: String,
+}

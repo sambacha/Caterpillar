@@ -43,10 +43,6 @@ let searchRepository = (
                       index,
                     })
                     .then(
-                      childrenFor =>
-                        console.log({ childrenFor }) || childrenFor
-                    )
-                    .then(
                       instanceProcId =>
                         searchRepository(
                           web3,

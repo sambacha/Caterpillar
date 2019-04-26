@@ -32,12 +32,6 @@ const AddModel: React.StatelessComponent<{
         <form
           onSubmit={e => {
             e.preventDefault();
-            add({
-              variables: {
-                registry,
-                bpmn: file,
-              }
-            });
           }}
         >
           <div>
@@ -71,7 +65,6 @@ const AddModel: React.StatelessComponent<{
               }
             }
           />
-          <button type="submit">Add Model</button>
         </form>
       </div>
     )}

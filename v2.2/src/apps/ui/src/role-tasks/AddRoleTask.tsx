@@ -5,7 +5,6 @@ import {
   MutationResult,
   MutationFn,
 } from 'react-apollo';
-import { withState } from 'recompose'
 
 import mutation from './mutation'
 import policiesQuery from '../policies/query'

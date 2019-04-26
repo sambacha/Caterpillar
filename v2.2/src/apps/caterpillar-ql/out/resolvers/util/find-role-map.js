@@ -1,0 +1,17 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _default = repoArr => {
+  let roleIndexMap = new Map();
+
+  for (let i = 1; i < repoArr.length; i++) if (repoArr[i]) roleIndexMap.set(repoArr[i], i);
+
+  return roleIndexMap;
+};
+
+exports.default = _default;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL2FwcC9yZXNvbHZlcnMvdXRpbC9maW5kLXJvbGUtbWFwLnRzIl0sIm5hbWVzIjpbInJlcG9BcnIiLCJyb2xlSW5kZXhNYXAiLCJNYXAiLCJpIiwibGVuZ3RoIiwic2V0Il0sIm1hcHBpbmdzIjoiOzs7Ozs7O2VBQWdCQSxPQUFELElBQWE7QUFDMUIsTUFBSUMsWUFBaUMsR0FBRyxJQUFJQyxHQUFKLEVBQXhDOztBQUNBLE9BQUssSUFBSUMsQ0FBQyxHQUFHLENBQWIsRUFBZ0JBLENBQUMsR0FBR0gsT0FBTyxDQUFDSSxNQUE1QixFQUFvQ0QsQ0FBQyxFQUFyQyxFQUNJLElBQUdILE9BQU8sQ0FBQ0csQ0FBRCxDQUFWLEVBQ0lGLFlBQVksQ0FBQ0ksR0FBYixDQUFpQkwsT0FBTyxDQUFDRyxDQUFELENBQXhCLEVBQTZCQSxDQUE3Qjs7QUFDUixTQUFPRixZQUFQO0FBQ0QsQyIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBkZWZhdWx0IChyZXBvQXJyKSA9PiB7XG4gIGxldCByb2xlSW5kZXhNYXA6IE1hcDxzdHJpbmcsIG51bWJlcj4gPSBuZXcgTWFwKCk7XG4gIGZvciAobGV0IGkgPSAxOyBpIDwgcmVwb0Fyci5sZW5ndGg7IGkrKylcbiAgICAgIGlmKHJlcG9BcnJbaV0pIFxuICAgICAgICAgIHJvbGVJbmRleE1hcC5zZXQocmVwb0FycltpXSwgaSk7XG4gIHJldHVybiByb2xlSW5kZXhNYXA7ICAgIFxufSJdfQ==

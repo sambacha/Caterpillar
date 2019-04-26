@@ -13,15 +13,11 @@ export default function PaletteProvider(palette: any, create: any, elementFactor
   palette.registerProvider(this);
 }
 
-const DiagramList: any = {};
-const diagramSubject: any = {};
-
 // @ts-ignore
 PaletteProvider['$inject'] = ['palette', 'create', 'elementFactory', 'spaceTool', 'lassoTool'];
 
 PaletteProvider.prototype.getPaletteEntries = function (element: any) {
-  var self = this;
-
+  
   var actions = {},
     create = this._create,
     elementFactory = this._elementFactory,
@@ -42,7 +38,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element: any) {
     return {
       group: group,
       className: className,
-      title: title || 'Create ' + type.replace(/^bpmn\:/, ''),
+      title: title || 'Create ' + type.replace(/^bpmn:/, ''),
       action: {
         dragstart: createListener,
         click: createListener

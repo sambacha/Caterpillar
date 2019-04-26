@@ -1,7 +1,7 @@
 import Web3 from 'web3'
 import { RegistryContract } from 'caterpillar-lib'
 
-import instanceState from './instance-state'
+import instanceState from './instance-state/index'
 import resources from './resources'
 
 export default (web3: Web3): object => ({

@@ -10,6 +10,7 @@ import Registry from './types/Registry.gql'
 import RoleBinding from './types/RoleBinding.gql'
 import RoleTask from './types/Role-Task.gql'
 import WorkItem from './types/Work-Item.gql'
+import WorkItemRef from './types/Work-Item-Ref.gql'
 import WorkItemInput from './types/Work-Item-Input.gql'
 
 export default [
@@ -25,5 +26,6 @@ export default [
   Registry,
   RoleTask,
   WorkItem,
+  WorkItemRef,
   WorkItemInput,
 ]

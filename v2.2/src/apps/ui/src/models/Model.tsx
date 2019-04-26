@@ -13,7 +13,6 @@ import { Link } from 'react-router-relative-link'
 
 import query from './query'
 import Viewer from './Viewer'
-import queryResult from '../types/query-result'
 
 import Data from './types/Data'
 import QueryVariables from './types/QueryVariables'
@@ -77,6 +76,9 @@ const Model: React.FC<{
                           id={data.registries[0].models[0].id}
                           model={data.registries[0].models[0].bpmn}
                         />
+                        <div>
+                          {data.registries[0].models[0].solidity}
+                        </div>
                       </div>
                   }
                 />

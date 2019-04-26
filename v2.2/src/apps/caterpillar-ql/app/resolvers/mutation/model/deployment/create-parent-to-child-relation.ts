@@ -29,6 +29,7 @@ const createParent2ChildRelation = (
           )
           .then(
             (result) => {
+              debug('child bundleId added')
               if (currentIndex + 1 < sortedElements.length) {
                 return createParent2ChildRelation(web3, registryContract, currentIndex + 1, sortedElements, outputContracts, modelInfo);
               } else {
