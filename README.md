@@ -4,7 +4,7 @@
 
 ![bpmn model](Screenshot%20from%202019-04-27%2012-53-12.png)
 
-IPBM will allow multiple parties to co operate on pre defined, pre aggreed business processes without having to trust eachother.  There will be no "data silos" so no one will "own" the processes.
+IPBM will allow multiple parties to co operate on pre defined, pre agreed business processes without having to trust eachother.  There will be no "data silos" so no one will "own" the processes.
 
 *Registries* can be created on an Ethereum Blockchain.  Registries can contain *models*.  Models are ethereum contracts which are compiled from XML BPMN models.  When executed these contracts operate the logic of the BPMN model.  Models can be combined together with sub models.  Models are associated with *policies* a policy configures how and by whom roles, defined in the model can be allocated and removed as the process progresses.  This allows a party to nominate and endorse other parties for a role.
 
