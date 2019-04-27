@@ -7,6 +7,7 @@ import {
 import {
   BrowserRouter as Router,
   Route,
+  Switch,
 } from 'react-router-dom';
 import { Link } from 'react-router-relative-link'
 import {
@@ -15,13 +16,12 @@ import {
 } from 'apollo-cache-inmemory';
 
 import Accounts from './Accounts'
-import Policies from './policies/Policies'
-import RoleTasks from './RoleTasks'
 
 import Registries from './registries/Registries'
 import AddRegistry from './registries/Add-Registry'
-
-import './App.css';
+import fourOFour from './util/four-o-four'
+import './App.css'
+import './font-awesome'
 
 const client = new ApolloClient({
   cache: new InMemoryCache({
@@ -59,40 +59,27 @@ const App: React.FC = () => {
       >
         +
       </Link>
-      <Link
-        to='./policies'
-      >
-        policies
-      </Link>
-      <Link
-        to='./role-tasks'
-      >
-        role tasks
-      </Link>      
       <ApolloProvider
         client={client}
       >
-        <Route
-          path='/accounts'
-          component={Accounts}
-        />
-        <Route
-          exact
-          path='/registries-add'
-          component={AddRegistry}
-        />
-        <Route
-          path='/registries'
-          component={Registries}
-        />
-        <Route
-          path='/policies'
-          component={Policies}
-        />
-        <Route
-          path='/role-tasks'
-          component={RoleTasks}
-        />
+        <Switch>
+          <Route
+            path='/accounts'
+            component={Accounts}
+          />
+          <Route
+            exact
+            path='/registries-add'
+            component={AddRegistry}
+          />
+          <Route
+            path='/registries'
+            component={Registries}
+          />
+          <Route
+            component={fourOFour({ url: '/' })}
+          />
+        </Switch>
       </ApolloProvider>
     </Router>
   );

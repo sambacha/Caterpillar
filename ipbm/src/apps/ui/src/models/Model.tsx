@@ -18,6 +18,7 @@ import QueryVariables from './types/Query-Variables'
 
 import AddRoleTask from '../role-tasks/Add-Role-Task'
 import AddProcess from '../processes/Add-Process'
+import fourOFour from '../util/four-o-four'
 
 const Model: React.FC<{
   match: any
@@ -43,77 +44,67 @@ const Model: React.FC<{
         }) =>
           ( !loading && data && data.registries[0] &&
             data.registries[0].models &&
-            <div>
-              r: {registry}
-              m: {model}
-              <Switch>
-                <Route
-                  exact
-                  path={url}
-                  render={
-                    () =>
-                      <div
-                        style={{
-                          whiteSpace: 'pre'
-                        }}
-                      >
-                        <Link to='.'>.</Link>
-                        <div>
-                          {data.registries[0].models[0].taskRoleId}
-                        </div>
-                        <Link
-                          to={`${url}/role-task-add`}
-                        >
-                          add role task
-                        </Link>
-                        <Link
-                          to={`${url}/process-add`}
-                        >
-                          add process
-                        </Link>
-                        <Viewer
-                          id={data.registries[0].models[0].id}
-                          model={data.registries[0].models[0].bpmn}
-                        />
-                        <div>
-                          {data.registries[0].models[0].solidity}
-                        </div>
-                      </div>
-                  }
-                />
-                <Route
-                  path={`${url}/role-task-add`}
-                  render={
-                    () =>
-                      <AddRoleTask
-                        model={model}
-                        registry={data.registries[0]._id}
-                        registryAddress={data.registries[0].address}
-                      />
-                  }
-                />
-                <Route
-                  path={`${url}/process-add`}
-                  render={
-                    () =>
-                      <AddProcess
-                        model={model}
-                        registryAddress={data.registries[0].address}
-                      />
-                  }
-                />
-                
-                <Route
-                  render={
-                    () =>
+            <Switch>
+              <Route
+                exact
+                path={url}
+                render={
+                  () =>
+                    <div
+                      style={{
+                        whiteSpace: 'pre'
+                      }}
+                    >
+                      <Link to='.'>.</Link>
                       <div>
-                        <div>??</div>
-                        <Link to='.'>..</Link>
+                        {data.registries[0].models[0].taskRoleId}
                       </div>
-                  }
-                />
-              </Switch>
-            </div>  
+                      <Link
+                        to={`${url}/role-task-add`}
+                      >
+                        add role task
+                      </Link>
+                      <Link
+                        to={`${url}/process-add`}
+                      >
+                        add process
+                      </Link>
+                      <Viewer
+                        id={data.registries[0].models[0].id}
+                        model={data.registries[0].models[0].bpmn}
+                      />
+                      <div>
+                        {data.registries[0].models[0].solidity}
+                      </div>
+                    </div>
+                }
+              />
+              <Route
+                path={`${url}/role-task-add`}
+                render={
+                  () =>
+                    <AddRoleTask
+                      model={model}
+                      registry={data.registries[0]._id}
+                      registryAddress={data.registries[0].address}
+                    />
+                }
+              />
+              <Route
+                path={`${url}/process-add`}
+                render={
+                  () =>
+                    <AddProcess
+                      model={model}
+                      registryAddress={data.registries[0].address}
+                    />
+                }
+              />
+              
+              <Route
+                component={fourOFour({ url })}
+              />
+            </Switch>
       ) || null
     }
   </Query>

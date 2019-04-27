@@ -2,8 +2,6 @@ import { registryContract } from 'ipbm-lib'
 
 import {
   registry,
-  roleTask,
-  process
 } from '../repo'
 
 import hexToId from '../util/hex-to-id'
@@ -14,8 +12,6 @@ export default (web3): object => ({
       (accounts): string[] =>
         accounts,
     ),
-  processes: async (_, { _id }): Promise<any[]> =>
-    process.find({..._id && { _id }}),
   registries: async (_, { _id }): Promise<any[]> =>
     registry
       .find({..._id && { _id }})
@@ -36,6 +32,4 @@ export default (web3): object => ({
               }),
           ),
       ),
-  roleTasks: async (_, { _id }): Promise<any[]> =>
-    roleTask.find({..._id && { _id }}),
 })

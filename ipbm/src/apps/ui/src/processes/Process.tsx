@@ -8,6 +8,8 @@ import {
   Switch,
 } from 'react-router-dom';
 
+import fourOFour from '../util/four-o-four'
+
 import Modal from 'react-modal';
 
 import { Link } from 'react-router-relative-link'
@@ -86,7 +88,6 @@ const Process: React.FunctionComponent<
                           whiteSpace: 'pre'
                         }}
                       >
-                        <Link to='.'>.</Link>
                         {JSON.stringify(element)}
                         <Modal
                           isOpen={!!element}
@@ -171,13 +172,7 @@ const Process: React.FunctionComponent<
                   }
                 />
                 <Route
-                  render={
-                    () =>
-                      <div>
-                        <div>??</div>
-                        <Link to='.'>..</Link>
-                      </div>
-                  }
+                  component={fourOFour({ url })}
                 />
               </Switch>
             </div>  
