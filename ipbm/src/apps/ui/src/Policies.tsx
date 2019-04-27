@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 import {
   Query,
-} from 'react-apollo';
-import gql from "graphql-tag";
+} from 'react-apollo'
+import gql from "graphql-tag"
 
 const query = gql`
   {
@@ -40,7 +40,7 @@ const Policies: React.FC = () => {
           </div>
       }
     </Query>
-  );
+  )
 }
 
-export default Policies;
+export default Policies

@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 import {
   Query,
-} from 'react-apollo';
-import gql from "graphql-tag";
+} from 'react-apollo'
+import gql from "graphql-tag"
 
 const query = gql`
   {
@@ -36,7 +36,7 @@ const RoleTasks: React.FC = () => {
           </div>
       }
     </Query>
-  );
+  )
 }
 
-export default RoleTasks;
+export default RoleTasks

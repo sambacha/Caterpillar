@@ -15,8 +15,8 @@ let continueRegistration = (
   registerModels,
 ) => {
   if (currentIndex + 1 >= sortedElements.length) {
-    debug('....................................................................');
-    debug('RELATING PARENT TO NESTED CHILDREN IN REGISTRY  ...');
+    debug('....................................................................')
+    debug('RELATING PARENT TO NESTED CHILDREN IN REGISTRY  ...')
     return createParent2ChildRelation(
       web3,
       registryContract,
@@ -35,7 +35,7 @@ let continueRegistration = (
       nodeIndexes,
       modelInfo,
       contracts,
-    );
-};
+    )
+}
 
 export default continueRegistration

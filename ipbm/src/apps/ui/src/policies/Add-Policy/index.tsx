@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from 'react'
 import {
   Mutation,
-} from 'react-apollo';
+} from 'react-apollo'
 import Data from '../types/Data'
 import mutation from '../mutation'
 import Form from './Form'
@@ -28,4 +28,4 @@ const AddPolicy: React.FunctionComponent<
     )}
   </Mutation>
 
-export default AddPolicy;
+export default AddPolicy

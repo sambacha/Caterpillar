@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from "graphql-tag"
 import fragment from './fragment'
 
 export default gql`

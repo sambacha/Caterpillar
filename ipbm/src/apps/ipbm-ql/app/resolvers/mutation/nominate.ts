@@ -68,8 +68,8 @@ export default async ({
   if (accessControlAddress === '0x0000000000000000000000000000000000000000') {
     throw new Error('Process instance not found')
   }
-  debug(`${nominatorRole}[${nominator}] is nominating ${nomineeRole}[${nominee}]`);
-  debug(`Process Case: ${pcase}`);
+  debug(`${nominatorRole}[${nominator}] is nominating ${nomineeRole}[${nominee}]`)
+  debug(`Process Case: ${pcase}`)
   const nominated = await createContract(web3)(JSON.parse(policy.accessControlAbi), accessControlAddress)
     .methods
     .nominate(

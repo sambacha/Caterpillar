@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 import {
   Query,
-} from 'react-apollo';
+} from 'react-apollo'
 import { Link } from 'react-router-relative-link'
 import {
   Route,
@@ -69,7 +69,7 @@ const Registries: React.FC<RouteComponentProps> = ({
         component={Registry}
       />
     </>
-  );
+  )
 }
 
-export default Registries;
+export default Registries

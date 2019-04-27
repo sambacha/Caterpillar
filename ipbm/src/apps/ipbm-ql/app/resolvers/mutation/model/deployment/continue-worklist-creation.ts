@@ -19,23 +19,23 @@ const continueWorklistCreation = (
       sortedElements,
       outputContracts,
       modelInfo,
-      );
+      )
   } else {
-    let bundleId = '';
+    let bundleId = ''
     for (let i = 0; i < sortedElements.length; i++) {
       if (sortedElements[i].nodeName === modelInfo.name) {
-        bundleId = sortedElements[i].bundleId;
-        break;
+        bundleId = sortedElements[i].bundleId
+        break
       }
     }
-    debug('----------------------------------------------------------------------------------------------');
+    debug('----------------------------------------------------------------------------------------------')
     return {
       id: bundleId,
       name: modelInfo.name,
       bpmn: modelInfo.bpmn,
       solidity: modelInfo.solidity
-    };
+    }
   }
-};
+}
 
 export default continueWorklistCreation

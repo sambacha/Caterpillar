@@ -1,9 +1,9 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from 'react'
 import {
   Mutation,
   MutationResult,
   MutationFn,
-} from 'react-apollo';
+} from 'react-apollo'
 
 import mutation from './mutation'
 
@@ -18,8 +18,8 @@ const Registries: React.FC = () =>
       <div>
         <form
           onSubmit={e => {
-            e.preventDefault();
-            add();
+            e.preventDefault()
+            add()
           }}
         >
           {JSON.stringify(data)}
@@ -29,4 +29,4 @@ const Registries: React.FC = () =>
     )}
   </Mutation>
 
-export default Registries;
+export default Registries

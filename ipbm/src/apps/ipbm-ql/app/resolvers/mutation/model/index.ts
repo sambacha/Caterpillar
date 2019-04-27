@@ -52,21 +52,21 @@ export default async ({
 
 
   if (!contracts || Object.keys(contracts).length === 0) {
-    debug('COMPILATION ERROR IN SMART CONTRACTS');
+    debug('COMPILATION ERROR IN SMART CONTRACTS')
     throw new Error('COMPILATION ERROR IN SMART CONTRACTS 1')
   }
   // this does nothing
   /*Object.keys(output.contracts).forEach(key => {
-    let bytecode = '0x' + output.contracts[key].bytecode;
-    var gasEstimate = web3.eth.estimateGas({data: bytecode});
-    // console.log(".............................................");
-    // console.log("Contract Name: " + key.split(':')[1]);
-    // console.log("Gas Estimation: " + gasEstimate);
-  });*/
+    let bytecode = '0x' + output.contracts[key].bytecode
+    var gasEstimate = web3.eth.estimateGas({data: bytecode})
+    // console.log(".............................................")
+    // console.log("Contract Name: " + key.split(':')[1])
+    // console.log("Gas Estimation: " + gasEstimate)
+  })*/
   return registerModel(
     web3,
     contract,
     model,
     contracts,
-  );
+  )
 }

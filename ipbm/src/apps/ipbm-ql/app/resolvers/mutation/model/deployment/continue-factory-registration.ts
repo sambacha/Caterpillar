@@ -29,8 +29,8 @@ const continueFactoryRegistration = (
           )
           .then(
             (result1) => {
-                debug(`${sortedElements[currentIndex].nodeName}_Factory registered SUCCESSFULLY in Process Registry`);
-                debug('....................................................................');
+                debug(`${sortedElements[currentIndex].nodeName}_Factory registered SUCCESSFULLY in Process Registry`)
+                debug('....................................................................')
                 if (currentIndex + 1 < sortedElements.length) {
                     return registerFactory(
                       web3,
@@ -40,8 +40,8 @@ const continueFactoryRegistration = (
                       outputContracts,
                       modelInfo)
                 } else {
-                    debug('....................................................................');
-                    debug('DEPLOYONG worklist CONTRACTS AND UPDATING PROCESS REGISTRY ...');
+                    debug('....................................................................')
+                    debug('DEPLOYONG worklist CONTRACTS AND UPDATING PROCESS REGISTRY ...')
                     return createWorklistInstances(
                       web3,
                       registryContract,
@@ -49,10 +49,10 @@ const continueFactoryRegistration = (
                       sortedElements,
                       outputContracts,
                       modelInfo,
-                    );
+                    )
                 }
             })
         )
-};
+}
 
 export default continueFactoryRegistration

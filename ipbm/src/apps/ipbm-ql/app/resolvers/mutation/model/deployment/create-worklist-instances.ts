@@ -78,8 +78,8 @@ const createWorklistInstances = (
       outputContracts,
       modelInfo,
       createWorklistInstances,
-    );
+    )
   }
-};
+}
 
 export default createWorklistInstances

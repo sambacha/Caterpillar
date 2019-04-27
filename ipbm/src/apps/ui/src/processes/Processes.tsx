@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 import {
   Query,
-} from 'react-apollo';
+} from 'react-apollo'
 import {
   Route,
 } from 'react-router-dom'
@@ -82,4 +82,4 @@ const Processes: React.FC<{
         component={Process}
       />
     </>
-export default Processes;
+export default Processes

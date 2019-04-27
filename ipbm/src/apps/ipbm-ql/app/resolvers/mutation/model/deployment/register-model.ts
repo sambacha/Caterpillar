@@ -25,12 +25,12 @@ export default (
   ]
   for (let i = 0; i < queue.length; i++) {
     if (modelInfo.controlFlowInfoMap.has(queue[i].nodeId)) {
-      let cfInfo = modelInfo.controlFlowInfoMap.get(queue[i].nodeId);
-      let candidates = [cfInfo.multiinstanceActivities, cfInfo.nonInterruptingEvents, cfInfo.callActivities];
+      let cfInfo = modelInfo.controlFlowInfoMap.get(queue[i].nodeId)
+      let candidates = [cfInfo.multiinstanceActivities, cfInfo.nonInterruptingEvents, cfInfo.callActivities]
       candidates.forEach(children => {
         if (children) {
           children.forEach((value, key) => {
-            queue.push({ nodeId: key, nodeName: value, bundleId: '', nodeIndex: 0, bundleParent: '', factoryContract: '' });
+            queue.push({ nodeId: key, nodeName: value, bundleId: '', nodeIndex: 0, bundleParent: '', factoryContract: '' })
           })
         }
       })
@@ -40,8 +40,8 @@ export default (
   let nodeIndexes = new Map();
   for (let i = 0; i < queue.length; i++)
     nodeIndexes.set(queue[i].nodeId, i)
-  debug('....................................................................');
-  debug('UPDATING COMPILATION ARTIFACTS IN REPOSITORY ...');
+  debug('....................................................................')
+  debug('UPDATING COMPILATION ARTIFACTS IN REPOSITORY ...')
   return registerModels(
     web3,
     registryContract,

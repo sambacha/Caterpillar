@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from "graphql-tag"
 
 export default (name: string) => gql`
   fragment ${name} on ProcessContract {

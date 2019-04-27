@@ -1,12 +1,12 @@
-import React from 'react';
+import React from 'react'
 import {
   Query,
-} from 'react-apollo';
+} from 'react-apollo'
 
 import {
   Route,
   Switch,
-} from 'react-router-dom';
+} from 'react-router-dom'
 
 
 import { Link } from 'react-router-relative-link'
@@ -102,7 +102,7 @@ const Registry: React.FC<{ match: any }> = ({ match: { params: { registry }, url
           ) || null
       }
     </Query>
-  );
+  )
 }
 
-export default Registry;
+export default Registry

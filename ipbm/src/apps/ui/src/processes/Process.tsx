@@ -1,16 +1,16 @@
-import React from 'react';
+import React from 'react'
 import {
   Query,
-} from 'react-apollo';
+} from 'react-apollo'
 
 import {
   Route,
   Switch,
-} from 'react-router-dom';
+} from 'react-router-dom'
 
 import fourOFour from '../util/four-o-four'
 
-import Modal from 'react-modal';
+import Modal from 'react-modal'
 
 import { Link } from 'react-router-relative-link'
 import { withState } from 'recompose'
@@ -34,7 +34,7 @@ const customStyles = {
     marginRight           : '-50%',
     transform             : 'translate(-50%, -50%)'
   }
-};
+}
 const Process: React.FunctionComponent<
   {
     match: any
@@ -180,4 +180,4 @@ const Process: React.FunctionComponent<
     }
   </Query>
 
-export default withState('element', 'setElement', undefined)(Process);
+export default withState('element', 'setElement', undefined)(Process)

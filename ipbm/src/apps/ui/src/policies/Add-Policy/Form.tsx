@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   compose,
   withState,
@@ -49,11 +49,11 @@ const Form: React.FunctionComponent<
         onChange={
           evt => {
             if (evt.target.files) {
-              const reader = new FileReader();
+              const reader = new FileReader()
               reader.onload = function(e) {
                 setFile((reader.result && reader.result.toString()) || '')
-              };  
-              reader.readAsText(evt.target.files[0]);
+              }  
+              reader.readAsText(evt.target.files[0])
             }
           }
         }
@@ -102,4 +102,4 @@ export default compose<
       })
     }
   }),
-)(Form);
+)(Form)

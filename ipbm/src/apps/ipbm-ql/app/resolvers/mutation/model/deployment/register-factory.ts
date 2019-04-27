@@ -21,8 +21,8 @@ const registerFactory = (
       outputContracts[`${sortedElements[currentIndex].nodeName}_Factory`],
     )
   )
-  const factoryContract = new web3.eth.Contract(outputContracts[`${sortedElements[currentIndex].nodeName}_Factory`].abi);
-  factoryContract.transactionConfirmationBlocks = 1;
+  const factoryContract = new web3.eth.Contract(outputContracts[`${sortedElements[currentIndex].nodeName}_Factory`].abi)
+  factoryContract.transactionConfirmationBlocks = 1
   return web3.eth.personal.getAccounts()
     .then(
       accounts =>
@@ -52,6 +52,6 @@ const registerFactory = (
               )
           )
     )
-  };
+  }
 
 export default registerFactory

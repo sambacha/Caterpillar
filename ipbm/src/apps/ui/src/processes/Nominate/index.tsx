@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import {
   Mutation,
-} from 'react-apollo';
+} from 'react-apollo'
 import mutation from './mutation'
 import Data from '../types/Data'
 import Form from './Form'

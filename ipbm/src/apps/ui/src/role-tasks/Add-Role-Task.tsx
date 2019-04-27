@@ -1,10 +1,10 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from 'react'
 import {
   Query,
   Mutation,
   MutationResult,
   MutationFn,
-} from 'react-apollo';
+} from 'react-apollo'
 
 import mutation from './mutation'
 import policiesQuery from '../policies/query'
@@ -58,14 +58,14 @@ const AddRoleTask: React.FunctionComponent<{
                               {JSON.stringify(data)}
                               <form
                                 onSubmit={e => {
-                                  e.preventDefault();
+                                  e.preventDefault()
                                   add({
                                     variables: {
                                       registry: registryAddress,
                                       model,
                                       policy: policy._id
                                     }
-                                  });
+                                  })
                                 }}
                               >
                                 <button type="submit">Add Role Task</button>

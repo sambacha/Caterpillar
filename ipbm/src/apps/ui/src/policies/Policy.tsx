@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 import {
   Query,
-} from 'react-apollo';
+} from 'react-apollo'
 import {
   Route,
   Switch,
-} from 'react-router-dom';
+} from 'react-router-dom'
 import fourOFour from '../util/four-o-four'
 
 import query from './query'
@@ -58,7 +58,7 @@ const Policy: React.FC<{
         component={fourOFour({ url })}
       />
     </Switch>
-  );
+  )
 }
 
-export default Policy;
+export default Policy

@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 import {
   Query,
-} from 'react-apollo';
+} from 'react-apollo'
 import {
   Route,
   RouteComponentProps,
@@ -72,4 +72,4 @@ const Policies: React.FC<RouteComponentProps<{ registry: string }>> =
         component={Policy}
       />
     </>
-export default Policies;
+export default Policies
