@@ -15,3 +15,5 @@ With the required browser extensions modellers and model users will be able to o
 **All** the business logic of the BPMN model will be enforced by the ethereum blockchain.
 
 IPBM will allow multiple parties to co operate in pre defined, pre aggreed business processes without having to trust eachother.  There will be no "data silos" so no one will "own" the processes.
+
+Currently there is a node app and a react app communicating through a graph-ql api.  These will be squashed into one app running in the browser with extensions.
