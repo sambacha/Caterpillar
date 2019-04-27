@@ -1,5 +1,5 @@
 {
-  "name": "caterpillar-ql",
+  "name": "bpmn-ql",
   "version": "0.0.0",
   "private": true,
   "description": "",
@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "truffle-compile": "4.0.12",
-    "caterpillar-lib": "0.0.0",
+    "bpmn-ql": "0.0.0",
     "antlr4": "^4.7.2",
     "antlr4ts": "^0.5.0-alpha.3",
     "apollo-server": "^2.4.8",
