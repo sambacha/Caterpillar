@@ -2,7 +2,7 @@
 
 "Inter Planetary Business Modelling"
 
-![bpmn model](blob/3/Screenshot%20from%202019-04-27%2012-53-12.png)
+![bpmn model](Screenshot%20from%202019-04-27%2012-53-12.png)
 
 
 *Registries* can be created on an Ethereum Blockchain.  Registries can contain *models*.  Models are sets contracts which are compiled from XML BPMN models.  When executed these contracts operate the logic of the BPMN model.  Models can be combined together with sub models.  Models are associated with *policies* a policy configures how and by whom roles, defined in the model can be allocated and removed as the process progresses.
