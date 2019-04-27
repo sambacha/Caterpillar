@@ -17,7 +17,11 @@ import Data from './types/Data'
 import QueryVariables from './types/QueryVariables'
 import WorkItem from './Work-Item'
 import Nominate from './Nominate'
+import VoteNominate from './Vote-Nominate'
+import Release from './Release'
+import VoteRelease from './Vote-Release'
 import Viewer from '../models/Viewer'
+import HereIfNot from '../util/Here-If-Not'
 
 const customStyles = {
   content : {
@@ -62,8 +66,15 @@ const Process: React.StatelessComponent<
             data.registries[0].processes &&
             data.registries[0].processes[0] &&
             <div>
+              <HereIfNot
+                url={url}
+              >
+                .
+              </HereIfNot>
               <Link to='./nominate'>nominate</Link>
-              {url}
+              <Link to='./vote-nominate'>vote-nominate</Link>
+              <Link to='./release'>release</Link>
+              <Link to='./vote-release'>vote-release</Link>
               <Switch>
                 <Route
                   exact
@@ -124,6 +135,36 @@ const Process: React.StatelessComponent<
                   render={
                     () =>
                       <Nominate
+                        processAddress={process}
+                        registryAddress={data.registries[0].address}
+                      />
+                  }
+                />
+                <Route
+                  path={`${url}/vote-nominate`}
+                  render={
+                    () =>
+                      <VoteNominate
+                        processAddress={process}
+                        registryAddress={data.registries[0].address}
+                      />
+                  }
+                />
+                <Route
+                  path={`${url}/release`}
+                  render={
+                    () =>
+                      <Release
+                        processAddress={process}
+                        registryAddress={data.registries[0].address}
+                      />
+                  }
+                />
+                <Route
+                  path={`${url}/vote-release`}
+                  render={
+                    () =>
+                      <VoteRelease
                         processAddress={process}
                         registryAddress={data.registries[0].address}
                       />

@@ -7,8 +7,8 @@ import {
 import {
   BrowserRouter as Router,
   Route,
-  Link,
 } from 'react-router-dom';
+import { Link } from 'react-router-relative-link'
 import {
   InMemoryCache,
   defaultDataIdFromObject,
@@ -19,7 +19,6 @@ import Policies from './policies/Policies'
 import RoleTasks from './RoleTasks'
 
 import Registries from './registries/Registries'
-import Registry from './registries/Registry'
 import AddRegistry from './registries/AddRegistry'
 
 import './App.css';
@@ -41,32 +40,32 @@ const App: React.FC = () => {
   return (
     <Router>
       <Link
-        to='/'
+        to='./'
       >
         <h1>Caterpillar</h1>
       </Link>
       <Link
-        to='/accounts'
+        to='./accounts'
       >
         accounts
       </Link>
       <Link
-        to='/registries'
+        to='./registries'
       >
         registries
       </Link>
       <Link
-        to='/registries-add'
+        to='./registries-add'
       >
         +
       </Link>
       <Link
-        to='/policies'
+        to='./policies'
       >
         policies
       </Link>
       <Link
-        to='/role-tasks'
+        to='./role-tasks'
       >
         role tasks
       </Link>      
@@ -83,13 +82,8 @@ const App: React.FC = () => {
           component={AddRegistry}
         />
         <Route
-          exact
           path='/registries'
           component={Registries}
-        />
-        <Route
-          path='/registries/:registry'
-          component={Registry}
         />
         <Route
           path='/policies'

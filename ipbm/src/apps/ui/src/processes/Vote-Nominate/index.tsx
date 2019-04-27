@@ -8,7 +8,7 @@ import Form from './Form'
 
 import Props from './Props'
 
-const WorkItem: React.StatelessComponent<
+const VoteNominate: React.StatelessComponent<
   Props
 > = ({
   registryAddress,
@@ -31,4 +31,5 @@ const WorkItem: React.StatelessComponent<
     )}
     </Mutation>
 
-export default WorkItem
+
+export default VoteNominate

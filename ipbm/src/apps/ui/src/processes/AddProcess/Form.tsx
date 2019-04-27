@@ -24,16 +24,13 @@ const Form: React.StatelessComponent<
   >
     <FormFields
       names={[
-        'nominator',
-        'nominatorRole',
-        'nominee',
-        'nomineeRole',
+        'creator',
+        'creatorRole'  
       ]}
       handleChange={handleChange}
       errors={errors}
       touched={touched}
     />
-    <button type="submit">Nominate</button>
+    <button type="submit">Add process</button>
   </form>
-
 export default withFormik(Form)

@@ -1,31 +1,35 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from 'react'
 import {
   Mutation,
 } from 'react-apollo';
+import mutation from './mutation'
 import Data from '../types/Data'
-import mutation from '../mutation'
 import Form from './Form'
+
 import Props from './Props'
 
-const AddPolicy: React.StatelessComponent<
+const WorkItem: React.StatelessComponent<
   Props
 > = ({
-  registry
+  registryAddress,
+  model,
 }) =>
   <Mutation<Data>
     mutation={mutation}
-  >
+    >
     {(
-      add,
+      mutate,
       { data },
     ): ReactNode => (
       <Form
-        add={add}
-        registry={registry}
+        mutate={mutate}
+        model={model}
+        registryAddress={registryAddress}
       >
         {JSON.stringify(data)}
       </Form>  
     )}
-  </Mutation>
+    </Mutation>
 
-export default AddPolicy;
+
+export default WorkItem

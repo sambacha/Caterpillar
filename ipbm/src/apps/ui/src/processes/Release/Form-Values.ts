@@ -1,5 +1,6 @@
 export default // Shape of form values
 interface FormValues {
-  from: string
-  parameters: string[]
+  nominator: string
+  nominee: string
+  nomineeRole: string
 }

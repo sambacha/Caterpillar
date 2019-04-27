@@ -24,7 +24,8 @@ const Form: React.StatelessComponent<
   >
     <FormFields
       names={[
-        'nominator',
+        'endorser',
+        'endorserRole',
         'nominatorRole',
         'nominee',
         'nomineeRole',

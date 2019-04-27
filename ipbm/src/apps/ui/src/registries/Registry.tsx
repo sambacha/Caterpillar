@@ -7,10 +7,7 @@ import { Route } from 'react-router-dom';
 
 import { Link } from 'react-router-relative-link'
 
-
-
 import Models from '../models/Models'
-import Model from '../models/Model'
 import Policies from '../policies/Policies'
 import Policy from '../policies/Policy'
 import Processes from '../processes/Processes'
@@ -69,13 +66,8 @@ const Registry: React.FC<{ match: any }> = ({ match: { params: { registry }, url
                 }
               />
               <Route
-                exact
                 path={`${path}/models`}
                 component={Models}
-              />
-              <Route
-                path={`${path}/models/:model`}
-                component={Model}
               />
               <Route
                 path={`${url}/policies-add`}

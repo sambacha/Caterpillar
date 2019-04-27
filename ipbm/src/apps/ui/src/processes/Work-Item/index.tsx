@@ -7,7 +7,6 @@ import Data from '../types/Data'
 import Form from './Form'
 
 import Props from './Props'
-import Add from './Mutate'
 
 const WorkItem: React.StatelessComponent<
   Props
@@ -24,7 +23,7 @@ const WorkItem: React.StatelessComponent<
       { data },
     ): ReactNode => (
       <Form
-        add={mutate}
+        mutate={mutate}
         element={element}
         registry={registry}
         instanceState={instanceState}

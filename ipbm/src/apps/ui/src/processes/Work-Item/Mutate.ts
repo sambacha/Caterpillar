@@ -1,3 +1,15 @@
+import FormValues from './Form-Values'
+
 export default interface Mutate {
-  add: (any: any) => any,
+  mutate: (
+    props: {
+      variables: FormValues &
+        {
+          registry: string
+          from: string
+          id: string
+          worklist: string
+        }
+    },
+  ) => any,
 }
