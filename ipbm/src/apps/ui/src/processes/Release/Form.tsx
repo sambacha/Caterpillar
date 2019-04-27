@@ -7,7 +7,7 @@ import FormValues from './Form-Values'
 import FormFields from '../../util/Form-Fields'
 import withFormik from './with-formik'
 
-const Form: React.StatelessComponent<
+const Form: React.FunctionComponent<
   Props &
     FormikProps<FormValues>
 > = ({

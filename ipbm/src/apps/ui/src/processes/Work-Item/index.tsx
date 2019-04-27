@@ -8,7 +8,7 @@ import Form from './Form'
 
 import Props from './Props'
 
-const WorkItem: React.StatelessComponent<
+const WorkItem: React.FunctionComponent<
   Props
 > = ({
   registry,

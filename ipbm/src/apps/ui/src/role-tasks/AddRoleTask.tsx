@@ -12,7 +12,7 @@ import policiesQuery from '../policies/query'
 import PoliciesData from '../policies/types/Data'
 import PoliciesQueryVariables from '../policies/types/QueryVariables'
 
-const AddRoleTask: React.StatelessComponent<{
+const AddRoleTask: React.FunctionComponent<{
   model: string,
   registry: string,
   registryAddress: string,

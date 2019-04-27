@@ -8,7 +8,7 @@ import Form from './Form'
 
 import Props from './Props'
 
-const VoteNominate: React.StatelessComponent<
+const VoteNominate: React.FunctionComponent<
   Props
 > = ({
   registryAddress,

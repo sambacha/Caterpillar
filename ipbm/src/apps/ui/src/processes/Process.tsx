@@ -33,7 +33,7 @@ const customStyles = {
     transform             : 'translate(-50%, -50%)'
   }
 };
-const Process: React.StatelessComponent<
+const Process: React.FunctionComponent<
   {
     match: any
   } & {

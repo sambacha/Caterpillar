@@ -7,7 +7,7 @@ import mutation from '../mutation'
 import Form from './Form'
 import Props from './Props'
 
-const AddPolicy: React.StatelessComponent<
+const AddPolicy: React.FunctionComponent<
   Props
 > = ({
   registry

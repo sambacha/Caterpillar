@@ -11,7 +11,7 @@ import Modeler from './Modeler'
 import emptyBpmn from './empty-bpmn'
 import Data from './types/Data'
 
-const AddModel: React.StatelessComponent<{
+const AddModel: React.FunctionComponent<{
   registry: string,
 } & {
   file: string,

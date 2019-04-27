@@ -13,7 +13,7 @@ interface SetFileProps {
   setFile: (state: string) => string,
 }
 
-const Form: React.StatelessComponent<
+const Form: React.FunctionComponent<
   Props &
     Mutate &
     SetFileProps &
