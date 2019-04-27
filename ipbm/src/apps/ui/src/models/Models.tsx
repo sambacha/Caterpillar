@@ -74,7 +74,7 @@ const Models: React.FC<RouteComponentProps<{ registry: string }>> =
         }
       />
       <Route
-        path={`$path}/:model`}
+        path={`${path}/:model`}
         component={Model}
       />
     </>

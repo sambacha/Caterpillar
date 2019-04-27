@@ -38,7 +38,10 @@ const Processes: React.FC<{
                   loading,
                 }) =>
                   (
-                    !loading && data && data.registries[0] &&
+                    !loading &&
+                      data &&
+                      data.registries[0] &&
+                      data.registries[0].processes &&
                       <div
                         style={{
                           whiteSpace: 'pre'
