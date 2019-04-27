@@ -10,7 +10,7 @@ import mutation from './mutation'
 import policiesQuery from '../policies/query'
 
 import PoliciesData from '../policies/types/Data'
-import PoliciesQueryVariables from '../policies/types/QueryVariables'
+import PoliciesQueryVariables from '../policies/types/Query-Variables'
 
 const AddRoleTask: React.FunctionComponent<{
   model: string,

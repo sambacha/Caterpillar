@@ -9,7 +9,7 @@ import {
 import { Link } from 'react-router-relative-link'
 import query from './query'
 import Data from './types/Data'
-import QueryVariables from './types/QueryVariables'
+import QueryVariables from './types/Query-Variables'
 import Policy from './Policy'
 
 const Policies: React.FC<RouteComponentProps<{ registry: string }>> =

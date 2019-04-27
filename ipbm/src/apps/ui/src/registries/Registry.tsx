@@ -13,8 +13,8 @@ import Policy from '../policies/Policy'
 import Processes from '../processes/Processes'
 import Process from '../processes/Process'
 
-import AddPolicy from '../policies/AddPolicy'
-import AddModel from '../models/AddModel'
+import AddPolicy from '../policies/Add-Policy'
+import AddModel from '../models/Add-Model'
 import query from './query'
 
 const Registry: React.FC<{ match: any }> = ({ match: { params: { registry }, url, path } }) => {

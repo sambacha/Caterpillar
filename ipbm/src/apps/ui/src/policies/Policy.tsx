@@ -5,7 +5,7 @@ import {
 
 import query from './query'
 import Data from './types/Data'
-import QueryVariables from './types/QueryVariables'
+import QueryVariables from './types/Query-Variables'
 
 const Policy: React.FC<{
   match: any

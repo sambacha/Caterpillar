@@ -19,7 +19,7 @@ import Policies from './policies/Policies'
 import RoleTasks from './RoleTasks'
 
 import Registries from './registries/Registries'
-import AddRegistry from './registries/AddRegistry'
+import AddRegistry from './registries/Add-Registry'
 
 import './App.css';
 

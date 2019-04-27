@@ -3,7 +3,6 @@ import {
   Query,
 } from 'react-apollo';
 
-
 import {
   Route,
   Switch,
@@ -15,10 +14,10 @@ import query from './query'
 import Viewer from './Viewer'
 
 import Data from './types/Data'
-import QueryVariables from './types/QueryVariables'
+import QueryVariables from './types/Query-Variables'
 
-import AddRoleTask from '../role-tasks/AddRoleTask'
-import AddProcess from '../processes/AddProcess'
+import AddRoleTask from '../role-tasks/Add-Role-Task'
+import AddProcess from '../processes/Add-Process'
 
 const Model: React.FC<{
   match: any

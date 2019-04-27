@@ -10,7 +10,7 @@ import { Link } from 'react-router-relative-link'
 import query from './query'
 import Viewer from './Viewer'
 import Data from './types/Data'
-import QueryVariables from './types/QueryVariables'
+import QueryVariables from './types/Query-Variables'
 import Model from './Model'
 
 const Models: React.FC<RouteComponentProps<{ registry: string }>> =
