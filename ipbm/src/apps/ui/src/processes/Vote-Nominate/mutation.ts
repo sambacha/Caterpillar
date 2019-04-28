@@ -12,7 +12,7 @@ export default gql`
     $nomineeRole: String!
   ) {
     nominate(
-      pcase: $processAddress
+      processAddress: $processAddress
       registryAddress: $registryAddress
       endorser: $endorser
       nominatorRole: $nominatorRole

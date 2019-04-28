@@ -28,7 +28,7 @@ type Mutation {
     parameters: [String]!
   ): ProcessContract
   nominate(
-    pcase: String!
+    processAddress: String!
     registryAddress: String!
     nominator: String!
     nominatorRole: String!
@@ -36,7 +36,7 @@ type Mutation {
     nomineeRole: String!
   ): ProcessContract
   release(
-    pcase: String!
+    processAddress: String!
     registryAddress: String!
     nominator: String!
     nominatorRole: String!
@@ -44,7 +44,7 @@ type Mutation {
   ): ProcessContract
   voteNominate(
     isAccepted: Boolean!
-    pcase: String!
+    processAddress: String!
     registryAddress: String!
     endorser: String!
     endorserRole: String!
@@ -53,7 +53,7 @@ type Mutation {
   ): ProcessContract
   voteRelease(
     isAccepted: Boolean!
-    pcase: String!
+    processAddress: String!
     registryAddress: String!
     endorser: String!
     endorserRole: String!

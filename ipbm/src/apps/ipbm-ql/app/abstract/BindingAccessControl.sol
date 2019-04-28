@@ -18,7 +18,7 @@ contract BindingPolicy {
 contract ControlFlow {
     function findParent() public view returns(address);
     function getRoleFromTask(uint taskIndex, bytes32 processId) public pure returns(uint);
-    function bundleFor(address pCase) external view returns(bytes32);
+    function bundleFor(address processAddress) external view returns(bytes32);
 } 
 
 
@@ -56,33 +56,33 @@ contract BindingAccessControl {
         registry = _registry;
     }
 
-    function roleState (uint role, address pCase) public view returns(uint) {
-        return roleBindingState[caseIndex[pCase]][role].bindingState;
+    function roleState (uint role, address processAddress) public view returns(uint) {
+        return roleBindingState[caseIndex[processAddress]][role].bindingState;
     }
 
-    function nominateCaseCreator (uint rNominee, address nominee, address pCase) public {
+    function nominateCaseCreator (uint rNominee, address nominee, address processAddress) public {
 
         require(actorCount == 1 && BindingPolicy(policyAdr).isCaseCreator(rNominee));
         
         uint creatorIndex = actorIndex[nominee] = actorCount++;
-        uint pCaseIndex = caseIndex[pCase] = caseCount++;
+        uint pCaseIndex = caseIndex[processAddress] = caseCount++;
         
         roleBindingState[pCaseIndex][rNominee] = BindingInfo(creatorIndex, creatorIndex, 0, 0, 3);
         actorRoles[creatorIndex] = uint(1) << rNominee;
         
     }
     
-    function nominate (uint rNominator, uint rNominee, address nominator, address nominee, address pCase) public {
+    function nominate (uint rNominator, uint rNominee, address nominator, address nominee, address processAddress) public {
 
         // Verify that @processCase is a child in the process hierarchy where root is the process-case provided when nominated the process-creator.
         // This verification can be done via the RuntimeRegistry in order to keep the consistency between control-flow, worklist and binding-control.
         
         uint iNominee = actorIndex[nominee];
-        uint iCase = caseIndex[pCase];
+        uint iCase = caseIndex[processAddress];
         uint nomineeMask = uint(1) << rNominee;
         uint iNominator = actorIndex[nominator];
 
-        // no actor can be BOUND/NOMINATED in pCase, the noinee cannot hold the rNominee role
+        // no actor can be BOUND/NOMINATED in processAddress, the noinee cannot hold the rNominee role
         // nominator actor must be binded to a role unless self-nomination is allowed
         // the role of the nominator is allowed to nominate in the binding policy.
         // the requested nomination fulfill the conditions defined in the policy by the instructions IN / NOT IN
@@ -95,7 +95,7 @@ contract BindingAccessControl {
         
         // Verifying that all the indexes (for actors and process-cases) were already assigned to an index.
         if(iCase == 0)
-            iCase = caseIndex[pCase] = caseCount++;
+            iCase = caseIndex[processAddress] = caseCount++;
         if(iNominee == 0)
             iNominee = actorIndex[nominee] = actorCount++;
         if(iNominator == 0)
@@ -109,10 +109,10 @@ contract BindingAccessControl {
             actorRoles[iNominee] |= nomineeMask;
     }
     
-    function voteN (uint rNominator, uint rNominee, uint rEndorser, address endorser, address pCase, bool isAccepted) public returns(uint) {
+    function voteN (uint rNominator, uint rNominee, uint rEndorser, address endorser, address processAddress, bool isAccepted) public returns(uint) {
         //require(runtimeRegistry == msg.sender);
         
-        uint iCase = caseIndex[pCase];
+        uint iCase = caseIndex[processAddress];
         BindingInfo memory roleVState = roleBindingState[iCase][rNominee];
         
         // A nomination to endorse must be in NOMINATED state
@@ -136,10 +136,10 @@ contract BindingAccessControl {
         return state;
     }
     
-    function release (uint rNominator, uint rNominee, address nominator, address pCase) public {
+    function release (uint rNominator, uint rNominee, address nominator, address processAddress) public {
         //require(runtimeRegistry == msg.sender);
         
-        uint iCase = caseIndex[pCase];
+        uint iCase = caseIndex[processAddress];
         
         BindingInfo memory roleRState = roleBindingState[iCase][rNominee];
         
@@ -159,10 +159,10 @@ contract BindingAccessControl {
            roleBindingState[iCase][rNominee].bindingState = 1;
     }
     
-    function voteR (uint rNominator, uint rNominee, uint rEndorser, address endorser, address pCase, bool isAccepted) public returns(uint) {
+    function voteR (uint rNominator, uint rNominee, uint rEndorser, address endorser, address processAddress, bool isAccepted) public returns(uint) {
         // require(runtimeRegistry == msg.sender);
         
-        uint iCase = caseIndex[pCase];
+        uint iCase = caseIndex[processAddress];
         BindingInfo memory roleVRState = roleBindingState[iCase][rNominee];
         
         // A release to vote must be in RELEASING state
@@ -185,15 +185,15 @@ contract BindingAccessControl {
     }
         
     
-    function canPerform(address actor, address pCase, uint taskIndex) public view returns(bool) {
-        bytes32 pId = ControlFlow(registry).bundleFor(pCase);
+    function canPerform(address actor, address processAddress, uint taskIndex) public view returns(bool) {
+        bytes32 pId = ControlFlow(registry).bundleFor(processAddress);
         uint tRole = ControlFlow(taskRoleAdr).getRoleFromTask(taskIndex, pId);
-        uint iCase = caseIndex[pCase];
+        uint iCase = caseIndex[processAddress];
         while(roleBindingState[iCase][tRole].bindingState != 3) {
-            pCase = ControlFlow(pCase).findParent();
-            if(pCase == address(0))
+            processAddress = ControlFlow(processAddress).findParent();
+            if(processAddress == address(0))
                 break;
-            iCase = caseIndex[pCase];
+            iCase = caseIndex[processAddress];
         }
         return actorIndex[actor] > 0 && roleBindingState[iCase][tRole].nominee == actorIndex[actor];
     }

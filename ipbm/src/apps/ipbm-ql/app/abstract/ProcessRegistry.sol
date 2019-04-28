@@ -37,8 +37,8 @@ contract ProcessRegistry {
         IFunct(worklist).updateRuntimeRegistry(address(this));
     }
 
-    function findRuntimePolicy(address pCase) public view returns(address) {
-        return instance2PolicyOp[pCase];
+    function findRuntimePolicy(address processAddress) public view returns(address) {
+        return instance2PolicyOp[processAddress];
     }
 
     function relateProcessToPolicy(bytes32 bundleId, bytes32 _policy, bytes32 _taskRole) external {

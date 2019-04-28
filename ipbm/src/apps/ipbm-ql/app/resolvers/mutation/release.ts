@@ -13,7 +13,7 @@ import createContract from '../util/create-contract'
 const debug = _debug('caterpillarql:mutation:release')
 
 export default async ({
-  pcase,
+  processAddress,
   registryAddress,
   nominator,
   nominatorRole,
@@ -28,7 +28,7 @@ export default async ({
   })
   const policyId = await contract
     .bindingPolicyFor({
-      address: pcase,
+      address: processAddress,
     })
   const [policy] = await policySchema
       .find({ _id: policyId })
@@ -45,17 +45,17 @@ export default async ({
     throw new Error('nominator is not an address')
   }
   
-  if(!web3.utils.isAddress(pcase)) {
-    throw new Error('pcase is not an address')
+  if(!web3.utils.isAddress(processAddress)) {
+    throw new Error('processAddress is not an address')
   }
   const bundleId = await contract
     .bundleFor({
-      instance: pcase,
+      instance: processAddress,
     })
   
   const accessControlAddress = await contract
     .findRuntimePolicy({
-      address: pcase,
+      address: processAddress,
     })
     .call()
   
@@ -66,7 +66,7 @@ export default async ({
   }
 
   debug(`${nominatorRole}[${nominator}] is releasing ${nomineeRole}`);
-  debug(`Process Case: ${pcase}`);
+  debug(`Process Case: ${processAddress}`);
   
   const released = await createContract(web3)(JSON.parse(policy.accessControlAbi), accessControlAddress)
     .methods
@@ -74,7 +74,7 @@ export default async ({
       roleIndexMap.get(nominatorRole),
       roleIndexMap.get(nomineeRole),
       nominator,
-      pcase,
+      processAddress,
     )
     .send({
       from: nominator,
@@ -84,6 +84,6 @@ export default async ({
   debug({ released })
   return {
     id: bundleId,
-    address: pcase
+    address: processAddress
   }
 }

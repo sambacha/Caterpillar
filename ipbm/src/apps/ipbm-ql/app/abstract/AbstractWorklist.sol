@@ -1,8 +1,8 @@
 pragma solidity ^0.5.0;
 
 contract IRFunct {
-    function findRuntimePolicy(address pCase) public view returns(address);
-    function canPerform(address actor, address pCase, uint taskIndex) public view returns(bool);
+    function findRuntimePolicy(address processAddress) public view returns(address);
+    function canPerform(address actor, address processAddress, uint taskIndex) public view returns(bool);
 }
 
 contract AbstractWorklist {
@@ -38,7 +38,7 @@ contract AbstractWorklist {
         return workitems[workitemId].elementIndex;
     }
 
-    function canPerform(address actor, address pCase, uint elementIndex) internal view returns(bool) {
-        return IRFunct(IRFunct(runtimeRegistry).findRuntimePolicy(pCase)).canPerform(actor, pCase, elementIndex);
+    function canPerform(address actor, address processAddress, uint elementIndex) internal view returns(bool) {
+        return IRFunct(IRFunct(runtimeRegistry).findRuntimePolicy(processAddress)).canPerform(actor, processAddress, elementIndex);
     }
 }

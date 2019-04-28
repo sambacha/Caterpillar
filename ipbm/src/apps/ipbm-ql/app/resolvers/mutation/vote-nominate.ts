@@ -14,7 +14,7 @@ const debug = _debug('caterpillarql:mutation:vote-nominate')
 
 export default async ({
   isAccepted,
-  pcase,
+  processAddress,
   registryAddress,
   endorser,
   endorserRole,
@@ -29,7 +29,7 @@ export default async ({
   })
   const policyId = await contract
     .bindingPolicyFor({
-      address: pcase,
+      address: processAddress,
     })
   const [policy] = await policySchema
       .find({ _id: policyId })
@@ -49,18 +49,18 @@ export default async ({
     throw new Error('endorser is not an address')
   }
   
-  if(!web3.utils.isAddress(pcase)) {
-    throw new Error('pcase is not an address')
+  if(!web3.utils.isAddress(processAddress)) {
+    throw new Error('processAddress is not an address')
   }
   const bundleId = await contract
     .bundleFor({
-      instance: pcase,
+      instance: processAddress,
     })
   debug({ bundleId })
   
   const accessControlAddress = await contract
     .findRuntimePolicy({
-      address: pcase,
+      address: processAddress,
     })
 
   debug({ accessControlAddress })
@@ -75,7 +75,7 @@ export default async ({
       roleIndexMap.get(nomineeRole),
       roleIndexMap.get(endorserRole),
       endorser,
-      pcase,
+      processAddress,
       isAccepted.toString(),
     )
     .send({
@@ -86,6 +86,6 @@ export default async ({
   debug({ voted })
   return {
     id: bundleId,
-    address: pcase
+    address: processAddress
   }
 }
