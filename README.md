@@ -23,3 +23,40 @@ Current development is in ipbm folder.
 **IPBM** is forked from [Caterpillar](https://github.com/orlenyslp/Caterpillar)
 
 The api is being changed from REST to graphql with subscriptions, the client is now written in reactjs.
+
+## to run
+
+You need ganache-cli - this is development ethereum - it won't cost you in ethers
+-b 1 auto mines a block every second
+
+````
+$ npm install -g ganache-cli
+$ ganache-cli -b 1
+````
+
+You need mongo running on 27017
+You need node and npm
+You need yarn
+
+clone the repo and install dependencies
+
+````
+$ git clone https://github.com/ipbm/ipbm.git
+$ cd ipbm/ipbm/src
+$ yarn
+````
+
+run the server
+````
+$ cd apps/bpmn-ql
+$ yarn start
+````
+
+run the client
+````
+$ cd apps/bpmn-ui
+yarn start
+````
+
+
+
