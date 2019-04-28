@@ -6,6 +6,7 @@ import {
 import {
   Route,
   Switch,
+  RouteComponentProps,
 } from 'react-router-dom'
 
 import fourOFour from '../util/four-o-four'
@@ -36,9 +37,12 @@ const customStyles = {
   }
 }
 const Process: React.FunctionComponent<
-  {
-    match: any
-  } & {
+  RouteComponentProps<
+    {
+      process: string
+      registryId: string
+    }
+  > & {
     element: any,
     setElement: (element: any) => any,
   }

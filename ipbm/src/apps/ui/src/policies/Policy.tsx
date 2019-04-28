@@ -5,6 +5,7 @@ import {
 import {
   Route,
   Switch,
+  RouteComponentProps,
 } from 'react-router-dom'
 import fourOFour from '../util/four-o-four'
 
@@ -12,9 +13,14 @@ import query from './query'
 import Data from './types/Data'
 import QueryVariables from './types/Query-Variables'
 
-const Policy: React.FC<{
-  match: any
-}> =
+const Policy: React.FC<
+  RouteComponentProps<
+    {
+      policy: string
+      registryId: string
+    }
+  >
+> =
   ({
     match: {
       params: {

@@ -5,6 +5,7 @@ import {
 
 import {
   Route,
+  RouteComponentProps,
   Switch,
 } from 'react-router-dom'
 
@@ -20,7 +21,21 @@ import AddModel from '../models/Add-Model'
 import query from './query'
 import fourOFour from '../util/four-o-four'
 
-const Registry: React.FC<{ match: any }> = ({ match: { params: { registryId }, url, path } }) => {
+const Registry: React.FC<
+  RouteComponentProps<
+    {
+      registryId: string
+    }
+  >
+> = ({
+  match: {
+    params: {
+      registryId,
+    },
+    url,
+    path,
+  }
+}) => {
   return (
     <Query
       query={query}

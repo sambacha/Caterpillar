@@ -14,7 +14,9 @@ import Policy from './Policy'
 
 const Policies: React.FC<
   RouteComponentProps<
-    { registryId: string }
+    {
+      registryId: string
+    }
   >
 > =
   ({

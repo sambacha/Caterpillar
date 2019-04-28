@@ -13,14 +13,19 @@ import Data from './types/Data'
 import QueryVariables from './types/Query-Variables'
 import Model from './Model'
 
-const Models: React.FC<RouteComponentProps<{ registryId: string }>> =
+const Models: React.FC<
+  RouteComponentProps<
+    {
+      registryId: string
+    }
+  >
+> =
   ({
     match: {
       params: {
         registryId,
       },
       path,
-      url,
     },
   }) =>
     <>

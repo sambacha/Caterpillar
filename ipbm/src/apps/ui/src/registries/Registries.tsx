@@ -11,7 +11,9 @@ import Registry from './Registry'
 
 import query from './query'
 
-const Registries: React.FC<RouteComponentProps> = ({
+const Registries: React.FC<
+  RouteComponentProps
+> = ({
   match: {
     path,
   }

@@ -4,6 +4,7 @@ import {
 } from 'react-apollo'
 import {
   Route,
+  RouteComponentProps,
 } from 'react-router-dom'
 import { Link } from 'react-router-relative-link'
 import query from './query'
@@ -11,9 +12,13 @@ import Data from './types/Data'
 import QueryVariables from './types/Query-Variables'
 import Process from './Process'
 
-const Processes: React.FC<{
-  match: any
-}> =
+const Processes: React.FC<
+  RouteComponentProps<
+    {
+      registryId: string
+    }
+  >
+> =
   ({
     match: {
       params: {

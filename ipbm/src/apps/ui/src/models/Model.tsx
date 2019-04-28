@@ -6,6 +6,7 @@ import {
 import {
   Route,
   Switch,
+  RouteComponentProps,
 } from 'react-router-dom';
 
 import { Link } from 'react-router-relative-link'
@@ -20,9 +21,14 @@ import AddRoleTask from '../role-tasks/Add-Role-Task'
 import AddProcess from '../processes/Add-Process'
 import fourOFour from '../util/four-o-four'
 
-const Model: React.FC<{
-  match: any
-}> =
+const Model: React.FC<
+  RouteComponentProps<
+    {
+      model: string
+      registryId: string
+    }
+  >
+> =
   ({
     match: {
       params: {
