@@ -17,7 +17,7 @@ export default async ({
     address: registryAddress,
     web3,
   })
-  console.log('adding model to', registryAddress)
+  debug('adding model to', registryAddress)
   // nasty!!!
   const model = {
     bpmn,
@@ -31,11 +31,7 @@ export default async ({
   const contracts = await truffleCompile({
     ...sources,
     [model.id]: model.solidity,
-  })
-  console.log('-------------------')
-  console.log(model.solidity)
-  console.log('-------------------')
-  
+  })  
   debug(
     Object.keys(contracts)
       .reduce(
@@ -59,9 +55,9 @@ export default async ({
   /*Object.keys(output.contracts).forEach(key => {
     let bytecode = '0x' + output.contracts[key].bytecode
     var gasEstimate = web3.eth.estimateGas({data: bytecode})
-    // console.log(".............................................")
-    // console.log("Contract Name: " + key.split(':')[1])
-    // console.log("Gas Estimation: " + gasEstimate)
+    // debug(".............................................")
+    // debug("Contract Name: " + key.split(':')[1])
+    // debug("Gas Estimation: " + gasEstimate)
   })*/
   return registerModel(
     web3,

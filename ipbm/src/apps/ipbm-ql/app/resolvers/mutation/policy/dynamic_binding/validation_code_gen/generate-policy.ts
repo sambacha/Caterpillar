@@ -10,8 +10,8 @@ import policy2solEJS from '../../../../../templates/policy2sol.ejs'
 import { ANTLRInputStream, CommonTokenStream, ANTLRErrorListener } from 'antlr4ts';
 import { Binding_grammarLexer } from '../antlr/Binding_grammarLexer';
 import { binding_grammarParser } from '../antlr/binding_grammarParser';
-import { BindingVisitor } from './BindingPolicyParser';
-import { Policy, DisjunctionSet, ConjunctionSet } from './DataStructures';
+import BindingVisitor from './Binding-Visitor';
+import { Policy, DisjunctionSet, ConjunctionSet } from './data-structures';
 
 const debug = _debug('caterpillarql:policy: generate-policy')
 

@@ -1,9 +1,10 @@
-import debug from 'debug'
+import _debug from 'debug'
 import {
   modelSchema
 } from '../repo'
-import hexToId from '../util/hex-to-id'
 import Web3 from 'web3'
+
+const debug = _debug('caterpillarql:registry.models')
 
 export default async (
   {
@@ -16,7 +17,6 @@ export default async (
     id: String,
   },
 ): Promise<any[]> => {
-  console.log('models called...')
   if (contract) {
     const models: any[] = await modelSchema
       .find(
@@ -33,7 +33,7 @@ export default async (
       models
         .map(
           ({ _id }): Promise<string> => {
-            debug('caterpillarql:registry.models')('_id',{ _id, is: web3.utils.fromAscii(_id.toString()) })
+            debug('_id',{ _id, is: web3.utils.fromAscii(_id.toString()) })
             return contract
               .childrenFor({
                 id: web3.utils.fromAscii(_id.toString()),
@@ -47,8 +47,7 @@ export default async (
           },
         )
     )
-    console.log({ children })
-    debug('caterpillarql:registry.models')('filtered-children', { children  })
+    debug('filtered-children', { children  })
     return models
       .filter(
         ({

@@ -64,7 +64,7 @@ export default async ({
       from: creator,
       gas: 4700000,
     })
-  console.log('access control contract created', created.address)
+  debug('access control contract created', created.address)
   const instance = await contract
     .newBundleInstanceFor({
       bundleId: web3.utils.fromAscii(model._id.toString()),
@@ -105,7 +105,7 @@ export default async ({
 
     }
   )
-  console.log(
+  debug(
     'got to nominated..',
     creatorRole,
     roleIndexMap.get(creatorRole),

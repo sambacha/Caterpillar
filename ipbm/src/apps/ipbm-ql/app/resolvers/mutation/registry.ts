@@ -37,7 +37,7 @@ export default async ({
         {
           fromBlock: 'latest',
         },
-        e => console.log('past event', e),
+        e => debug('past event', e),
       )*/
     // how many blocks we wait for before result
     procContract.transactionConfirmationBlocks = 1;
@@ -52,7 +52,7 @@ export default async ({
           from: accounts[executionAccount],
           gas: 4700000,
         },
-        // (error, txHash) => console.log('s func', error, txHash),
+        // (error, txHash) => debug('s func', error, txHash),
       )
       .on(
         'receipt',

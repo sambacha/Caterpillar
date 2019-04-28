@@ -1,3 +1,5 @@
+import _debug from 'debug'
+const debug = _debug('caterpillarql:policy:data-structures')
 
 export class Policy {
     caseCreator: string = undefined;
@@ -24,14 +26,14 @@ export class Policy {
    }
 
     print() {
-      console.log('Roles: ')
+      debug('Roles: ')
       for (var [key, value] of this.roleIndexMap) {
-        console.log(key + ': ' + value);
+        debug(key + ': ' + value);
       }
-      console.log('---------------------------')
+      debug('---------------------------')
       this.nominationStatements.forEach(value => {
         value.print();
-        console.log('---------------------------')
+        debug('---------------------------')
       })
     }
 
@@ -42,14 +44,14 @@ export class Statement {
     bindingConstraint: DisjunctionSet = undefined;
     endorsementConstraint: DisjunctionSet = undefined;
     print() {
-      console.log('Nominator: ', this.nominator);
-      console.log('Nominee: ', this.nominee);
+      debug('Nominator: ', this.nominator);
+      debug('Nominee: ', this.nominee);
       if(this.bindingConstraint !== undefined){
-         console.log('Binding Constraints ');
+         debug('Binding Constraints ');
          this.bindingConstraint.print();
       }
       if(this.endorsementConstraint !== undefined){
-        console.log('Endorsement Constraints ');
+        debug('Endorsement Constraints ');
         this.endorsementConstraint.print();
      }
     }
@@ -63,7 +65,7 @@ export class Statement {
 
 
     print() {
-      console.log('  Disjunction Set: ', this.isNegative ? 'NOT IN' : 'IN');
+      debug('  Disjunction Set: ', this.isNegative ? 'NOT IN' : 'IN');
       this.conjunctionSets.forEach(value => {
         value.print();
 
@@ -74,7 +76,7 @@ export class Statement {
     roles: Array<string> = new Array();
 
     print() {
-       console.log('    [' + this.roles.toString() + ']')
+       debug('    [' + this.roles.toString() + ']')
     }
   }
 

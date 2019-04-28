@@ -13,7 +13,7 @@ import {
     Statement,
     DisjunctionSet,
     ConjunctionSet
- } from './DataStructures';
+ } from './data-structures';
  
 import { 
     Binding_statementContext, 
@@ -28,7 +28,7 @@ import {
 } from '../antlr/binding_grammarParser';
 
  
-export class BindingVisitor implements binding_grammarVisitor<string> {
+export default class BindingVisitor implements binding_grammarVisitor<string> {
 
     _names: string[] = [];
     policy: Policy = new Policy();
