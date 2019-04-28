@@ -2,11 +2,11 @@ import gql from "graphql-tag";
 
 export default gql`
   mutation Model(
-    $registry: String!
+    $registryAddress: String!
     $bpmn: String!
   ) {
     model(
-      registry: $registry,
+      registryAddress: $registryAddress,
       bpmn: $bpmn
     ) {
       id

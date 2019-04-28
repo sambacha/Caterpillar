@@ -4,10 +4,10 @@ export default gql`
   mutation RoleTask(
     $policy : String!
     $model: String!
-    $registry: String!
+    $registryAddress: String!
   ) {
     roleTask(
-      registry: $registry
+      registryAddress: $registryAddress
       rootProc: $model
       policyId: $policy
     ) {

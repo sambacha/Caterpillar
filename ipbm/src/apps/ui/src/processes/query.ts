@@ -3,12 +3,12 @@ import fragment from './fragment'
 
 export default gql`
   query Policies(
-    $registry: String,
+    $registryId: String,
     $process: String
   )
     {
       registries(
-        _id: $registry
+        _id: $registryId
       ) {
         _id
         address,

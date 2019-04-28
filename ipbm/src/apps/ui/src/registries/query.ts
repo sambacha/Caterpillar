@@ -1,9 +1,9 @@
 import gql from "graphql-tag"
 
 export default gql`
-  query Registries($_id: String)
+  query Registries($registryId: String)
     {
-      registries(_id: $_id) {
+      registries(_id: $registryId) {
         _id
         address
         solidityCode

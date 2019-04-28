@@ -2,12 +2,12 @@ import gql from "graphql-tag"
 
 export default gql`
   query Policies(
-    $registry: String,
+    $registryId: String,
     $policy: String
   )
     {
       registries(
-        _id: $registry
+        _id: $registryId
       ) {
         _id
         policies(

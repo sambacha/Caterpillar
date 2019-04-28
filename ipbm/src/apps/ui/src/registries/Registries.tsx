@@ -65,7 +65,7 @@ const Registries: React.FC<RouteComponentProps> = ({
         }
       />
       <Route
-        path={`${path}/:registry`}
+        path={`${path}/:registryId`}
         component={Registry}
       />
     </>

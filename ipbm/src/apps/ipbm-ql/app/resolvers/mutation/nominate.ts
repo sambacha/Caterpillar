@@ -14,7 +14,7 @@ const debug = _debug('caterpillarql:mutation:nominate')
 
 export default async ({
   pcase,
-  registry,
+  registryAddress,
   nominator,
   nominatorRole,
   nominee,
@@ -24,7 +24,7 @@ export default async ({
   
   const accounts = await web3.eth.personal.getAccounts()
   const contract = await registryContract({
-    address: registry,
+    address: registryAddress,
     web3,
   })
   const policyId = await contract

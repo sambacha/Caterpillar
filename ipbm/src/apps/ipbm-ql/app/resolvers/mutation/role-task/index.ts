@@ -16,11 +16,11 @@ const debug = _debug('caterpillarql:role-task')
 export default async ({
   policyId,
   rootProc,
-  registry,
+  registryAddress,
   web3,
 }): Promise<object> => {
   const contract = await registryContract({
-    address: registry,
+    address: registryAddress,
     web3,
   })
   const [policy] = await policySchema

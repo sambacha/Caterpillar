@@ -10,14 +10,14 @@ const debug = _debug('caterpillarql:model')
 
 export default async ({
   bpmn,
-  registry,
+  registryAddress,
   web3,
 }): Promise<object> => {
   const contract = await registryContract({
-    address: registry,
+    address: registryAddress,
     web3,
   })
-
+  console.log('adding model to', registryAddress)
   // nasty!!!
   const model = {
     bpmn,

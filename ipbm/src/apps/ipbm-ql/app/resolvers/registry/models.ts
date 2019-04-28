@@ -14,6 +14,7 @@ export default async (
     id: String,
   },
 ): Promise<any[]> => {
+  console.log('models called...')
   if (contract) {
     const models: any[] = await process
       .find(
@@ -26,7 +27,6 @@ export default async (
           }
         },
       )
-    
     const children = await Promise.all(
       models
         .map(
@@ -45,6 +45,7 @@ export default async (
           },
         )
     )
+    console.log({ children })
     debug('caterpillarql:registry.models')('filtered-children', { children  })
     return models
       .filter(

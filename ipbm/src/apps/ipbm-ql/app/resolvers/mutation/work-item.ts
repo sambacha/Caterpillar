@@ -17,7 +17,7 @@ export default async ({
   worklist,
   from,
   parameters,
-  registry,
+  registryAddress,
   web3,
 }): Promise<object> => {
   debug({ worklist })
@@ -25,7 +25,7 @@ export default async ({
     throw new Error('User is not a valid address')
   }
   const contract = await registryContract({
-    address: registry,
+    address: registryAddress,
     web3,
   })
   const worklistId = await contract
@@ -50,7 +50,7 @@ export default async ({
     .elementIndexFor(id)
     .call()
     debug({ nodeIndex })
-    
+  debug({ nodeIndex })  
   const node = model
     .indexToElement[nodeIndex.toNumber()]
   debug('about to fire method', worklist, from, node.name, ...[id, ...parameters])
@@ -62,15 +62,7 @@ export default async ({
       from,
       gas: 4700000,
     })
-    .on(
-      'receipt',
-      (
-        receipt: any,
-      ): void => {
-        debug({ receipt })
-      },
-    )
-  debug({ ddd })
+  debug('fired method', { ddd })
   // to do get the worklist address...
   return {
     address: processAddress,

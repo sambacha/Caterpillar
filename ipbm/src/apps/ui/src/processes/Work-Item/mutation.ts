@@ -4,14 +4,14 @@ import fragment from '../fragment'
 export default gql`
   mutation WorkItem(
     $id: String!
-    $registry: String!
+    $registryAddress: String!
     $worklist: String!
     $from: String!
     $parameters: [String]!
   ) {
     workItem(
       id: $id
-      registry: $registry
+      registryAddress: $registryAddress
       worklist: $worklist
       from: $from
       parameters: $parameters

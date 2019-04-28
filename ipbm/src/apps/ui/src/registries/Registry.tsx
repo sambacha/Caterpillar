@@ -20,11 +20,11 @@ import AddModel from '../models/Add-Model'
 import query from './query'
 import fourOFour from '../util/four-o-four'
 
-const Registry: React.FC<{ match: any }> = ({ match: { params: { registry }, url, path } }) => {
+const Registry: React.FC<{ match: any }> = ({ match: { params: { registryId }, url, path } }) => {
   return (
     <Query
       query={query}
-      variables={{ _id: registry }}
+      variables={{ registryId }}
     >
       {
         ({
@@ -65,7 +65,7 @@ const Registry: React.FC<{ match: any }> = ({ match: { params: { registry }, url
                   render={
                     () =>
                       <AddModel
-                        registry={registries[0].address}
+                        registryAddress={registries[0].address}
                       />
                   }
                 />
@@ -78,7 +78,7 @@ const Registry: React.FC<{ match: any }> = ({ match: { params: { registry }, url
                   render={
                     () =>
                       <AddPolicy
-                        registry={registries[0].address}
+                        registryAddress={registries[0].address}
                       />
                   }
                 />
@@ -87,7 +87,6 @@ const Registry: React.FC<{ match: any }> = ({ match: { params: { registry }, url
                   component={Policies}
                 />
                 <Route
-                  exact
                   path={`${path}/processes`}
                   component={Processes}
                 />

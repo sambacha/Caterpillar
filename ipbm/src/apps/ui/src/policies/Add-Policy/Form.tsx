@@ -23,7 +23,7 @@ const Form: React.FunctionComponent<
   file,
   handleSubmit,
   setFile,
-  registry
+  registryAddress
 }) =>
     <form
       onSubmit={handleSubmit}
@@ -88,7 +88,7 @@ export default compose<
       _,
       {
         props: {
-          registry,
+          registryAddress,
           add,
           file,
         },
@@ -96,7 +96,7 @@ export default compose<
     ) => {
       add({
         variables: {
-          registry,
+          registryAddress,
           model: file,
         }
       })

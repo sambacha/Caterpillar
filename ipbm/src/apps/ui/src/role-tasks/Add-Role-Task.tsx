@@ -14,16 +14,16 @@ import PoliciesQueryVariables from '../policies/types/Query-Variables'
 
 const AddRoleTask: React.FunctionComponent<{
   model: string,
-  registry: string,
+  registryId: string,
   registryAddress: string,
 }> = ({
   model,
-  registry,
+  registryId,
   registryAddress
 }) =>
   <Query<PoliciesData, PoliciesQueryVariables>
     query={policiesQuery}
-    variables={{ registry }}
+    variables={{ registryId }}
   >
     {
       ({
@@ -61,7 +61,7 @@ const AddRoleTask: React.FunctionComponent<{
                                   e.preventDefault()
                                   add({
                                     variables: {
-                                      registry: registryAddress,
+                                      registryAddress,
                                       model,
                                       policy: policy._id
                                     }
@@ -82,7 +82,5 @@ const AddRoleTask: React.FunctionComponent<{
         ) || null
     }
   </Query>
-/*
-  
-*/
+
 export default AddRoleTask

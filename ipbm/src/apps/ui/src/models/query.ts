@@ -1,9 +1,12 @@
 import gql from "graphql-tag";
 
 export default gql`
-  query Models($registry: String, $model: String)
+  query Models(
+    $registryId: String,
+    $model: String
+  )
     {
-      registries(_id: $registry) {
+      registries(_id: $registryId) {
         _id
         address
         models(id: $model) {

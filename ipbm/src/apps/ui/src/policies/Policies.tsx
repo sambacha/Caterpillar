@@ -12,11 +12,15 @@ import Data from './types/Data'
 import QueryVariables from './types/Query-Variables'
 import Policy from './Policy'
 
-const Policies: React.FC<RouteComponentProps<{ registry: string }>> =
+const Policies: React.FC<
+  RouteComponentProps<
+    { registryId: string }
+  >
+> =
   ({
     match: {
       params: {
-        registry,
+        registryId,
       },
       path,
     },
@@ -29,7 +33,9 @@ const Policies: React.FC<RouteComponentProps<{ registry: string }>> =
           () =>
           <Query<Data, QueryVariables>
             query={query}
-            variables={{ registry }}
+            variables={{
+              registryId,
+            }}
           >
             {
               ({

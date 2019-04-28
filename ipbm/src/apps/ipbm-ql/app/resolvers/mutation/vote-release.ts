@@ -15,7 +15,7 @@ const debug = _debug('caterpillarql:mutation:vote-nominate')
 export default async ({
   isAccepted,
   pcase,
-  registry,
+  registryAddress,
   endorser,
   endorserRole,
   nominatorRole,
@@ -24,7 +24,7 @@ export default async ({
 }): Promise<object> => {
   
   const contract = await registryContract({
-    address: registry,
+    address: registryAddress,
     web3,
   })
   const policyId = await contract

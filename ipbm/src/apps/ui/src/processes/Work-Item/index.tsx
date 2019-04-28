@@ -11,7 +11,7 @@ import Props from './Props'
 const WorkItem: React.FunctionComponent<
   Props
 > = ({
-  registry,
+  registryAddress,
   element,
   instanceState,
 }) =>
@@ -25,7 +25,7 @@ const WorkItem: React.FunctionComponent<
       <Form
         mutate={mutate}
         element={element}
-        registry={registry}
+        registryAddress={registryAddress}
         instanceState={instanceState}
       >
         {JSON.stringify(data)}

@@ -17,7 +17,7 @@ const Processes: React.FC<{
   ({
     match: {
       params: {
-        registry,
+        registryId,
       },
       path,
     },
@@ -30,7 +30,7 @@ const Processes: React.FC<{
           () =>
             <Query<Data, QueryVariables>
               query={query}
-              variables={{ registry }}
+              variables={{ registryId }}
             >
               {
                 ({

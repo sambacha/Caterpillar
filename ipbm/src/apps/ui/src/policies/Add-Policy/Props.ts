@@ -1,3 +1,3 @@
 export default interface Props {
-  registry: string,
+  registryAddress: string,
 }

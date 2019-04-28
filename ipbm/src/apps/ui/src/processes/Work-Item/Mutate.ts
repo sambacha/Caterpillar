@@ -5,7 +5,7 @@ export default interface Mutate {
     props: {
       variables: FormValues &
         {
-          registry: string
+          registryAddress: string
           from: string
           id: string
           worklist: string

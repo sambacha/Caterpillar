@@ -19,7 +19,7 @@ const Policy: React.FC<{
     match: {
       params: {
         policy,
-        registry,
+        registryId,
       },
       url,
     },
@@ -33,7 +33,10 @@ const Policy: React.FC<{
           () =>
             <Query<Data, QueryVariables>
               query={query}
-              variables={{ policy, registry }}
+              variables={{
+                policy,
+                registryId,
+              }}
             >
               {
                 ({

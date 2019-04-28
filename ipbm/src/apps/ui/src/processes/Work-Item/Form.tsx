@@ -44,7 +44,7 @@ const Form: React.FunctionComponent<
 
     }
     <FormField
-      name="froms"
+      name="from"
       handleChange={handleChange}
       errors={errors}
       touched={touched}

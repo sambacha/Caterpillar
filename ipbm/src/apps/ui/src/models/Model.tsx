@@ -27,7 +27,7 @@ const Model: React.FC<{
     match: {
       params: {
         model,
-        registry,
+        registryId,
       },
       path,
       url,
@@ -35,7 +35,10 @@ const Model: React.FC<{
   }) =>
     <Query<Data, QueryVariables>
       query={query}
-      variables={{ model, registry }}
+      variables={{
+        model,
+        registryId,
+      }}
     >
       {
         ({
@@ -85,7 +88,7 @@ const Model: React.FC<{
                   () =>
                     <AddRoleTask
                       model={model}
-                      registry={data.registries[0]._id}
+                      registryId={data.registries[0]._id}
                       registryAddress={data.registries[0].address}
                     />
                 }

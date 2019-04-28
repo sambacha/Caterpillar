@@ -3,33 +3,33 @@ type Mutation {
   registry: Registry,
   model(
     bpmn: String!
-    registry: String!
+    registryAddress: String!
   ): Model
   process(
     modelId: String!
-    registry: String!
+    registryAddress: String!
     creator: String!
     creatorRole: String!
   ): ProcessContract
   policy(
     model: String!
-    registry: String!
+    registryAddress: String!
   ): Policy
   roleTask(
     policyId : String!
     rootProc: String!
-    registry: String!
+    registryAddress: String!
   ): RoleTask
   workItem(
     id: String!
-    registry: String!
+    registryAddress: String!
     worklist: String!
     from: String!
     parameters: [String]!
   ): ProcessContract
   nominate(
     pcase: String!
-    registry: String!
+    registryAddress: String!
     nominator: String!
     nominatorRole: String!
     nominee: String!
@@ -37,7 +37,7 @@ type Mutation {
   ): ProcessContract
   release(
     pcase: String!
-    registry: String!
+    registryAddress: String!
     nominator: String!
     nominatorRole: String!
     nomineeRole: String!
@@ -45,7 +45,7 @@ type Mutation {
   voteNominate(
     isAccepted: Boolean!
     pcase: String!
-    registry: String!
+    registryAddress: String!
     endorser: String!
     endorserRole: String!
     nominatorRole: String!
@@ -54,7 +54,7 @@ type Mutation {
   voteRelease(
     isAccepted: Boolean!
     pcase: String!
-    registry: String!
+    registryAddress: String!
     endorser: String!
     endorserRole: String!
     nominatorRole: String!

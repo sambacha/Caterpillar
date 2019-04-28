@@ -16,14 +16,14 @@ export default async ({
   creator,
   creatorRole,
   modelId,
-  registry,
+  registryAddress,
   web3,
 }): Promise<object> => {
   if (!web3.utils.isAddress(creator)) {
     throw new Error('Case creator is not a valid address')
   }
   const contract = await registryContract({
-    address: registry,
+    address: registryAddress,
     web3,
   })
   const roleTaskId = await contract
@@ -55,7 +55,7 @@ export default async ({
   const created = await accessControlContract
     .deploy({
       arguments: [
-        registry,
+        registryAddress,
         policy.address,
         roleTask.address
       ],
@@ -124,7 +124,6 @@ export default async ({
       from: creator,
       gas: 4700000,
     })
-  
   return {
     id: modelId,
     address: result.returnValues.processAddress,

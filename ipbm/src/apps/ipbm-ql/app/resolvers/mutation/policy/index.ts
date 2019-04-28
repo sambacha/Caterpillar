@@ -10,11 +10,11 @@ const debug = _debug('caterpillarql:policy')
 
 export default async ({
   model,
-  registry,
+  registryAddress,
   web3,
 }): Promise<object> => {
   const contract = await registryContract({
-    address: registry,
+    address: registryAddress,
     web3,
   })
   const policy = await generatePolicy(model, 'BindingPolicy');

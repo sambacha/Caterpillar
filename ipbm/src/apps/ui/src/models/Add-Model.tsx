@@ -12,14 +12,14 @@ import emptyBpmn from './empty-bpmn'
 import Data from './types/Data'
 
 const AddModel: React.FunctionComponent<{
-  registry: string,
+  registryAddress: string,
 } & {
   file: string,
   setFile: (state: string) => string,
 }> = ({
   file,
   setFile,
-  registry
+  registryAddress,
 }) =>
   <Mutation<Data>
     mutation={mutation}
@@ -40,7 +40,7 @@ const AddModel: React.FunctionComponent<{
               save={
                 (bpmn: string) => add({
                   variables: {
-                    registry,
+                    registryAddress,
                     bpmn,
                   }
                 })

@@ -46,7 +46,7 @@ const Process: React.FunctionComponent<
   ({
     match: {
       params: {
-        registry,
+        registryId,
         process,
       },
       path,
@@ -57,7 +57,10 @@ const Process: React.FunctionComponent<
   }) =>
     <Query<Data, QueryVariables>
       query={query}
-      variables={{ registry, process }}
+      variables={{
+        registryId,
+        process,
+      }}
     >
       {
         ({
@@ -101,7 +104,7 @@ const Process: React.FunctionComponent<
                             }}
                           >
                             <WorkItem
-                              registry={data.registries[0].address}
+                              registryAddress={data.registries[0].address}
                               element={element}
                               instanceState={data.registries[0].processes[0].instanceState}
                              />

@@ -24,7 +24,7 @@ export default withFormik<
         instanceState: {
           workItems,
         },
-        registry,
+        registryAddress,
         mutate,
       }
     }
@@ -40,7 +40,7 @@ export default withFormik<
     mutate({
         variables: {
           id: refs[0].index.toString(),
-          registry: registry,
+          registryAddress,
           worklist: refs[0].worklistAddress,
           ...o,
         },

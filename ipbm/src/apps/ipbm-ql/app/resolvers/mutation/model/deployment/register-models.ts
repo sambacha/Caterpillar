@@ -54,6 +54,7 @@ let registerModels = (
     })
     let bpmnModel = currentIndex < sortedElements.length - 1 ? 'empty' : modelInfo.bpmn
     let worklistAbi = contracts[`${nodeName}_worklist`] ? contracts[`${nodeName}_worklist`].abi : 'undefined'
+    console.log('creating the process...')
     return process.create(
       {
         rootProcessID: gNodeId,

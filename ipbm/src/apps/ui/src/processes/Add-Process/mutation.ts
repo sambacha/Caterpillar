@@ -10,7 +10,7 @@ export default gql`
   ) {
     process(
       modelId: $model
-      registry: $registryAddress
+      registryAddress: $registryAddress
       creator: $creator
       creatorRole: $creatorRole
     ) {
