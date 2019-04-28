@@ -46,17 +46,20 @@ $ cd ipbm/ipbm/src
 $ yarn
 ````
 
+build ipbm-lib
+````
+$ cd packages/ipbm-lib
+$ yarn start
+````
+
 run the server
 ````
-$ cd apps/bpmn-ql
+$ cd apps/ipbm-ql
 $ yarn start
 ````
 
 run the client
 ````
-$ cd apps/bpmn-ui
+$ cd apps/ipbm-ui
 yarn start
 ````
-
-
-
