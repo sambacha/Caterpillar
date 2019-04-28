@@ -26,7 +26,8 @@ The api is being changed from REST to graphql with subscriptions, the client is 
 
 ## to run
 
-You need ganache-cli
+You need ganache-cli - this is development ethereum - it won't cost you in ethers
+-b 1 auto mines a block every second
 
 ````
 $ npm install -g ganache-cli
