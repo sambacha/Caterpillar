@@ -1,7 +1,7 @@
 import _debug from 'debug'
 
 import StatusError from '../Status-Error'
-import { registry } from '../repo'
+import { registrySchema } from '../repo'
 import truffleCompile from '../util/truffle-compile'
 
 import abstractFactory from '../../abstract/AbstractFactory.sol'
@@ -65,7 +65,7 @@ export default async ({
         },
       )
       
-    return registry.create(
+    return registrySchema.create(
       {
         address: contract.address,  
         solidityCode: processRegistry,

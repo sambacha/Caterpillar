@@ -16,11 +16,11 @@ const AddPolicy: React.FunctionComponent<
     mutation={mutation}
   >
     {(
-      add,
+      mutate,
       { data },
     ): ReactNode => (
       <Form
-        add={add}
+        mutate={mutate}
         registryAddress={registryAddress}
       >
         {JSON.stringify(data)}

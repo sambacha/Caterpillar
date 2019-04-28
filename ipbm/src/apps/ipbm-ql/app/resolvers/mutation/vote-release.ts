@@ -1,12 +1,9 @@
 import _debug from 'debug'
 
 import {
-  roleTask as roleTaskSchema,
-  policy as policySchema,
-  process as processSchema
+  policySchema,
 } from '../repo'
 import registryContract from '../util/registry-contract'
-import hexToId from '../util/hex-to-id'
 import findRoleMap from '../util/find-role-map'
 import createContract from '../util/create-contract'
 

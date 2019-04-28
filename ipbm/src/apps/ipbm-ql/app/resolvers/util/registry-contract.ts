@@ -1,12 +1,12 @@
 import { registryContract } from 'ipbm-lib'
-import { registry } from '../repo'
+import { registrySchema } from '../repo'
 import hexToId from './hex-to-id'
 
 export default async ({
   web3,
   address,
 }) =>
-  registry
+  registrySchema
     .find({ address })
     .then(([r]) => r)
     .then(

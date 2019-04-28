@@ -3,8 +3,8 @@ import truffleCompile from '../../util/truffle-compile'
 import registryContract from '../../util/registry-contract'
 import findRoleMap from '../../util/find-role-map'
 import {
-  roleTask as roleTaskSchema,
-  policy as policySchema
+  roleTaskSchema,
+  policySchema
 } from '../../repo'
 import searchRepository from './deployment/search-repository'
 import generateRoleTaskIndexes from './deployment/dynamic-binding/validation_code_gen/generate-role-task-indexes'

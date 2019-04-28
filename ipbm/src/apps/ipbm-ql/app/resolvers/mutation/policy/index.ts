@@ -2,14 +2,14 @@ import _debug from 'debug'
 import truffleCompile from '../../util/truffle-compile'
 import registryContract from '../../util/registry-contract'
 import debugContracts from '../../util/debug-contracts'
-import { policy as policySchema } from '../../repo'
-import {generatePolicy} from './dynamic_binding/validation_code_gen/BindingPolicyGenerator';
+import { policySchema } from '../../repo'
+import generatePolicy from './dynamic_binding/validation_code_gen/generate-policy';
 import bindingAccessControl from '../../../abstract/BindingAccessControl.sol'
 
 const debug = _debug('caterpillarql:policy')
 
 export default async ({
-  model,
+  policyModel,
   registryAddress,
   web3,
 }): Promise<object> => {
@@ -17,16 +17,16 @@ export default async ({
     address: registryAddress,
     web3,
   })
-  const policy = await generatePolicy(model, 'BindingPolicy');
+  const policy = await generatePolicy(
+    policyModel,
+    'BindingPolicy',
+  );
   debug('=============================================');
   debug("SOLIDITY CODE");
   debug('=============================================');
   debug(policy.solidity)
   debug('....................................................................');
-  console.log('=============================================');
-  console.log(policy.solidity)
-  console.log('....................................................................');
-
+  
   const contracts = await truffleCompile({
     BindingPolicy: policy.solidity,
     BindingAccessControl: bindingAccessControl
@@ -57,11 +57,22 @@ export default async ({
   for (let [role, index] of policy.roleIndexMap) {
       indexToRole[index] = role;
   }
+  debug({
+    address: result.address,
+    registryAddress: contract.address,
+    policyModel,
+    solidityCode: policy.solidity,
+    abi: JSON.stringify(contracts.BindingPolicy_Contract.abi),
+    bytecode: contracts.BindingPolicy_Contract.bytecode,
+    indexToRole,
+    accessControlAbi: JSON.stringify(contracts.BindingAccessControl.abi),
+    accessControlBytecode: contracts.BindingAccessControl.bytecode,
+})
   return policySchema.create(
     {
         address: result.address,
-        registry: contract.address,
-        model: model,
+        registryAddress: contract.address,
+        policyModel,
         solidityCode: policy.solidity,
         abi: JSON.stringify(contracts.BindingPolicy_Contract.abi),
         bytecode: contracts.BindingPolicy_Contract.bytecode,

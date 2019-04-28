@@ -1,12 +1,11 @@
 import _debug from 'debug'
 
 import {
-  roleTask as roleTaskSchema,
-  policy as policySchema,
-  process as processSchema
+  roleTaskSchema,
+  policySchema,
+  modelSchema
 } from '../repo'
 import registryContract from '../util/registry-contract'
-import hexToId from '../util/hex-to-id'
 import findRoleMap from '../util/find-role-map'
 import createContract from '../util/create-contract'
 
@@ -47,7 +46,7 @@ export default async ({
     throw new Error('Case Creator Role NOT found')
   }
   
-  const [model] = await processSchema
+  const [model] = await modelSchema
     .find({
       _id: modelId,
     })

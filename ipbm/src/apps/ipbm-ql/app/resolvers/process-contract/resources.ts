@@ -1,6 +1,5 @@
 import { compose } from 'ramda'
-import hexToId from '../util/hex-to-id'
-import { policy } from '../repo'
+import { policySchema } from '../repo'
 import findRoleMap from '../util/find-role-map'
 
 const bindings = {
@@ -25,7 +24,7 @@ export default (
   const [{
     indexToRole,
     accessControlAbi,
-  }] = await policy.find({
+  }] = await policySchema.find({
     _id: await registryContract
       .bindingPolicyFor({
         address: contractAddress,

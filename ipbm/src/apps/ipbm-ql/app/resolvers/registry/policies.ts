@@ -1,7 +1,13 @@
 import {
-  policy
+  policySchema
 } from '../repo'
 
-export default async ({ registry, _id }): Promise<any[]> =>
-  policy.find({ registry, ..._id && { _id }})
+export default async ({
+  registryAddress,
+  _id,
+}): Promise<any[]> =>
+  policySchema.find({
+    registryAddress,
+    ..._id && { _id },
+  })
   

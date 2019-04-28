@@ -1,14 +1,9 @@
 import _debug from 'debug'
 
 import {
-  roleTask as roleTaskSchema,
-  policy as policySchema,
-  process as processSchema
+  modelSchema
 } from '../repo'
 import registryContract from '../util/registry-contract'
-import hexToId from '../util/hex-to-id'
-import findRoleMap from '../util/find-role-map'
-import createContract from '../util/create-contract'
 
 const debug = _debug('caterpillarql:mutation:work-item')
 
@@ -33,7 +28,7 @@ export default async ({
       address: worklist,
     })
   debug({ worklistId })
-  const [model] = await processSchema
+  const [model] = await modelSchema
     .find({
       _id: worklistId,
     })

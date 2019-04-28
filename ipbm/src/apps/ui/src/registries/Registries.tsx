@@ -42,25 +42,21 @@ const Registries: React.FC<
                 }) =>
                   (
                     !loading && registries &&
-                      <div
-                        style={{
-                          whiteSpace: 'pre'
-                        }}
-                      > {
-                          registries
-                            .map(
-                              (registry) =>(
-                                <div key={registry._id}>
-                                  <Link
-                                    to={`./${registry._id}`}
-                                  >to</Link>
-                                  {JSON.stringify(registry, null, 2)}
-                                </div>
-                              )
-                            )
-                        }
-                        {JSON.stringify(registries, null, 2)}
-                      </div>
+                      registries
+                        .map(
+                          ({
+                            address,
+                            _id
+                          }) =>(
+                            <div key={_id}>
+                              <Link
+                                to={`./${_id}`}
+                              >
+                                {_id}:{address}
+                              </Link>
+                            </div>
+                          )
+                        )
                   ) || null
               }
             </Query>

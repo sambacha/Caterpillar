@@ -1,7 +1,7 @@
 import { registryContract } from 'ipbm-lib'
 
 import {
-  registry,
+  registrySchema,
 } from '../repo'
 
 import hexToId from '../util/hex-to-id'
@@ -13,7 +13,7 @@ export default (web3): object => ({
         accounts,
     ),
   registries: async (_, { _id }): Promise<any[]> =>
-    registry
+    registrySchema
       .find({..._id && { _id }})
       .then(
         rs => rs

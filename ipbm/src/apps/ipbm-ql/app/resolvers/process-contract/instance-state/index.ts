@@ -1,5 +1,7 @@
 import Web3 from 'web3'
-import { process } from '../../repo'
+import {
+  modelSchema,
+} from '../../repo'
 import createContract from '../../util/create-contract'
 import _debug from 'debug'
 
@@ -45,7 +47,7 @@ export default (
     abi,
     indexToElement,
     worklistAbi,
-  }] = await process
+  }] = await modelSchema
     .find({ _id: bundleId })
   
   // this is the contract for this instance

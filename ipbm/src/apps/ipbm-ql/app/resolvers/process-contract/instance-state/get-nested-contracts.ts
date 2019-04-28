@@ -1,7 +1,7 @@
-import { process } from '../../repo'
-import hexToId from '../../util/hex-to-id'
+import {
+  modelSchema
+} from '../../repo'
 import Web3 from 'web3';
-
 
 const nestedContracts = (
   {
@@ -20,7 +20,7 @@ const nestedContracts = (
     abi,
     indexToElement,
     worklistAbi,
-  }] = await process
+  }] = await modelSchema
     .find({ _id: bundleId })
   // shouldnt need this...
   if (!abi || !worklistAbi) {

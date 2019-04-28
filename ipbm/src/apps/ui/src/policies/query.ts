@@ -15,7 +15,8 @@ export default gql`
         ) {
         _id
         address
-        model
+        registryAddress
+        policyModel
         solidityCode
         abi
         bytecode

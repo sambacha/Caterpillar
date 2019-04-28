@@ -1,6 +1,6 @@
 import _debug from 'debug'
 
-import { process } from '../../../repo'
+import { modelSchema } from '../../../repo'
 import continueRegistration from './continue-registration'
 
 const debug = _debug('caterpillarql:model:register-models')
@@ -55,7 +55,7 @@ let registerModels = (
     let bpmnModel = currentIndex < sortedElements.length - 1 ? 'empty' : modelInfo.bpmn
     let worklistAbi = contracts[`${nodeName}_worklist`] ? contracts[`${nodeName}_worklist`].abi : 'undefined'
     console.log('creating the process...')
-    return process.create(
+    return modelSchema.create(
       {
         rootProcessID: gNodeId,
         rootProcessName: nodeName,

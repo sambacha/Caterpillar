@@ -1,6 +1,7 @@
 import _debug from 'debug'
-import { process } from '../../../repo'
-import hexToId from '../../../util/hex-to-id'
+import {
+  modelSchema,
+} from '../../../repo'
 
 const debug = _debug('caterpillarql:role-task:search-repository')
 
@@ -11,13 +12,13 @@ let searchRepository = (
   policyId,
   roleIndexMap
 ): Promise<any> =>
-  process
+  modelSchema
     .find({ _id: procId })
     .then(
-      ([repoData] = []) =>
-        repoData &&
+      ([model] = []) =>
+        model &&
           Promise.all(
-            repoData
+            model
               .indexToElement
               .map(
                 (
@@ -56,12 +57,12 @@ let searchRepository = (
             .then(
               separateInstances => ({
                 procId,
-                rootProcessName: repoData.rootProcessName,
-                rootProcessId: repoData.rootProcessId,
+                rootProcessName: model.rootProcessName,
+                rootProcessId: model.rootProcessId,
                 separateInstances:
                   separateInstances
                     .filter(s => s),
-                workItems: repoData
+                workItems: model
                   .indexToElement
                   .map(
                     (

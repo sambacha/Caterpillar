@@ -3,7 +3,7 @@ import * as path from "path";
 import * as ejs from "ejs";
 
 import { BigNumber } from "bignumber.js";
-
+import _debug from 'debug'
 import antlr4 from 'antlr4'
 import policy2solEJS from '../../../../../templates/policy2sol.ejs'
 
@@ -13,10 +13,14 @@ import { binding_grammarParser } from '../antlr/binding_grammarParser';
 import { BindingVisitor } from './BindingPolicyParser';
 import { Policy, DisjunctionSet, ConjunctionSet } from './DataStructures';
 
+const debug = _debug('caterpillarql:policy: generate-policy')
 
 let policy2solTemplate = ejs.compile(policy2solEJS);
 
-export let generatePolicy = (policyStr: string, policyName: string)  => {
+export default (
+    policyModel: string,
+    policyName: string,
+)  => {
 
     return new Promise<Policy>((resolve, reject) => {
 
@@ -25,7 +29,7 @@ export let generatePolicy = (policyStr: string, policyName: string)  => {
         ///      LEXER AND PAXER (ANTLR)         ///
         ////////////////////////////////////////////
             
-            let inputStream = new ANTLRInputStream(policyStr);
+            let inputStream = new ANTLRInputStream(policyModel);
             let lexer = new Binding_grammarLexer(inputStream);
 
             let tokenStream = new CommonTokenStream(lexer);
@@ -145,17 +149,17 @@ export let generatePolicy = (policyStr: string, policyName: string)  => {
             }
             throw 'Roles ' + invalid + 'cannot be nominated';
         } else {
-            console.log('Success, the policy is consistent. Role precedence:');
-            console.log(0 + ': ' + policy.caseCreator);
+            debug('Success, the policy is consistent. Role precedence:');
+            debug(0 + ': ' + policy.caseCreator);
             for(let i = 1; i <= level; i++) {
                 let inLevel = '';
                 for (let [key, value] of policy.roleIndexMap) {
                     if(roleOrder[value] === i)
                         inLevel += key + ' ';
                 }
-                console.log(i + ': ' + inLevel);
+                debug(i + ': ' + inLevel);
             }
-            console.log('...............................................................');
+            debug('...............................................................');
         }
 
         /////////////////////////////////////////////
@@ -250,7 +254,7 @@ export let generatePolicy = (policyStr: string, policyName: string)  => {
             resolve(policy);
             
         } catch(ex) {
-            console.log('Error: ', ex);
+            debug('Error: ', ex);
             reject(new Policy());
         }
 

@@ -6,6 +6,7 @@ import {
 import { withFormik, FormikProps } from 'formik'
 
 import Props from './Props'
+import FormValues from './Form-Values'
 import Mutate from './Mutate'
 
 interface SetFileProps {
@@ -15,6 +16,7 @@ interface SetFileProps {
 
 const Form: React.FunctionComponent<
   Props &
+    FormValues &
     Mutate &
     SetFileProps &
     FormikProps<{}>
@@ -23,7 +25,6 @@ const Form: React.FunctionComponent<
   file,
   handleSubmit,
   setFile,
-  registryAddress
 }) =>
     <form
       onSubmit={handleSubmit}
@@ -64,6 +65,7 @@ const Form: React.FunctionComponent<
 
 export default compose<
   Props &
+    FormValues &
     Mutate &
     SetFileProps &
     FormikProps<{}>,
@@ -73,6 +75,7 @@ export default compose<
   (
   withState<
     Props &
+      FormValues &
       Mutate,
     string,
     string,
@@ -80,6 +83,7 @@ export default compose<
   >('file', 'setFile', ''),
   withFormik<
     Props &
+      FormValues &
       Mutate &
       SetFileProps,
     {}
@@ -89,15 +93,15 @@ export default compose<
       {
         props: {
           registryAddress,
-          add,
+          mutate,
           file,
         },
       },
     ) => {
-      add({
+      mutate({
         variables: {
           registryAddress,
-          model: file,
+          policyModel: file,
         }
       })
     }

@@ -1,5 +1,7 @@
 import debug from 'debug'
-import { process } from '../repo'
+import {
+  modelSchema
+} from '../repo'
 import hexToId from '../util/hex-to-id'
 import Web3 from 'web3'
 
@@ -16,7 +18,7 @@ export default async (
 ): Promise<any[]> => {
   console.log('models called...')
   if (contract) {
-    const models: any[] = await process
+    const models: any[] = await modelSchema
       .find(
         {
           bpmnModel: {

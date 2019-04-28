@@ -45,31 +45,30 @@ const Policies: React.FC<
                 loading,
               }) =>
                 (
-                  !loading && data && data.registries[0] &&
-                    <div
-                      style={{
-                        whiteSpace: 'pre'
-                      }}
-                    >
-                    {
-                        data
-                          .registries[0]
-                          .policies
-                          .map(
-                            (policy: any) =>(
-                              <div key={policy._id}>
-                                <Link
-                                  to={`./${policy._id}`}
-                                >
-                                  to
-                                </Link>
-                                {JSON.stringify(policy, null, 2)}
-                              </div>
-                            )
-                          )
-
-                      }
-                    </div>
+                  !loading &&
+                    data &&
+                    data.registries[0] &&
+                    data
+                      .registries[0]
+                      .policies
+                      .map(
+                        ({
+                          _id,
+                          address,
+                          policyModel,
+                        }: any) =>(
+                          <div key={_id}>
+                            <Link
+                              to={`./${_id}`}
+                            >
+                              {_id}: {address}
+                            </Link>
+                            <div>
+                              {policyModel}
+                            </div>
+                          </div>
+                        )
+                      )
                 ) || null
             }
           </Query>
