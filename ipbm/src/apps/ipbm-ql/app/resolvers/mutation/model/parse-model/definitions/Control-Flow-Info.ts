@@ -11,7 +11,9 @@ export default class ControlFlowInfo {
   nonInterruptingEvents: Map<string, string> = new Map()
   callActivities: Map<string, string> = new Map()
   externalBundles: Map<string, string> = new Map()
-  catchingMessages: Array<string>
+  catchingMessages: Array<string> = []
+  parameterInfo: Map<string, Map<string, Array<ParameterInfo>>> = new Map()
+  userTaskList: Array<string> = []
   globalParameters: string = ""
   localParameters: Map<string, Map<string,Array<ParameterInfo>>> = new Map()
   oracleInfo: Map<string, OracleInfo> = new Map()

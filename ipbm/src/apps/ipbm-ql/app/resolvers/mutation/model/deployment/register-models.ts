@@ -42,6 +42,13 @@ let registerModels = (
             throw 'No role related to User Task: ' + controlFlowInfo.nodeNameMap.get(nodeId)
           role = controlFlowInfo.taskRoleMap.get(nodeId)
         }
+        debug({
+          1: 'idex',
+          nodeId,
+          2: controlFlowInfo.nodeIndexMap.get(nodeId),
+          3: controlFlowInfo.nodeIndexMap,
+          4: controlFlowInfo.edgeIndexMap
+        })
         indexToFunctionName[controlFlowInfo.nodeIndexMap.get(nodeId)] = {
           name: controlFlowInfo.nodeNameMap.get(nodeId),
           id: nodeId,

@@ -575,12 +575,15 @@ export default ({
     return result === '0b' ? new BigNumber(0) : new BigNumber(result).toFixed()
   },
   subprocessStartMarking: subprocessId => {
+    console.log({ subprocessId })
+    console.log(controlFlowInfo.edgeIndexMap)
     let toSearch = globalNodeMap[subprocessId]
     let bitarray = []
     let result = "0b"
     if (is(toSearch, "bpmn:BoundaryEvent")) {
-      for (let outgoing of toSearch.outgoing)
+      for (let outgoing of toSearch.outgoing) {
         bitarray[controlFlowInfo.edgeIndexMap.get(outgoing.id)] = 1
+      }
     } else {
       for (let node of toSearch.flowElements.filter(
         e => is(e, "bpmn:FlowNode") && is(e, "bpmn:StartEvent")
@@ -595,8 +598,10 @@ export default ({
               bitarray[controlFlowInfo.edgeIndexMap.get(outgoing.id)] = 1
       }
     }
+    console.log({ bitarray })
     for (let i = bitarray.length - 1; i >= 0; i--)
       result += bitarray[i] ? "1" : "0"
+    console.log({ result })
     return new BigNumber(result).toFixed()
   },
   getAllAncestorsMask: subprocId => {
