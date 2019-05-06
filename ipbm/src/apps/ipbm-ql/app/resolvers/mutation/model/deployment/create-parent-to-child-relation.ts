@@ -11,6 +11,7 @@ const createParent2ChildRelation = (
   sortedElements,
   outputContracts,
   modelInfo,
+  registryId,
 ) => {
   return web3.eth.personal.getAccounts()
     .then(
@@ -31,18 +32,34 @@ const createParent2ChildRelation = (
             (result) => {
               debug('child bundleId added')
               if (currentIndex + 1 < sortedElements.length) {
-                return createParent2ChildRelation(web3, registryContract, currentIndex + 1, sortedElements, outputContracts, modelInfo)
+                return createParent2ChildRelation(
+                  web3,
+                  registryContract,
+                  currentIndex + 1,
+                  sortedElements,
+                  outputContracts,
+                  modelInfo,
+                  registryId,
+                )
               } else {
                 debug('....................................................................')
                 let removedCallActivities = []
                 sortedElements.forEach(element => {
-                  if (modelInfo.controlFlowInfoMap.has(element.nodeId) || modelInfo.globalNodeMap.get(element.nodeId).$type === 'bpmn:StartEvent') {
+                  if (modelInfo.controlFlowInfoMap.has(element.nodeId) || modelInfo.globalNodeMap[element.nodeId].$type === 'bpmn:StartEvent') {
                     removedCallActivities.push(element)
                   }
                 })
                 if (removedCallActivities.length > 0) {
                   debug('DEPLOYING FACTORIES AND UPDATING PROCESS-FACTORY RELATION IN REGISTRY ...')
-                  return registerFactory(web3, registryContract, 0, removedCallActivities, outputContracts, modelInfo)
+                  return registerFactory(
+                    web3,
+                    registryContract,
+                    0,
+                    removedCallActivities,
+                    outputContracts,
+                    modelInfo,
+                    registryId,
+                  )
                 }
               }
             }

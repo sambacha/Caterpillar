@@ -5,25 +5,28 @@ import parseModel from './parse-model'
 import sources from './sources'
 import truffleCompile from '../../util/truffle-compile'
 import registerModel from './deployment/register-model'
-
+import {
+  registrySchema
+} from '../../repo'
 const debug = _debug('caterpillarql:model')
 
 export default async ({
   bpmn,
-  registryAddress,
+  registryId,
   web3,
 }): Promise<object> => {
+  debug('model mutation', registryId)
+  const [{ address: registryAddress }] = await registrySchema
+    .find({
+      _id: registryId,
+    })
+  debug('found', registryAddress)
   const contract = await registryContract({
     address: registryAddress,
     web3,
   })
   debug('adding model to', registryAddress)
-  // nasty!!!
-  const model = {
-    bpmn,
-  }
-  await parseModel(model)
-  debug('model contracts....')
+  const model = await parseModel(bpmn)
   debug({
     ...sources,
     [model.id]: model.solidity,
@@ -64,5 +67,6 @@ export default async ({
     contract,
     model,
     contracts,
+    registryId,
   )
 }

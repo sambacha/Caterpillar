@@ -5,14 +5,23 @@ import debugContracts from '../../util/debug-contracts'
 import { policySchema } from '../../repo'
 import generatePolicy from './dynamic_binding/validation_code_gen/generate-policy';
 import bindingAccessControl from '../../../abstract/BindingAccessControl.sol'
+import {
+  registrySchema
+} from '../../repo'
 
 const debug = _debug('caterpillarql:policy')
 
 export default async ({
   policyModel,
-  registryAddress,
+  registryId,
   web3,
 }): Promise<object> => {
+  const [{ address: registryAddress }] = await registrySchema
+    .find({
+      _id: registryId,
+    })
+  debug('found', registryAddress)
+  
   const contract = await registryContract({
     address: registryAddress,
     web3,
@@ -71,7 +80,7 @@ export default async ({
   return policySchema.create(
     {
         address: result.address,
-        registryAddress: contract.address,
+        registryId,
         policyModel,
         solidityCode: policy.solidity,
         abi: JSON.stringify(contracts.BindingPolicy_Contract.abi),

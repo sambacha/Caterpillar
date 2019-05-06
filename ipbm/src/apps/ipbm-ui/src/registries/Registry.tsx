@@ -80,7 +80,7 @@ const Registry: React.FC<
                   render={
                     () =>
                       <AddModel
-                        registryAddress={registries[0].address}
+                        registryId={registryId}
                       />
                   }
                 />
@@ -93,7 +93,7 @@ const Registry: React.FC<
                   render={
                     () =>
                       <AddPolicy
-                        registryAddress={registries[0].address}
+                        registryId={registryId}
                       />
                   }
                 />

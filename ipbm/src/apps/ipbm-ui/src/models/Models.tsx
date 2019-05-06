@@ -50,22 +50,33 @@ const Models: React.FC<
                           whiteSpace: 'pre'
                         }}
                       >
+                      {JSON.stringify(data.registries[0].models, null, 2)}
                       {
                           data.registries[0].models
                             .map(
-                              (model: any) =>(
-                                <div key={model.id}>
+                              (
+                                {
+                                  _id,
+                                  bpmn,
+                                  name,
+                                  policyId,
+                                  taskRoleId,
+                                }
+                              ) =>(
+                                <div key={_id}>
                                   <Link
-                                    to={`./${model.id}`}
+                                    to={`./${_id}`}
                                   >
-                                    {model.name}
+                                    {name}
                                   </Link>
                                   <div>
-                                    {model.taskRoleId}
+                                    {policyId}
+                                    :
+                                    {taskRoleId}
                                   </div>
                                   <Viewer
-                                    id={model.id}
-                                    model={model.bpmn}
+                                    id={_id}
+                                    model={bpmn}
                                   />
                                 </div>
                               )
@@ -79,7 +90,7 @@ const Models: React.FC<
         }
       />
       <Route
-        path={`${path}/:model`}
+        path={`${path}/:modelId`}
         component={Model}
       />
     </>

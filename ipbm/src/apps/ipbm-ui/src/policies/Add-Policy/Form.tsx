@@ -3,16 +3,13 @@ import {
   compose,
   withState,
 } from 'recompose'
-import { withFormik, FormikProps } from 'formik'
+import { FormikProps } from 'formik'
 
 import Props from './Props'
 import FormValues from './Form-Values'
 import Mutate from './Mutate'
-
-interface SetFileProps {
-  file: string,
-  setFile: (state: string) => string,
-}
+import withFormik from './with-formik'
+import SetFileProps from './Set-File-Props'
 
 const Form: React.FunctionComponent<
   Props &
@@ -63,47 +60,4 @@ const Form: React.FunctionComponent<
       {children}
     </form>
 
-export default compose<
-  Props &
-    FormValues &
-    Mutate &
-    SetFileProps &
-    FormikProps<{}>,
-  Props &
-    Mutate
->
-  (
-  withState<
-    Props &
-      FormValues &
-      Mutate,
-    string,
-    string,
-    string
-  >('file', 'setFile', ''),
-  withFormik<
-    Props &
-      FormValues &
-      Mutate &
-      SetFileProps,
-    {}
-  >({
-    handleSubmit: (
-      _,
-      {
-        props: {
-          registryAddress,
-          mutate,
-          file,
-        },
-      },
-    ) => {
-      mutate({
-        variables: {
-          registryAddress,
-          policyModel: file,
-        }
-      })
-    }
-  }),
-)(Form)
+export default withFormik(Form)

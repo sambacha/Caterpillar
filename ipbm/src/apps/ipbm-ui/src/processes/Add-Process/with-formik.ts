@@ -21,20 +21,17 @@ export default withFormik<
     {
       props: {
         registryAddress,
-        model,
+        modelId,
         mutate,
       },
     }
   ) => {
     mutate({
       variables: {
-        model,
+        modelId,
         registryAddress,
         ...values,
       },
     })
-      .then(
-        console.log
-      )
   }
 })

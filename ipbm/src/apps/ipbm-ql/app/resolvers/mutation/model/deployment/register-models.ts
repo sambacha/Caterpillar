@@ -13,17 +13,21 @@ let registerModels = (
   nodeIndexes,
   modelInfo,
   contracts,
+  registryId,
 ) => {
+  debug('register-models')
   let nodeName = sortedElements[currentIndex].nodeName
   let gNodeId = sortedElements[currentIndex].nodeId
   let controlFlowInfo = modelInfo.controlFlowInfoMap.get(gNodeId)
-  if (modelInfo.globalNodeMap.get(gNodeId).$type === 'bpmn:StartEvent')
-    controlFlowInfo = modelInfo.controlFlowInfoMap.get(modelInfo.globalNodeMap.get(gNodeId).$parent.id)
+  debug('gNodeId', gNodeId, modelInfo.globalNodeMap[gNodeId].$type, controlFlowInfo, modelInfo.controlFlowInfoMap.keys())
+  if (modelInfo.globalNodeMap[gNodeId].$type === 'bpmn:StartEvent')
+    controlFlowInfo = modelInfo.controlFlowInfoMap.get(modelInfo.globalNodeMap[gNodeId].$parent.id)
   if (controlFlowInfo) {
+    debug('controlFlowInfo')
     let indexToFunctionName = []
     let childrenSubproc = []
     controlFlowInfo.nodeList.forEach(nodeId => {
-      let element = modelInfo.globalNodeMap.get(nodeId)
+      let element = modelInfo.globalNodeMap[nodeId]
       if (controlFlowInfo.nodeList.indexOf(nodeId) >= 0) {
         let type = "None"
         let role = "None"
@@ -52,20 +56,22 @@ let registerModels = (
         }
       }
     })
-    let bpmnModel = currentIndex < sortedElements.length - 1 ? 'empty' : modelInfo.bpmn
+    let bpmn = currentIndex < sortedElements.length - 1 ? 'empty' : modelInfo.bpmn
     let worklistAbi = contracts[`${nodeName}_worklist`] ? contracts[`${nodeName}_worklist`].abi : 'undefined'
-    debug('creating the process...')
+    const toCreate = {
+      registryId,
+      rootProcessId: gNodeId,
+      name: nodeName,
+      bpmn,
+      solidity: modelInfo.solidity,
+      abi:JSON.stringify(contracts[`${nodeName}_Contract`].abi),
+      bytecode: contracts[`${nodeName}_Contract`].bytecode,
+      indexToElement: indexToFunctionName,
+      worklistAbi: JSON.stringify(worklistAbi)
+    }
+    debug({ toCreate })
     return modelSchema.create(
-      {
-        rootProcessID: gNodeId,
-        rootProcessName: nodeName,
-        bpmnModel: bpmnModel,
-        solidityCode: modelInfo.solidity,
-        abi:JSON.stringify(contracts[`${nodeName}_Contract`].abi),
-        bytecode: contracts[`${nodeName}_Contract`].bytecode,
-        indexToElement: indexToFunctionName,
-        worklistAbi: JSON.stringify(worklistAbi)
-      },
+      toCreate,
     )
       .then(
         (repoData) => {
@@ -76,11 +82,11 @@ let registerModels = (
             sortedElements[nodeIndexes.get(childId)].bundleParent = idAsString
           })
           debug(`Compilation artifacts of ${nodeName} updated in repository with id ${idAsString}`)
-          return continueRegistration(web3, registryContract, currentIndex, sortedElements, nodeIndexes, modelInfo, contracts, registerModels)
+          return continueRegistration(web3, registryContract, currentIndex, sortedElements, nodeIndexes, modelInfo, contracts, registerModels, registryId)
         }
       )
   } else {
-    return continueRegistration(web3, registryContract, currentIndex, sortedElements, nodeIndexes, modelInfo, contracts, registerModels)
+    return continueRegistration(web3, registryContract, currentIndex, sortedElements, nodeIndexes, modelInfo, contracts, registerModels, registryId)
   }
 }
 

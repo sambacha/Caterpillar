@@ -4,7 +4,7 @@ type Mutation {
   registry: Registry,
   model(
     bpmn: String!
-    registryAddress: String!
+    registryId: String!
   ): Model
   # Create a process for a model in a registry.
   process(
@@ -16,11 +16,11 @@ type Mutation {
   # create a  mew policy in a registry.
   policy(
     policyModel: String!
-    registryAddress: String!
+    registryId: String!
   ): Policy
   roleTask(
     policyId : String!
-    rootProc: String!
+    modelId: String!
     registryAddress: String!
   ): RoleTask
   workItem(

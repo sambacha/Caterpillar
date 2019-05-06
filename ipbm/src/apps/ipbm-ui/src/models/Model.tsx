@@ -24,7 +24,7 @@ import fourOFour from '../util/four-o-four'
 const Model: React.FC<
   RouteComponentProps<
     {
-      model: string
+      modelId: string
       registryId: string
     }
   >
@@ -32,7 +32,7 @@ const Model: React.FC<
   ({
     match: {
       params: {
-        model,
+        modelId,
         registryId,
       },
       path,
@@ -42,7 +42,7 @@ const Model: React.FC<
     <Query<Data, QueryVariables>
       query={query}
       variables={{
-        model,
+        modelId,
         registryId,
       }}
     >
@@ -66,6 +66,8 @@ const Model: React.FC<
                     >
                       <Link to='.'>.</Link>
                       <div>
+                        {data.registries[0].models[0].policyId}
+                        :
                         {data.registries[0].models[0].taskRoleId}
                       </div>
                       <Link
@@ -78,6 +80,7 @@ const Model: React.FC<
                       >
                         add process
                       </Link>
+                      {JSON.stringify(data.registries[0].models[0])}
                       <Viewer
                         id={data.registries[0].models[0].id}
                         model={data.registries[0].models[0].bpmn}
@@ -93,7 +96,7 @@ const Model: React.FC<
                 render={
                   () =>
                     <AddRoleTask
-                      model={model}
+                      modelId={modelId}
                       registryId={data.registries[0]._id}
                       registryAddress={data.registries[0].address}
                     />
@@ -104,7 +107,7 @@ const Model: React.FC<
                 render={
                   () =>
                     <AddProcess
-                      model={model}
+                      modelId={modelId}
                       registryAddress={data.registries[0].address}
                     />
                 }

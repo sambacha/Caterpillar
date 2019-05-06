@@ -11,7 +11,7 @@ type Registry {
     address: String
   ): [ProcessContract]
   models(
-    id: String
+    _id: String
   ): [Model]
   policies(
     _id: String

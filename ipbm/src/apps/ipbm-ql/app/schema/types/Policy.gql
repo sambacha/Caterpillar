@@ -1,7 +1,7 @@
 type Policy {
   _id: String!
   address: String!
-  registryAddress: String!
+  registryId: String!
   policyModel: String!
   solidityCode: String!
   abi: String!

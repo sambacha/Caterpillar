@@ -67,7 +67,7 @@ class Modeler extends Component {
   openBpmnDiagram = (xml) => {
     this.modeler.importXML(xml, (error) => {
       if (error) {
-        return console.log('fail import xml');
+        return console.log('fail import xml here');
       }
 
       var canvas = this.modeler.get('canvas');

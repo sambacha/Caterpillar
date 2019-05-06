@@ -2,14 +2,14 @@ import gql from "graphql-tag"
 
 export default gql`
   mutation RoleTask(
-    $policy : String!
-    $model: String!
+    $policyId : String!
+    $modelId: String!
     $registryAddress: String!
   ) {
     roleTask(
       registryAddress: $registryAddress
-      rootProc: $model
-      policyId: $policy
+      modelId: $modelId
+      policyId: $policyId
     ) {
       _id
       address

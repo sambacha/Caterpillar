@@ -10,6 +10,7 @@ const continueWorklistCreation = (
   outputContracts,
   modelInfo,
   createWorklistInstances,
+  registryId,
 ) => {
   if (currentIndex + 1 < sortedElements.length) {
     return createWorklistInstances(
@@ -19,7 +20,8 @@ const continueWorklistCreation = (
       sortedElements,
       outputContracts,
       modelInfo,
-      )
+      registryId,
+    )
   } else {
     let bundleId = ''
     for (let i = 0; i < sortedElements.length; i++) {
@@ -30,10 +32,11 @@ const continueWorklistCreation = (
     }
     debug('----------------------------------------------------------------------------------------------')
     return {
-      id: bundleId,
+      _id: bundleId,
       name: modelInfo.name,
       bpmn: modelInfo.bpmn,
-      solidity: modelInfo.solidity
+      solidity: modelInfo.solidity,
+      registryContract,
     }
   }
 }

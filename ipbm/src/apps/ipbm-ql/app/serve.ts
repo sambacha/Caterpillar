@@ -5,9 +5,8 @@ import debug from 'debug'
 import resolvers from './resolvers'
 import typeDefs from './schema/type-defs'
 
-
 export default (web3: Web3): void => {
-  
+
   // In the most basic sense, the ApolloServer can be started
   // by passing type definitions (typeDefs) and the resolvers
   // responsible for fetching the data for those types.

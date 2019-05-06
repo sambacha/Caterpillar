@@ -1,15 +1,18 @@
 import gql from "graphql-tag";
+import fragment from './fragment'
 
 export default gql`
   mutation Model(
-    $registryAddress: String!
+    $registryId: String!
     $bpmn: String!
   ) {
     model(
-      registryAddress: $registryAddress,
+      registryId: $registryId,
       bpmn: $bpmn
     ) {
-      id
+      _id
+      ...Model
     }
   }
+  ${fragment('Model')}
 `

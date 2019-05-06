@@ -12,6 +12,7 @@ const continueFactoryRegistration = (
   contractF,
   modelInfo,
   registerFactory,
+  registryId,
 ) => {
   return web3.eth.personal.getAccounts()
     .then(
@@ -38,7 +39,9 @@ const continueFactoryRegistration = (
                       currentIndex + 1,
                       sortedElements,
                       outputContracts,
-                      modelInfo)
+                      modelInfo,
+                      registryId,
+                    )
                 } else {
                     debug('....................................................................')
                     debug('DEPLOYONG worklist CONTRACTS AND UPDATING PROCESS REGISTRY ...')
@@ -49,6 +52,7 @@ const continueFactoryRegistration = (
                       sortedElements,
                       outputContracts,
                       modelInfo,
+                      registryId,
                     )
                 }
             })

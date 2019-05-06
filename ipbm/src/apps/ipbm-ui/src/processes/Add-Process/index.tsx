@@ -12,7 +12,7 @@ const WorkItem: React.FunctionComponent<
   Props
 > = ({
   registryAddress,
-  model,
+  modelId,
 }) =>
   <Mutation<Data>
     mutation={mutation}
@@ -23,7 +23,7 @@ const WorkItem: React.FunctionComponent<
     ): ReactNode => (
       <Form
         mutate={mutate}
-        model={model}
+        modelId={modelId}
         registryAddress={registryAddress}
       >
         {JSON.stringify(data)}

@@ -8,12 +8,12 @@ const debug = _debug('caterpillarql:role-task:search-repository')
 let searchRepository = (
   web3,
   registryContract: import('ipbm-lib').RegistryContract,
-  procId,
+  modelId,
   policyId,
   roleIndexMap
 ): Promise<any> =>
   modelSchema
-    .find({ _id: procId })
+    .find({ _id: modelId })
     .then(
       ([model] = []) =>
         model &&
@@ -39,7 +39,7 @@ let searchRepository = (
                 }) =>
                   registryContract
                     .childrenFor({
-                      id: web3.utils.fromAscii(procId.toString()),
+                      id: web3.utils.fromAscii(modelId.toString()),
                       index,
                     })
                     .then(
@@ -56,7 +56,7 @@ let searchRepository = (
           )
             .then(
               separateInstances => ({
-                procId,
+                procId: modelId,
                 rootProcessName: model.rootProcessName,
                 rootProcessId: model.rootProcessId,
                 separateInstances:

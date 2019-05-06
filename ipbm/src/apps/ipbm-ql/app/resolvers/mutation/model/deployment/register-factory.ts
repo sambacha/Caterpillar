@@ -11,6 +11,7 @@ const registerFactory = (
   sortedElements,
   outputContracts,
   modelInfo,
+  registryId,
 ) => {
   debug('------------------------------------------------------------------------')
   debug(
@@ -49,6 +50,7 @@ const registerFactory = (
                 contractF,
                 modelInfo,
                 registerFactory,
+                registryId,
               )
           )
     )

@@ -2,16 +2,16 @@ import gql from "graphql-tag"
 
 export default gql`
   mutation Policy(
-    $registryAddress: String!
+    $registryId: String!
     $policyModel: String!
   ) {
     policy(
-      registryAddress: $registryAddress,
+      registryId: $registryId,
       policyModel: $policyModel
     ) {
       _id
       address
-      registryAddress
+      registryId
       policyModel
       solidityCode
       abi

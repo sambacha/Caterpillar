@@ -11,6 +11,7 @@ const createWorklistInstances = (
   sortedElements,
   outputContracts,
   modelInfo,
+  registryId,
 ) => {
   debug('----------------------------------------------------------------------------------------')
   const worklistInstanceContract = outputContracts[`${sortedElements[currentIndex].nodeName}_worklist`]
@@ -63,6 +64,7 @@ const createWorklistInstances = (
                           outputContracts,
                           modelInfo,
                           createWorklistInstances,
+                          registryId,
                         )
                     )
                 }
@@ -78,6 +80,7 @@ const createWorklistInstances = (
       outputContracts,
       modelInfo,
       createWorklistInstances,
+      registryId,
     )
   }
 }

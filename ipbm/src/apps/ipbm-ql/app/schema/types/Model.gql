@@ -1,8 +1,14 @@
 type Model {
-  id: String
+  _id: String
+  parentId: String
+  rootProcessId: String
+  registryId: String
   name: String
   bpmn: String
   solidity: String,
   policyId: String
   taskRoleId: String
+  processes(
+    _id: String
+  ): [Process]
 }

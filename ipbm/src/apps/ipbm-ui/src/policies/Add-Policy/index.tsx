@@ -10,7 +10,7 @@ import Props from './Props'
 const AddPolicy: React.FunctionComponent<
   Props
 > = ({
-  registryAddress
+  registryId
 }) =>
   <Mutation<Data>
     mutation={mutation}
@@ -21,7 +21,7 @@ const AddPolicy: React.FunctionComponent<
     ): ReactNode => (
       <Form
         mutate={mutate}
-        registryAddress={registryAddress}
+        registryId={registryId}
       >
         {JSON.stringify(data)}
       </Form>  

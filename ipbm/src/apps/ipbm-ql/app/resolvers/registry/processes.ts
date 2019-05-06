@@ -43,12 +43,12 @@ export default async (
             .find({ _id: bundleFor})
             .then(
               ([{
-                bpmnModel,
-                rootProcessName: name,
+                bpmn,
+                name,
               }]): object => ({
                 address: instance,
                 id: bundleFor,
-                bpmnModel,
+                bpmnModel: bpmn,
                 registryContract: contract,
                 name,
               })

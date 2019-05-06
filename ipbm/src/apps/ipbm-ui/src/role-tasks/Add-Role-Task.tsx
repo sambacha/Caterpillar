@@ -13,11 +13,11 @@ import PoliciesData from '../policies/types/Data'
 import PoliciesQueryVariables from '../policies/types/Query-Variables'
 
 const AddRoleTask: React.FunctionComponent<{
-  model: string,
+  modelId: string,
   registryId: string,
   registryAddress: string,
 }> = ({
-  model,
+  modelId,
   registryId,
   registryAddress
 }) =>
@@ -62,8 +62,8 @@ const AddRoleTask: React.FunctionComponent<{
                                   add({
                                     variables: {
                                       registryAddress,
-                                      model,
-                                      policy: policy._id
+                                      modelId,
+                                      policyId: policy._id
                                     }
                                   })
                                 }}

@@ -11,6 +11,7 @@ export default (
   registryContract,
   modelInfo,
   contracts,
+  registryId
 ) => {
   // Sorting elements such that children are created first
   let queue = [
@@ -50,5 +51,6 @@ export default (
     nodeIndexes,
     modelInfo,
     contracts,
+    registryId,
   )
 }

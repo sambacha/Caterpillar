@@ -5,11 +5,11 @@ export default gql`
   mutation Process(
     $creator : String!
     $creatorRole: String!
-    $model: String!
+    $modelId: String!
     $registryAddress: String!
   ) {
     process(
-      modelId: $model
+      modelId: $modelId
       registryAddress: $registryAddress
       creator: $creator
       creatorRole: $creatorRole

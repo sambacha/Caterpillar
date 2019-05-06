@@ -15,7 +15,7 @@ const debug = _debug('caterpillarql:role-task')
 
 export default async ({
   policyId,
-  rootProc,
+  modelId,
   registryAddress,
   web3,
 }): Promise<object> => {
@@ -30,7 +30,7 @@ export default async ({
   const searchResults = await searchRepository(
     web3,
     contract,
-    rootProc,
+    modelId,
     policyId,
     findRoleMap(policy.indexToRole)
   )
@@ -66,7 +66,7 @@ export default async ({
     )
   const related = await contract
     .relateProcessToPolicy({
-      bundleId: web3.utils.fromAscii(rootProc),
+      bundleId: web3.utils.fromAscii(modelId),
       policyId: web3.utils.fromAscii(policyId),
       roleTaskId: web3.utils.fromAscii(created._id.toString()),
     })

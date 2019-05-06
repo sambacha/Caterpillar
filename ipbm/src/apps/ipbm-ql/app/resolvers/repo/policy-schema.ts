@@ -8,7 +8,7 @@ export default model<any>(
   'policy',
   new Schema({
     address: String,
-    registryAddress: String,
+    registryId: String,
     policyModel: String,
     solidityCode: String,
     abi: String,

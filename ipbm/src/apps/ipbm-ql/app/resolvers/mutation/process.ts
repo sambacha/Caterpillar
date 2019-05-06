@@ -79,30 +79,28 @@ export default async ({
   const result = await new Promise(
     (resolve, reject) => {
       const event = contract
-    .events
-    .NewInstanceCreatedFor({
-      fromBlock: instance.blockNumber,
-    })
-    .on(
-      'data',
-      e => {
-        if (e.transactionHash === instance.transactionHash) {
-          event.removeListener('data')
-          event.removeListener('error')
-          resolve(e)
-        }
-      },
-    )
-    .on(
-      'error',
-      e => {
-        event.removeListener('data')
-        event.removeListener('error')
-        reject(e)
-      },
-    );
-  
-
+        .events
+        .NewInstanceCreatedFor({
+          fromBlock: instance.blockNumber,
+        })
+        .on(
+          'data',
+          e => {
+            if (e.transactionHash === instance.transactionHash) {
+              event.removeListener('data')
+              event.removeListener('error')
+              resolve(e)
+            }
+          },
+        )
+        .on(
+          'error',
+          e => {
+            event.removeListener('data')
+            event.removeListener('error')
+            reject(e)
+          },
+        );
     }
   )
   debug(

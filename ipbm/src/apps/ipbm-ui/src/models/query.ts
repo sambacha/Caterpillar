@@ -1,22 +1,19 @@
 import gql from "graphql-tag";
+import fragment from './fragment'
 
 export default gql`
   query Models(
     $registryId: String,
-    $model: String
+    $modelId: String
   )
     {
       registries(_id: $registryId) {
         _id
         address
-        models(id: $model) {
-          id
-          name
-          bpmn
-          solidity
-          policyId
-          taskRoleId
+        models(_id: $modelId) {
+          ...Model
         }
       }
     }
+    ${fragment('Model')}
 `

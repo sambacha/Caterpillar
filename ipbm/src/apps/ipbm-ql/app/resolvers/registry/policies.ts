@@ -3,11 +3,11 @@ import {
 } from '../repo'
 
 export default async ({
-  registryAddress,
+  registryId,
   _id,
 }): Promise<any[]> =>
   policySchema.find({
-    registryAddress,
+    registryId,
     ..._id && { _id },
   })
   

@@ -13,6 +13,7 @@ let continueRegistration = (
   modelInfo,
   contracts,
   registerModels,
+  registryId,
 ) => {
   if (currentIndex + 1 >= sortedElements.length) {
     debug('....................................................................')
@@ -24,6 +25,7 @@ let continueRegistration = (
       sortedElements,
       contracts,
       modelInfo,
+      registryId
     )
   }
   else
@@ -35,6 +37,7 @@ let continueRegistration = (
       nodeIndexes,
       modelInfo,
       contracts,
+      registryId,
     )
 }
 

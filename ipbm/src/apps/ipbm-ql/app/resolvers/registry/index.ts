@@ -17,27 +17,29 @@ export default (web3): object => ({
     }),
   policies: async (
     {
-      address: registryAddress,
+      _id: registryId,
     },
     {
       _id,
     }
   ): Promise<any[]> =>
     policies({
-      registryAddress,
+      registryId,
       _id,
     }),
   models: async (
     {
+      _id,
       contract,
     },
     {
-      id,
+      _id: modelId,
     }
   ): Promise<any[]> =>
     models({
       web3,
       contract,
-      id,
+      registryId: _id,
+      modelId,
     }),  
 })

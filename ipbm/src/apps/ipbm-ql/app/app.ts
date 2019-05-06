@@ -10,7 +10,7 @@ const debug = _debug('caterpillarql:app')
 
 mongoose.Promise = global.Promise
 
-mongoose.connect('mongodb://localhost:27017/caterpillarRepo8')
+mongoose.connect('mongodb://localhost:27017/caterpillarRepo9')
   .then(
     () => {
       debug('Conectado a MongoDB')
