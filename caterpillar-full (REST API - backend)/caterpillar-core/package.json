@@ -4,9 +4,15 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./out/www.js",
+    "start-bpm": "node ./out/www.js",
     "compile": "node ./node_modules/typescript/bin/tsc -p ./src",
-    "antlr4ts": "antlr4ts -o ./src/models/dynamic_binding  -visitor ./src/models/dynamic_binding/binding_grammar.g4"
+    "antlr4ts": "antlr4ts -o ./src/models/dynamic_binding  -visitor ./src/models/dynamic_binding/binding_grammar.g4",
+    "start-service": "nodemon -r source-map-support/register dist/server/server.js",
+    "build": "tsc -p src/server; tsc -p src/client;",
+    "bundle": "rollup -c",
+    "watch": "npm run build; npm run bundle; concurrently --names 'server,client,rollup' -c 'white.bgBlue,bgCyan,white.bgRed' 'tsc -p ./src/server -w' 'tsc -p ./src/client -w' 'rollup -c -w' ",
+    "prepublishOnly": "npm run lint; npm run build",
+    "lint": "eslint src/**/*.ts --fix"
   },
   "dependencies": {
     "antlr4": "^4.7.1",
@@ -22,7 +28,12 @@
     "morgan": "^1.10.0",
     "solc": "^0.6.10",
     "web3": "^1.2.9",
-    "colors": "^1.4.0"
+    "colors": "^1.4.0",
+    "commander": "latest",
+    "dotenv": "latest",
+    "kafka-node": "latest",
+    "lit-element": "latest",
+    "ws": "latest"
   },
   "devDependencies": {
     "@types/antlr4": "^4.7.0",
@@ -43,6 +54,14 @@
     "gulp-tsb": "^4.0.5",
     "marked": "^1.1.0",
     "typescript": "^3.9.6",
-    "xml2js": "^0.4.23"
+    "xml2js": "^0.4.23",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "concurrently": "latest",
+    "eslint": "latest",
+    "nodemon": "^1.18.11",
+    "rollup": "latest",
+    "rollup-plugin-node-resolve": "latest",
+    "source-map-support": "^0.5.12"
   }
 }

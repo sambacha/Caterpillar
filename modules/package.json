@@ -1,0 +1,53 @@
+{
+    "name": "experimenting-with-kafka",
+    "version": "1.0.0",
+    "description": "Experimenting with Apache Kafka using kafka-node",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "bin": {
+        "kafka-publish": "dist/server/cli.js"
+    },
+    "files": [
+        "src/**/*",
+        "dist/**/*"
+    ],
+    "scripts": {
+        "start": "nodemon -r source-map-support/register dist/server/server.js",
+        "build": "tsc -p src/server; tsc -p src/client;",
+        "bundle": "rollup -c",
+        "watch": "npm run build; npm run bundle; concurrently --names 'server,client,rollup' -c 'white.bgBlue,bgCyan,white.bgRed' 'tsc -p ./src/server -w' 'tsc -p ./src/client -w' 'rollup -c -w' ",
+        "prepublishOnly": "npm run lint; npm run build",
+        "lint": "eslint src/**/*.ts --fix"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/drochgenius/experimenting-with-kafka.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/drochgenius/experimenting-with-kafka/issues"
+    },
+    "homepage": "https://github.com/drochgenius/experimenting-with-kafka#readme",
+    "devDependencies": {
+        "@types/node": "latest",
+        "@typescript-eslint/eslint-plugin": "latest",
+        "@typescript-eslint/parser": "latest",
+        "concurrently": "latest",
+        "eslint": "latest",
+        "nodemon": "^1.18.11",
+        "rollup": "latest",
+        "rollup-plugin-node-resolve": "latest",
+        "source-map-support": "^0.5.12",
+        "typescript": "latest"
+    },
+    "dependencies": {
+        "commander": "latest",
+        "dotenv": "latest",
+        "express": "latest",
+        "kafka-node": "latest",
+        "lit-element": "latest",
+        "ws": "latest"
+    }
+}
