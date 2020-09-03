@@ -45,22 +45,22 @@ web3.eth.filter("latest", function (error, result) {
         try {
             let info = web3.eth.getBlock(result);
             if (info.transactions.length > 0) {
-                //  // console.log('----------------------------------------------------------------------------------------------');
-                //  // console.log('NEW BLOCK MINED');
+            console.log('----------------------------------------------------------------------------------------------');
+            console.log('NEW BLOCK MINED');
                 let toNotify = [];
                 info.transactions.forEach(transactionHash => {
-                    // // console.log("TRANSACTION ", transRec);
-                    //// console.log(web3.eth.estimateGas({from: web3.eth.accounts[0], to: transactionHash, amount: web3.toWei(1, "ether")}))
+                    console.log("TRANSACTION ", transRec);
+                 console.log(web3.eth.estimateGas({from: web3.eth.accounts[0], to: transactionHash, amount: web3.toWei(1, "ether")}))
                     let transRec = web3.eth.getTransactionReceipt(transactionHash);
                     let tranInfo = { 'hash': transactionHash,
                         'blockNumber': transRec.blockNumber,
                         'gas': transRec.gasUsed,
                         'cumulGas': transRec.cumulativeGasUsed };
-                    //  if(toPrint.length > 0 && toPrint === transactionHash) {
-                    //      // console.log('Gas :' + tI + " " + transRec.gasUsed);
-                    //      toPrint = '';
-                    //      tI = 0;
-                    //  }
+                      if(toPrint.length > 0 && toPrint === transactionHash) {
+                           console.log('Gas :' + tI + " " + transRec.gasUsed);
+                          toPrint = '';
+                          tI = 0;
+                      }
                     if (pendingTrans.has(tranInfo.hash)) {
                         toNotify.push(tranInfo);
                         /* if(transRec.logs && transRec.logs.length > 0) {
@@ -71,33 +71,33 @@ web3.eth.filter("latest", function (error, result) {
                     /* if(!bindingOpTransactions.has(tranInfo.hash)) {
                         transRec.logs.forEach(logElem => {
                             if (workListInstances.has(logElem.address) && toNotify.indexOf(logElem.address) < 0) {
-                                //// console.log("LOG ELEMENT ", logElem);
-                                // console.log('WorkList', workListInstances);
+                                 console.log("LOG ELEMENT ", logElem);
+                                 console.log('WorkList', workListInstances);
                                 toNotify.push(workListInstances.get(logElem.address));
                             }
                         })
                     } */
-                    //// console.log('----------------------------------------------------------------------------------------------');
+                     console.log('----------------------------------------------------------------------------------------------');
                 });
                 if (toNotify.length > 0) {
-                    //// console.log("Message sent through socket running on port 8090");
+                     console.log("Message sent through socket running on port 8090");
                     toNotify.forEach(add => {
-                        // console.log(add.hash)
+                         console.log(add.hash)
                         if (mws)
                             mws.send(JSON.stringify(add), function ack(error) {
                             });
                     });
-                    //io.emit('message', { type: 'new-message', text: "Updates in Server" });
+                    io.emit('message', { type: 'new-message', text: "Updates in Server" });
                 }
                 else {
-                    //// console.log("Nothing to notify");
+                     console.log("Nothing to notify");
                 }
             }
         }
         catch (ex) { }
     }
 });
-/////////////////////////////////////////////////////////
+/////////////////////////////////
 ///    CATERPILLAR INTERPRETER OPERATIONS             ///
 /////////////////////////////////////////////////////////
 let contractsInfo;
@@ -238,7 +238,7 @@ models.post('/i-flow/p-cases/:cfAddress', (req, res) => {
             });
         }
         else {
-            // console.log(error)
+           console.log(error)
             res.status(400).send(error);
         }
     });
@@ -274,8 +274,8 @@ models.patch('/i-data/:pcAddress/i-flow/:eIndex', (req, res) => {
         }
         else {
             pendingTrans.set(result.toString(), 'checkIn: ' + reqId);
-            //console.log(`TRANSACTION: ${result}, PENDING !!!`);
-            //console.log('----------------------------------------------------------------------------------------------');
+            console.log(`TRANSACTION: ${result}, PENDING !!!`);
+            console.log('----------------------------------------------------------------------------------------------');
             res.status(200).send({ transactionHash: result });
         }
     }));
@@ -571,7 +571,7 @@ models.post('/registry', (req, res) => {
                     if (err) {
                         console.log('Error ', err);
                         console.log('----------------------------------------------------------------------------------------------');
-                        // registerModels(currentIndex, sortedElements, createdElementMap, modelInfo, contracts, res);
+                         registerModels(currentIndex, sortedElements, createdElementMap, modelInfo, contracts, res);
                     }
                     else {
                         processRegistryContract = contract;
