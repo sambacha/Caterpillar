@@ -13,18 +13,18 @@ const fs = require("fs");
 const async = require("async");
 
 const customPaletteModule = {
-  paletteProvider: ["type", PaletteProvider]
+  paletteProvider: ["type", PaletteProvider],
 };
 
 const customPropertiesProviderModule = {
   __init__: ["propertiesProvider"],
-  propertiesProvider: ["type", CustomPropertiesProvider]
+  propertiesProvider: ["type", CustomPropertiesProvider],
 };
 
 @Component({
   selector: "modeler",
   styleUrls: ["./modeler.component.css"],
-  templateUrl: "./modeler.component.html"
+  templateUrl: "./modeler.component.html",
 })
 export class ModelerComponent implements OnInit {
   modeler: any;
@@ -36,16 +36,16 @@ export class ModelerComponent implements OnInit {
   ngOnInit() {
     this.processStorage.resetModel();
     this.modeler = new Modeler({
-      container: '#canvas',
+      container: "#canvas",
       additionalModules: [
         propertiesPanelModule,
         propertiesProviderModule,
         customPropertiesProviderModule,
-        customPaletteModule
+        customPaletteModule,
       ],
       propertiesPanel: {
-        parent: '#js-properties-panel'
-      }
+        parent: "#js-properties-panel",
+      },
     });
     this.modeler.importXML(
       this.processStorage.model,
@@ -71,19 +71,28 @@ export class ModelerComponent implements OnInit {
   validateName() {
     this.modeler.saveXML({ format: true }, (err: any, xml: string) => {
       for (let i = 0; i < this.modeler.definitions.rootElements.length; i++) {
-        if (this.modeler.definitions.rootElements[i].$type === 'bpmn:Process') {
-          if (this.processStorage.hasModel(this.modeler.definitions.rootElements[i].id)) {
+        if (this.modeler.definitions.rootElements[i].$type === "bpmn:Process") {
+          if (
+            this.processStorage.hasModel(
+              this.modeler.definitions.rootElements[i].id
+            )
+          ) {
             this.modelText =
-              'The selected ID exists on the Workspace. Please, change this value and try again.';
-          } else if (!this.modeler.definitions.rootElements[i].name || this.modeler.definitions.rootElements[i].name === '') {
+              "The selected ID exists on the Workspace. Please, change this value and try again.";
+          } else if (
+            !this.modeler.definitions.rootElements[i].name ||
+            this.modeler.definitions.rootElements[i].name === ""
+          ) {
             this.modelText =
-              'The Name of the model cannot be empty. Please, update this value and try again.';
+              "The Name of the model cannot be empty. Please, update this value and try again.";
           } else {
             this.goToDashborad();
-            this.processStorage.modelId = this.modeler.definitions.rootElements[i].id;
+            this.processStorage.modelId = this.modeler.definitions.rootElements[
+              i
+            ].id;
             this.processStorage.registerModel(xml);
             this.modelText =
-              'Working in Model Registration. Please, take into account that this may require some seconds.';
+              "Working in Model Registration. Please, take into account that this may require some seconds.";
           }
           break;
         }
@@ -92,6 +101,6 @@ export class ModelerComponent implements OnInit {
   }
 
   goToDashborad() {
-      this.router.navigateByUrl('/dashboard');
+    this.router.navigateByUrl("/dashboard");
   }
 }

@@ -13,5 +13,4 @@
   overflow: auto;
 }
 
-@import '~bpmn-js/assets/bpmn-font/css/bpmn.css';
-
+@import "~bpmn-js/assets/bpmn-font/css/bpmn.css";
