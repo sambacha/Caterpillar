@@ -3,7 +3,8 @@ import {Router} from 'express';
 import * as solc from 'solc';
 
 import {AbiCoder} from 'web3-eth-abi';
-const abiCoder = new AbiCoder();
+ //const abiCoder = new AbiCoder();
+const abiCoder = require("web3-eth-abi");
 
 import * as Web3 from 'web3';
 import BigNumber from "bignumber.js";

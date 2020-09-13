@@ -8,11 +8,9 @@ const abiCoder = require("web3-eth-abi");
 const Web3 = require("web3");
 const models_parsers_1 = require("./models.parsers");
 const procModelData_1 = require("../repo/procModelData");
-const procModelData_2 = require("../repo/procModelData");
-const procModelData_3 = require("../repo/procModelData");
-const procModelData_4 = require("../repo/procModelData");
 const BindingPolicyGenerator_1 = require("./dynamic_binding/validation_code_gen/BindingPolicyGenerator");
 const ProcessRoleGenerator_1 = require("./dynamic_binding/validation_code_gen/ProcessRoleGenerator");
+const AgreementPolicyGenerator_1 = require("./dynamic_process_agreement/validation_code_gen/AgreementPolicyGenerator");
 const BPMNParser_1 = require("./interpreter/BPMNParser");
 // import * as mongoose from 'mongoose';
 // let app = require('express')();
@@ -55,6 +53,7 @@ web3.eth.filter("latest", function (error, result) {
                         'blockNumber': transRec.blockNumber,
                         'gas': transRec.gasUsed,
                         'cumulGas': transRec.cumulativeGasUsed };
+                    toNotify.push(tranInfo);
                     //  if(toPrint.length > 0 && toPrint === transactionHash) {
                     //      // console.log('Gas :' + tI + " " + transRec.gasUsed);
                     //      toPrint = '';
@@ -67,15 +66,15 @@ web3.eth.filter("latest", function (error, result) {
                             console.log('-----------------------------------------------------------------')
                          } */
                     }
-                    /* if(!bindingOpTransactions.has(tranInfo.hash)) {
+                    if (!bindingOpTransactions.has(tranInfo.hash)) {
                         transRec.logs.forEach(logElem => {
                             if (workListInstances.has(logElem.address) && toNotify.indexOf(logElem.address) < 0) {
                                 //// console.log("LOG ELEMENT ", logElem);
                                 // console.log('WorkList', workListInstances);
                                 toNotify.push(workListInstances.get(logElem.address));
                             }
-                        })
-                    } */
+                        });
+                    }
                     //// console.log('----------------------------------------------------------------------------------------------');
                 });
                 if (toNotify.length > 0) {
@@ -464,6 +463,7 @@ let instantiateContract = (key) => {
 let workListInstances = new Map();
 let bindingOpTransactions = new Map();
 let processRegistryContract = undefined;
+let dynamicProcessManager = undefined;
 // Querying for every contract all the created instances
 models.get('/processes', (req, res) => {
     console.log('QUERYING ALL ACTIVE CONTRACTS');
@@ -561,7 +561,7 @@ models.post('/registry', (req, res) => {
                 res.status(403).send(err);
             }
             else if (contract.address) {
-                procModelData_2.registrySchema.create({
+                procModelData_1.registrySchema.create({
                     address: contract.address,
                     solidityCode: input['ProcessRegistry'],
                     abi: output.contracts['ProcessRegistry:ProcessRegistry'].interface,
@@ -595,7 +595,7 @@ models.post('/registry', (req, res) => {
 models.post('/registry/load', (req, res) => {
     console.log('LOADING PROCESS RUNTIME REGISTRY ...');
     if (web3.isAddress(req.body.from)) {
-        procModelData_2.registrySchema.find({ address: req.body.from }, (err, repoData) => {
+        procModelData_1.registrySchema.find({ address: req.body.from }, (err, repoData) => {
             if (!err && repoData && repoData.length > 0) {
                 processRegistryContract = web3.eth.contract(JSON.parse(repoData[0].abi)).at(req.body.from);
                 console.log('Registry Loaded Successfully');
@@ -611,7 +611,7 @@ models.post('/registry/load', (req, res) => {
         });
     }
     else {
-        procModelData_2.registrySchema.find({ _id: req.body.from }, (err, repoData) => {
+        procModelData_1.registrySchema.find({ _id: req.body.from }, (err, repoData) => {
             if (!err && repoData && repoData.length > 0) {
                 processRegistryContract = web3.eth.contract(JSON.parse(repoData[0].abi)).at(repoData[0].address);
                 console.log('Registry Loaded Successfully');
@@ -623,6 +623,276 @@ models.post('/registry/load', (req, res) => {
                 console.log('----------------------------------------------------------------------------------------------');
                 res.status(400).send('Registry NOT Found');
                 return;
+            }
+        });
+    }
+});
+//////////////////////////////////////////////////////////////////////
+///               AGREEMENT POLICY operations                  ///
+//////////////////////////////////////////////////////////////////////
+models.post('/agreements/policy', (req, res) => {
+    // Receives the agreement_policy (in JSON), the access_control address, and runtime_registry
+    // Generates/compiles and deploy the agreement policy
+    console.log('GENERATING AND DEPLOYING AGREEMENT POLICY CONTRACTS ...');
+    if (processRegistryContract === undefined) {
+        console.log('ERROR: No Runtime Registry Available');
+        console.log('----------------------------------------------------------------------------------------------');
+        res.status(404).send('Error: Runtime Registry Not Found');
+    }
+    else {
+        console.log('GENERATING SMART CONTRACTS FROM AGREEMENT POLICY ...');
+        let agreementPolicy = req.body.model;
+        let parsingResult = AgreementPolicyGenerator_1.generateAgreementPolicy(agreementPolicy, 'AgreementPolicy');
+        parsingResult
+            .then((policy) => {
+            let input = {
+                'DynamicProcessManager': fs.readFileSync('./src/models/dynamic_process_agreement/runtime_solidity/DynamicProcessManager.sol', 'utf8')
+            };
+            input['AgreementPolicy'] = policy.solidity;
+            console.log('=============================================');
+            console.log("SOLIDITY CODE");
+            console.log('=============================================');
+            Object.keys(input).forEach(key => {
+                console.log(input[key]);
+            });
+            console.log('....................................................................');
+            let output = solc.compile({ sources: input }, 1);
+            if (Object.keys(output.contracts).length === 0) {
+                res.status(400).send('COMPILATION ERROR IN AGREEMENT CONTRACT');
+                console.log('COMPILATION ERROR IN AGREEMENT CONTRACT');
+                console.log(output.errors);
+                console.log('----------------------------------------------------------------------------------------------');
+                return;
+            }
+            console.log('AGREEMENT CONTRACT GENERATED AND COMPILED SUCCESSFULLY');
+            let ProcContract = web3.eth.contract(JSON.parse(output.contracts['AgreementPolicy:AgreementPolicy_Contract'].interface));
+            ProcContract.new({
+                from: web3.eth.accounts[executionAccount],
+                data: "0x" + output.contracts['AgreementPolicy:AgreementPolicy_Contract'].bytecode,
+                gas: 4700000
+            }, (err, contract) => {
+                if (err) {
+                    console.log(`ERROR: AgreementContract instance creation failed`);
+                    console.log('RESULT ', err);
+                    res.status(403).send(err);
+                }
+                else if (contract.address) {
+                    procModelData_1.agreementSchema.create({
+                        address: contract.address,
+                        model: req.body.model,
+                        solidityCode: input['AgreementPolicy'],
+                        abi: output.contracts['AgreementPolicy:AgreementPolicy_Contract'].interface,
+                        bytecode: output.contracts['AgreementPolicy:AgreementPolicy_Contract'].bytecode,
+                        accessControlAbi: output.contracts['DynamicProcessManager:DynamicProcessManager'].interface,
+                        accessControlBytecode: output.contracts['DynamicProcessManager:DynamicProcessManager'].bytecode,
+                    }, (err, repoData) => {
+                        if (err) {
+                            console.log('Error ', err);
+                            console.log('----------------------------------------------------------------------------------------------');
+                        }
+                        else {
+                            let idAsString = repoData._id.toString();
+                            let policyGas = web3.eth.getTransactionReceipt(contract.transactionHash).gasUsed;
+                            console.log("Agreement CREATED and RUNNING at " + contract.address.toString());
+                            console.log('GAS USED: ', policyGas);
+                            console.log('Agreement Id: ', idAsString);
+                            console.log('Role\'s indexes: ', policy.roleIndexMap);
+                            console.log(".............................................");
+                            res.status(200).send({ address: contract.address.toString(), gas: policyGas, repoId: idAsString });
+                            console.log('----------------------------------------------------------------------------------------------');
+                        }
+                    });
+                }
+            });
+        })
+            .catch((err) => {
+            res.status(200).send({ 'Error': 'Error Parsing' });
+            console.log('----------------------------------------------------------------------------------------------');
+        });
+    }
+});
+models.post('/agreement/dpManager', (req, res) => {
+    if (processRegistryContract === undefined) {
+        console.log('ERROR: No Runtime Registry Available');
+        console.log('----------------------------------------------------------------------------------------------');
+        res.status(404).send('Error: Runtime Registry Not Found');
+    }
+    else {
+        console.log('DEPLOYING DYNAMIC PROCESS MANAGER...');
+        try {
+            let input = {
+                'DynamicProcessManager': fs.readFileSync('./src/models/dynamic_process_agreement/runtime_solidity/DynamicProcessManager.sol', 'utf8')
+            };
+            console.log('=============================================');
+            console.log("SOLIDITY CODE");
+            console.log('=============================================');
+            console.log(input['DynamicProcessManager']);
+            console.log('....................................................................');
+            let output = solc.compile({ sources: input }, 1);
+            if (Object.keys(output.contracts).length === 0) {
+                res.status(400).send('COMPILATION ERROR IN DYNAMIC PROCESS MANAGER CONTRACT');
+                console.log('COMPILATION ERROR IN DYNAMIC PROCESS MANAGER CONTRACTS');
+                console.log(output.errors);
+                console.log('----------------------------------------------------------------------------------------------');
+                return;
+            }
+            console.log('DYNAMIC PROCESS MANAGER compiled succesfully');
+            console.log('Creating DYNAMIC PROCESS MANAGER instance ... ');
+            let ProcContract = web3.eth.contract(JSON.parse(output.contracts['DynamicProcessManager:DynamicProcessManager'].interface));
+            ProcContract.new(req.body.accessControlAdr, req.body.agreementPolicyAdr, processRegistryContract.address, {
+                from: web3.eth.accounts[executionAccount],
+                data: "0x" + output.contracts['DynamicProcessManager:DynamicProcessManager'].bytecode,
+                gas: 4700000
+            }, (err, contract) => {
+                if (err) {
+                    console.log(`ERROR: DynamicProcessManager instance creation failed`);
+                    console.log('RESULT ', err);
+                    res.status(403).send(err);
+                }
+                else if (contract.address) {
+                    procModelData_1.dynamicProcessManagerSchema.create({
+                        address: contract.address,
+                        solidityCode: input['DynamicProcessManager'],
+                        abi: output.contracts['DynamicProcessManager:DynamicProcessManager'].interface,
+                        bytecode: output.contracts['DynamicProcessManager:DynamicProcessManager'].bytecode,
+                    }, (err, repoData) => {
+                        if (err) {
+                            console.log('Error ', err);
+                            console.log('----------------------------------------------------------------------------------------------');
+                        }
+                        else {
+                            dynamicProcessManager = contract;
+                            let dynamicPMGas = web3.eth.getTransactionReceipt(contract.transactionHash).gasUsed;
+                            let idAsString = repoData._id.toString();
+                            console.log("Process Registry DEPLOYED and RUNNING at " + processRegistryContract.address.toString());
+                            console.log('GAS USED: ', dynamicPMGas);
+                            console.log('REPO ID: ', idAsString);
+                            res.status(200).send({ 'address': dynamicProcessManager.address.toString(), gas: dynamicPMGas, repoId: idAsString });
+                            console.log('----------------------------------------------------------------------------------------------');
+                        }
+                    });
+                }
+            });
+        }
+        catch (e) {
+            console.log("Error: ", e);
+            console.log('----------------------------------------------------------------------------------------------');
+            res.status(400).send(e);
+        }
+    }
+});
+models.get('/agreements/:actorAddress/:procAddress/:opInd/:eInd', (req, res) => {
+    // Retrieves the state of a request for a given process case
+    if (!web3.isAddress(req.params.procAddress)) {
+        res.status(200).send({ 'state': 'INVALID INPUT PROCESS ADDRESS' });
+    }
+    else if (processRegistryContract === undefined) {
+        res.status(200).send({ 'state': 'UNDEFINED PROCESS REGISTRY' });
+    }
+    else if (dynamicProcessManager === undefined) {
+        res.status(200).send({ 'state': 'UNDEFINED DYNAMIC PROCESS MANAGER' });
+    }
+    else {
+        let result = dynamicProcessManager.findState.call(req.params.actorAddress, req.params.procAddress, req.params.opInd, req.params.eInd);
+        if (result.c[0] === 0) {
+            console.log(`Request is UNGRANTED`);
+            res.status(200).send({ 'state': 'UNGRANTED' });
+        }
+        else if (result.c[0] === 1) {
+            console.log(`Request is REQUESTED`);
+            res.status(200).send({ 'state': 'REQUESTED' });
+        }
+        else if (result.c[0] === 2) {
+            console.log(`Request is GRANTED`);
+            res.status(200).send({ 'state': 'GRANTED' });
+        }
+        else {
+            console.log('UNDEFINED STATE');
+            res.status(200).send({ 'state': 'UNDEFINED' });
+        }
+    }
+    console.log('----------------------------------------------------------------------------------------------');
+});
+models.post('/agreements/link-process', (req, res) => {
+    // Starts the request of and operation.
+    if (processRegistryContract === undefined) {
+        res.status(404).send({ 'state': 'UNDEFINED PROCESS REGISTRY' });
+    }
+    else if (dynamicProcessManager === undefined) {
+        res.status(200).send({ 'state': 'UNDEFINED DYNAMIC PROCESS MANAGER' });
+    }
+    else {
+        dynamicProcessManager.requestAction(req.body.rProposer, req.body.pCase, req.body.opInd, req.body.eInd, req.body.bundleId, req.body.factoryAdr, {
+            from: req.body.sender,
+            gas: 4700000
+        }, (error, result) => {
+            if (result) {
+                console.log(`SUCCESS: ${req.body.rProposer} proposed ${req.body.opInd} on ${req.body.eInd}`);
+                console.log(`Transaction Hash: ${result}`);
+                console.log('----------------------------------------------------------------------------------------------');
+                bindingOpTransactions.set(result, 0);
+                res.status(200).send({ 'transactionHash': result });
+            }
+            else {
+                console.log(error);
+                console.log('ERROR', 'Request REJECTED by the Agreement Policy');
+                console.log('----------------------------------------------------------------------------------------------');
+                res.status(404).send({ 'ERROR': error });
+            }
+        });
+    }
+});
+models.post('/agreements/link-int', (req, res) => {
+    // Starts the request of and operation.
+    if (processRegistryContract === undefined) {
+        res.status(404).send({ 'state': 'UNDEFINED PROCESS REGISTRY' });
+    }
+    else if (dynamicProcessManager === undefined) {
+        res.status(200).send({ 'state': 'UNDEFINED DYNAMIC PROCESS MANAGER' });
+    }
+    else {
+        dynamicProcessManager.requestAction(req.body.rProposer, req.body.pCase, req.body.opInd, req.body.eInd, req.body.dataIn, {
+            from: req.body.sender,
+            gas: 4700000
+        }, (error, result) => {
+            if (result) {
+                console.log(`SUCCESS: ${req.body.rProposer} proposed ${req.body.opInd} on ${req.body.eInd}`);
+                console.log(`Transaction Hash: ${result}`);
+                console.log('----------------------------------------------------------------------------------------------');
+                bindingOpTransactions.set(result, 0);
+                res.status(200).send({ 'transactionHash': result });
+            }
+            else {
+                console.log('ERROR', 'Request REJECTED by the Agreement Policy');
+                console.log('----------------------------------------------------------------------------------------------');
+                res.status(404).send({ 'ERROR': error });
+            }
+        });
+    }
+});
+models.post('/agreements/vote', (req, res) => {
+    if (processRegistryContract === undefined) {
+        res.status(404).send({ 'state': 'UNDEFINED PROCESS REGISTRY' });
+    }
+    else if (dynamicProcessManager === undefined) {
+        res.status(200).send({ 'state': 'UNDEFINED DYNAMIC PROCESS MANAGER' });
+    }
+    else {
+        dynamicProcessManager.voteRequest(req.body.rEndorser, req.body.aProposer, req.body.pCase, req.body.opInd, req.body.eInd, req.body.isAccepted, {
+            from: req.body.sender,
+            gas: 4700000
+        }, (error, result) => {
+            if (result) {
+                console.log(`SUCCESS: ${req.body.rEndorser} endorsed ${req.body.opInd} on ${req.body.eInd}`);
+                console.log(`Transaction Hash: ${result}`);
+                console.log('----------------------------------------------------------------------------------------------');
+                bindingOpTransactions.set(result, 0);
+                res.status(200).send({ 'transactionHash': result });
+            }
+            else {
+                console.log('ERROR', 'Request REJECTED by the Agreement Policy');
+                console.log('----------------------------------------------------------------------------------------------');
+                res.status(404).send({ 'ERROR': error });
             }
         });
     }
@@ -679,7 +949,7 @@ models.post('/resources/policy', (req, res) => {
                     for (let [role, index] of policy.roleIndexMap) {
                         indexToRole[index] = role;
                     }
-                    procModelData_3.policySchema.create({
+                    procModelData_1.policySchema.create({
                         address: contract.address,
                         model: req.body.model,
                         solidityCode: input['BindingPolicy'],
@@ -702,7 +972,7 @@ models.post('/resources/policy', (req, res) => {
                             console.log('Policy Id: ', idAsString);
                             console.log('Role\'s indexes: ', policy.roleIndexMap);
                             console.log(".............................................");
-                            res.status(200).send({ address: contract.address.toString(), gas: policyGas, repoId: idAsString });
+                            res.status(200).send({ address: contract.address.toString(), policyId: idAsString, gas: policyGas, repoId: idAsString });
                             console.log('----------------------------------------------------------------------------------------------');
                         }
                     });
@@ -723,7 +993,7 @@ models.post('/resources/task-role', (req, res) => {
     }
     else {
         if (web3.isAddress(req.body.policyId)) {
-            procModelData_3.policySchema.find({ address: req.body.policyId }, (err, repoData) => {
+            procModelData_1.policySchema.find({ address: req.body.policyId }, (err, repoData) => {
                 if (!err && repoData && repoData.length > 0) {
                     let processData = new Map();
                     searchRepository(0, [req.body.rootProc], processData, res, req.body.policyId, findRoleMap(repoData[0].indexToRole));
@@ -737,7 +1007,7 @@ models.post('/resources/task-role', (req, res) => {
             });
         }
         else {
-            procModelData_3.policySchema.find({ _id: req.body.policyId }, (err, repoData) => {
+            procModelData_1.policySchema.find({ _id: req.body.policyId }, (err, repoData) => {
                 if (!err && repoData && repoData.length > 0) {
                     let processData = new Map();
                     searchRepository(0, [req.body.rootProc], processData, res, req.body.policyId, findRoleMap(repoData[0].indexToRole));
@@ -761,7 +1031,7 @@ models.get('/resources/:role/:procAddress', (req, res) => {
     }
     else {
         let _policyId = web3.toAscii(processRegistryContract.bindingPolicyFor.call(req.params.procAddress)).toString().substr(0, 24);
-        procModelData_3.policySchema.find({ _id: _policyId }, (err, repoData) => {
+        procModelData_1.policySchema.find({ _id: _policyId }, (err, repoData) => {
             if (!err && repoData && repoData.length > 0) {
                 let roleIndexMap = findRoleMap(repoData[0].indexToRole);
                 if (!roleIndexMap.has(req.params.role)) {
@@ -846,7 +1116,7 @@ models.post('/resources/nominate', (req, res) => {
     }
     else {
         let _policyId = web3.toAscii(processRegistryContract.bindingPolicyFor.call(req.body.pCase)).toString().substr(0, 24);
-        procModelData_3.policySchema.find({ _id: _policyId }, (err, repoData) => {
+        procModelData_1.policySchema.find({ _id: _policyId }, (err, repoData) => {
             if (!err && repoData && repoData.length > 0) {
                 let roleIndexMap = findRoleMap(repoData[0].indexToRole);
                 if (validateInput(req.body.rNominator, req.body.rNominee, roleIndexMap, res)) {
@@ -898,7 +1168,7 @@ models.post('/resources/release', (req, res) => {
     }
     else {
         let _policyId = web3.toAscii(processRegistryContract.bindingPolicyFor.call(req.body.pCase)).toString().substr(0, 24);
-        procModelData_3.policySchema.find({ _id: _policyId }, (err, repoData) => {
+        procModelData_1.policySchema.find({ _id: _policyId }, (err, repoData) => {
             if (!err && repoData && repoData.length > 0) {
                 let roleIndexMap = findRoleMap(repoData[0].indexToRole);
                 if (validateInput(req.body.rNominator, req.body.rNominee, roleIndexMap, res)) {
@@ -957,7 +1227,7 @@ models.post('/resources/vote', (req, res) => {
     }
     else {
         let _policyId = web3.toAscii(processRegistryContract.bindingPolicyFor.call(req.body.pCase)).toString().substr(0, 24);
-        procModelData_3.policySchema.find({ _id: _policyId }, (err, repoData) => {
+        procModelData_1.policySchema.find({ _id: _policyId }, (err, repoData) => {
             if (!err && repoData && repoData.length > 0) {
                 let roleIndexMap = findRoleMap(repoData[0].indexToRole);
                 if (validateInput(req.body.rNominator, req.body.rNominee, roleIndexMap, res)) {
@@ -1078,7 +1348,7 @@ let searchRepository = (top, queue, processData, response, policyId, roleIndexMa
                                 response.status(403).send(err);
                             }
                             else if (contract.address) {
-                                procModelData_4.roleTaskSchema.create({
+                                procModelData_1.roleTaskSchema.create({
                                     address: contract.address,
                                     solidityCode: input['TaskRoleContract'],
                                     abi: output.contracts['TaskRoleContract:TaskRoleContract_Contract'].interface,
@@ -1183,11 +1453,13 @@ models.post('/models', (req, res) => {
 let caseCreatorMap = new Map();
 models.post('/models/:bundleId', (req, res) => {
     if (verifyAddress(req.body.caseCreator, 'Case Creator', res) && processRegistryContract !== undefined) {
+        // let _taskRoleId = req.body.taskRoleID;
+        // let _policyId = req.body.policyId;
         let _taskRoleId = web3.toAscii(processRegistryContract.taskRoleMapFromId.call(req.params.bundleId)).toString().substr(0, 24);
-        procModelData_4.roleTaskSchema.find({ _id: _taskRoleId }, (err, repoDataTaskRole) => {
+        procModelData_1.roleTaskSchema.find({ _id: _taskRoleId }, (err, repoDataTaskRole) => {
             if (!err && repoDataTaskRole && repoDataTaskRole.length > 0) {
                 let _policyId = web3.toAscii(processRegistryContract.bindingPolicyFromId.call(req.params.bundleId)).toString().substr(0, 24);
-                procModelData_3.policySchema.find({ _id: _policyId }, (err, repoDataPolicy) => {
+                procModelData_1.policySchema.find({ _id: _policyId }, (err, repoDataPolicy) => {
                     if (!err && repoDataPolicy && repoDataPolicy.length > 0) {
                         let roleIndexMap = findRoleMap(repoDataPolicy[0].indexToRole);
                         if (!roleIndexMap.has(req.body.creatorRole)) {
