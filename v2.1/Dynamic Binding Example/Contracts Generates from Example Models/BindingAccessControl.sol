@@ -1,4 +1,4 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.4.24;
 
 // Function assertVote will return 0 -> UNBOUND, 1 -> NOMINATED, 2 -> RELEASING, 3 -> BOUND
 contract BindingPolicy {

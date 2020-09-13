@@ -220,7 +220,7 @@ exports.parseModel = (modelInfo) => {
     return new Promise((resolve, reject) => {
         parseBpmn(modelInfo.bpmn)
             .then((definitions) => {
-            modelInfo.solidity = "pragma solidity ^0.4.25;\n";
+            modelInfo.solidity = "pragma solidity ^0.4.24;\n";
             modelInfo.controlFlowInfoMap = new Map();
             // Sanity checks
             if (!definitions.diagrams || definitions.diagrams.length == 0)

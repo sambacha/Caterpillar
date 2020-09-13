@@ -1,4 +1,4 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.4.24;
 
 contract AbstractFactory {
     address internal worklist = address(0);

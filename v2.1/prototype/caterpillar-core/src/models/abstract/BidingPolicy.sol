@@ -1,4 +1,4 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.4.24;
 
 /// Index 0 is reserved to identify in the mappings (see Binding Access Control) the elements that aren't binded yet.
 /// This is a restriction of Solidity, by definition all the keys are in the mapping, thus the zero (null) value would represent non existence. 
