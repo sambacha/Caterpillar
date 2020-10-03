@@ -5,6 +5,7 @@ WORKDIR /usr/caterpillar
 EXPOSE 3000
 EXPOSE 3010
 EXPOSE 3200
+<<<<<<< HEAD
 EXPOSE 8090
 
 # download some tools needed later
@@ -32,6 +33,9 @@ RUN npm install
 
 # copy project contents
 WORKDIR /usr/caterpillar
+=======
+RUN npm install -g ganache-cli gulp-cli httpserver @angular/cli@1.0.0
+>>>>>>> #7 update `TestRPC` references to `ganache-cli`
 COPY caterpillar-core caterpillar-core
 COPY execution-panel execution-panel
 COPY services-manager services-manager

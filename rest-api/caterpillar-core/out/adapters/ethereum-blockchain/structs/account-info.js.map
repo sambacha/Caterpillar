@@ -1,0 +1,1 @@
+{"version":3,"file":"account-info.js","sourceRoot":"","sources":["../../../../src/adapters/ethereum-blockchain/structs/account-info.ts"],"names":[],"mappings":";;;AACA,MAAa,WAAW;IAKpB,YAAY,IAAS,EAAE,GAAQ,EAAE,QAAa;QAC1C,IAAI,CAAC,IAAI,GAAG,IAAI,CAAC;QACjB,IAAI,CAAC,GAAG,GAAG,GAAG,CAAC;QACf,IAAI,CAAC,QAAQ,GAAG,QAAQ,CAAC;IAC7B,CAAC;CACJ;AAVD,kCAUC"}

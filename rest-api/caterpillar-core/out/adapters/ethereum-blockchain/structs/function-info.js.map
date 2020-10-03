@@ -1,0 +1,1 @@
+{"version":3,"file":"function-info.js","sourceRoot":"","sources":["../../../../src/adapters/ethereum-blockchain/structs/function-info.ts"],"names":[],"mappings":";;;AAAA,MAAa,YAAY;IACvB,YACS,YAAoB,EACpB,UAAyB,EACzB,UAAmB,EACnB,QAAkB;QAHlB,iBAAY,GAAZ,YAAY,CAAQ;QACpB,eAAU,GAAV,UAAU,CAAe;QACzB,eAAU,GAAV,UAAU,CAAS;QACnB,aAAQ,GAAR,QAAQ,CAAU;IACxB,CAAC;CACL;AAPD,oCAOC"}
