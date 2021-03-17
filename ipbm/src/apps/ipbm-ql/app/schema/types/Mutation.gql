@@ -1,0 +1,66 @@
+# The "Mutation" type is the root of all GraphQL mutations.
+type Mutation {
+  # Create a new registry.
+  registry: Registry,
+  model(
+    bpmn: String!
+    registryId: String!
+  ): Model
+  # Create a process for a model in a registry.
+  process(
+    modelId: String!
+    registryAddress: String!
+    creator: String!
+    creatorRole: String!
+  ): ProcessContract
+  # create a  mew policy in a registry.
+  policy(
+    policyModel: String!
+    registryId: String!
+  ): Policy
+  roleTask(
+    policyId : String!
+    modelId: String!
+    registryAddress: String!
+  ): RoleTask
+  workItem(
+    id: String!
+    registryAddress: String!
+    worklist: String!
+    from: String!
+    parameters: [String]!
+  ): ProcessContract
+  nominate(
+    processAddress: String!
+    registryAddress: String!
+    nominator: String!
+    nominatorRole: String!
+    nominee: String!
+    nomineeRole: String!
+  ): ProcessContract
+  release(
+    processAddress: String!
+    registryAddress: String!
+    nominator: String!
+    nominatorRole: String!
+    nomineeRole: String!
+  ): ProcessContract
+  voteNominate(
+    isAccepted: Boolean!
+    processAddress: String!
+    registryAddress: String!
+    endorser: String!
+    endorserRole: String!
+    nominatorRole: String!
+    nomineeRole: String!
+  ): ProcessContract
+  voteRelease(
+    isAccepted: Boolean!
+    processAddress: String!
+    registryAddress: String!
+    endorser: String!
+    endorserRole: String!
+    nominatorRole: String!
+    nomineeRole: String!
+  ): ProcessContract
+}

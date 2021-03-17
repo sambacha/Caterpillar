@@ -38,7 +38,7 @@
       <bpmn:outgoing>SequenceFlow_1qzkwmx</bpmn:outgoing>
     </bpmn:callActivity>
     <bpmn:sequenceFlow id="SequenceFlow_1qzkwmx" sourceRef="Task_05rkc4g" targetRef="ExclusiveGateway_0aatg8u" />
-    <bpmn:callActivity id="Task_1c7y5zx" name="Carrier Invoicing">
+    <bpmn:callActivity id="Task_1c7y5zx" name="Carrier_Invoicing">
       <bpmn:incoming>SequenceFlow_0tguzpt</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0o5yone</bpmn:outgoing>
     </bpmn:callActivity>
@@ -48,7 +48,7 @@
     <bpmn:sequenceFlow id="SequenceFlow_0o5yone" sourceRef="Task_1c7y5zx" targetRef="ExclusiveGateway_19bv76d" />
     <bpmn:sequenceFlow id="SequenceFlow_0tguzpt" sourceRef="ExclusiveGateway_0aatg8u" targetRef="Task_1c7y5zx" />
     <bpmn:sequenceFlow id="SequenceFlow_1s478bf" sourceRef="ExclusiveGateway_0aatg8u" targetRef="Task_1255o7q" />
-    <bpmn:callActivity id="Task_1255o7q" name="Supplier Invoicing">
+    <bpmn:callActivity id="Task_1255o7q" name="Supplier_Invoicing">
       <bpmn:incoming>SequenceFlow_1s478bf</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1w7sdld</bpmn:outgoing>
     </bpmn:callActivity>

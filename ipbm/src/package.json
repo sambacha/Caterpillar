@@ -1,0 +1,17 @@
+{
+ "private": true,
+ "scripts": {
+  "bootstrap": "lerna bootstrap --use-workspaces -- --verbose",
+  "bootstrap:production": "lerna bootstrap --use-workspaces -- --production --verbose",
+  "build": "lerna run build",
+  "clean": "lerna clean",
+  "lint": "lerna run lint"
+ },
+ "devDependencies": {
+  "lerna": "^3.13.3"
+ },
+ "workspaces": [
+  "apps/*",
+  "packages/*"
+  ]
+}

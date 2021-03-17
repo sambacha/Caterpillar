@@ -1,0 +1,11 @@
+type Process {
+  _id: String
+  rootProcessID: String
+  rootProcessName: String
+  bpmnModel: String
+  solidityCode: String
+  abi: String
+  bytecode: String
+  indexToElement: [ProcessElement]
+  worklistAbi: String
+}

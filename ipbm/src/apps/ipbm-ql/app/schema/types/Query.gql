@@ -1,0 +1,7 @@
+# The "Query" type is the root of all GraphQL queries.
+type Query {
+  accounts: [String]
+  registries(
+    _id: String
+  ): [Registry]
+}

@@ -1,0 +1,12 @@
+type Policy {
+  _id: String!
+  address: String!
+  registryId: String!
+  policyModel: String!
+  solidityCode: String!
+  abi: String!
+  bytecode: String!
+  indexToRole: [String]!
+  accessControlAbi: String!
+  accessControlBytecode: String!
+}

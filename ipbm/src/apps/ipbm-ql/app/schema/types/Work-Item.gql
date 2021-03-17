@@ -1,0 +1,8 @@
+type WorkItem {
+  worklistAddress: String
+  bundleId: String
+  elementId: String,
+  elementName: String,
+  input: [WorkItemInput]
+  refs: [WorkItemRef]
+}

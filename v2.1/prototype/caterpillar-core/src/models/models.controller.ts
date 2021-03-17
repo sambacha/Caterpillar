@@ -268,6 +268,7 @@ models.post('/registry/load', (req, res) => {
                 }
             })
     } else {
+        console.log('looking for id', req.body.from)
         registrySchema.find({_id: req.body.from},
             (err, repoData) => {
                 if (!err && repoData && repoData.length > 0) {
@@ -276,6 +277,7 @@ models.post('/registry/load', (req, res) => {
                     res.status(200).send('Registry Loaded Successfully');
                     console.log('----------------------------------------------------------------------------------------------');
                 } else {
+                    console.log({ err })
                     console.log("Error: Registry NOT Found");
                     console.log('----------------------------------------------------------------------------------------------');
                     res.status(400).send('Registry NOT Found');
@@ -386,12 +388,14 @@ models.post('/resources/policy', (req, res) => {
 });
 
 models.post('/resources/task-role', (req, res) => {
+    console.log('deploying task role..')
     if(processRegistryContract === undefined) {
         console.log('ERROR: Runtime Registry NOT FOUND.');
         res.status(404).send({ 'Error': 'Runtime Registry NOT FOUND. Please, Create/Load a Registry.' });
         console.log('----------------------------------------------------------------------------------------------');
     } else {
         if(web3.isAddress(req.body.policyId)) {
+            console.log('good policyid address')
             policySchema.find({address: req.body.policyId},
                 (err, repoData) => {
                     if (!err && repoData && repoData.length > 0) {
@@ -405,10 +409,13 @@ models.post('/resources/task-role', (req, res) => {
                     }
                 })
         } else {
+            console.log('good policyid id')
+            
             policySchema.find({_id: req.body.policyId},
                 (err, repoData) => {
                     if (!err && repoData && repoData.length > 0) {
                         let processData: Map<string, Array<any>> = new Map();
+                        console.log('searching', req.body.rootProc)
                         searchRepository(0, [req.body.rootProc], processData, res, req.body.policyId, findRoleMap(repoData[0].indexToRole));
                     } else {
                         console.log("Error: Binding Policy NOT Found");
@@ -443,6 +450,7 @@ models.get('/resources/:role/:procAddress', (req, res) => {
                         } else {
                             let _runtimePolicyContract = web3.eth.contract(JSON.parse(repoData[0].accessControlAbi)).at(accessControlAddr);
                             let result = _runtimePolicyContract.roleState.call(roleIndexMap.get(req.params.role), req.params.procAddress);
+                            console.log('result', result)
                             if(result.c[0] === 0) {
                                 console.log(`${req.params.role} is UNBOUND`)
                                 res.status(200).send({'state' : 'UNBOUND'});
@@ -722,8 +730,10 @@ models.post('/resources/vote', (req, res) => {
 
 let searchRepository = (top: number, queue: Array<string>, processData: Map<string, Array<any>>, response, policyId, roleIndexMap) => {
     processData.set(queue[top], new Array());
+    console.log('searching for', queue[top])
     repoSchema.find({_id: queue[top]},
         (err, repoData) => {
+            console.log({ err, repoData })
             if (err) {
                 return;
             } else {
@@ -733,6 +743,7 @@ let searchRepository = (top: number, queue: Array<string>, processData: Map<stri
                     if(dictionary[i].type === 'Workitem') {
                         processData.get(queue[top]).push({taskIndex: i, roleIndex: roleIndexMap.get(dictionary[i].role)});
                     } else if (dictionary[i].type === 'Separate-Instance') {
+                        console.log('found a separate instance', queue[top])
                         queue.push(web3.toAscii(processRegistryContract.childrenFor.call(queue[top], i)).toString().substr(0, 24));
                     } 
                 }
@@ -938,20 +949,22 @@ models.post('/models/:bundleId', (req, res) => {
                                                                         });
                                                                         myEvent.watch((errEvt, resEvt) => {
                                                                             if (!errEvt) {
+                                                                                console.log({ resEvt })
                                                                                 if (resEvt && resEvt.transactionHash === resNew && resEvt.event === 'NewInstanceCreatedFor' && parseInt(resEvt.args.parent.toString(), 16) === 0) {
                                                                                     myEvent.stopWatching();
                                                                                     let processAddress = resEvt.args.processAddress.toString();
                                                                                     console.log('Root Process Contract DEPLOYED and RUNNING !!! AT ADDRESS: ', processAddress);
                                                                                     console.log('GAS USED: ', web3.eth.getTransactionReceipt(resEvt.transactionHash).gasUsed);
                                                                                     console.log('....................................................................');
-                                                                                    
+                                                                                    console.log('nominating case ctreator', roleIndexMap.get(req.body.creatorRole), req.body.caseCreator, processAddress, contract.address)
+                                                                                    process.exit(1)
                                                                                     contract.nominateCaseCreator(roleIndexMap.get(req.body.creatorRole), req.body.caseCreator, processAddress, {
                                                                                         from: req.body.caseCreator,
                                                                                         gas: 4700000
                                                                                     },
                                                                                     (error1, result1) => {
                                                                                         if (result1) {
-                                                                                            console.log("Case-creator nominated ");
+                                                                                            console.log("Case-creator nominated ", error1, result1);
                                                                                             caseCreatorMap.set(result1, processAddress);
                                                                                             console.log('----------------------------------------------------------------------------------------------');
                                                                                             res.status(200).send({
@@ -1050,7 +1063,11 @@ models.post('/workitems/:worklistAddress/:reqId', (req, res) => {
                     let functionName = '';
 
                     realParameters = inputParams.length > 0 ? [reqId].concat(inputParams) : [reqId];
-                    console.log(`WANT TO EXECUTE TASK: ${node.name}, ON WORKLIST: ${worklistAddress}`);
+                    console.log(
+                        req.body.user,
+                        [reqId],
+                        `WANT TO EXECUTE TASK: ${node.name}, ON WORKLIST: ${worklistAddress}`
+                    );
                     functionName = node.name;
 
                     worklistInstance[functionName].apply(this, realParameters.concat({
@@ -1335,12 +1352,14 @@ let continueWorklistCreation = (currentIndex, sortedElements, outputContracts, m
 let instanceStateFor = (currentIndex, nestedContracts, bpmnModel, workitems, serviceTasks, res) => {
     let contractAddress = nestedContracts[currentIndex];
     let bundleId = web3.toAscii(processRegistryContract.bundleFor.call(contractAddress)).toString().substr(0, 24);
+    console.log('finding', bundleId)
     repoSchema.find({_id: bundleId},
         (err, repoData) => {
             if (err) {
                 console.log('ERROR ', err);
                 return [];
             } else {
+                console.log('found', repoData.worklistAbi)
                 let contractInstance = web3.eth.contract(JSON.parse(repoData[0].abi)).at(contractAddress);
                 let worklistAddress = contractInstance.getWorklistAddress.call();
                 let worklistInstance: any;
